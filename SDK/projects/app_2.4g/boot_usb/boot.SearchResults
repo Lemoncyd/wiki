@@ -1,0 +1,8 @@
+---- SEC_IMAGE_ALLOC_START_STACK_FADDR Matches (4 in 3 files) ----
+Bim_app.c (app):                  /*  if(addr<SEC_IMAGE_ALLOC_START_STACK_FADDR*4)
+bim_updataImage.c (app):        flash_erase(SEC_IMAGE_ALLOC_START_STACK_FADDR,(0x10000-SEC_IMAGE_ALLOC_START_STACK_FADDR));
+bim_updataImage.h (app):#define SEC_IMAGE_ALLOC_START_STACK_FADDR    (0x2000)  //(8KB)
+---- CO_ERROR_NO_ERROR Matches (3 in 1 files) ----
+Bim_flash.c (app):    return CO_ERROR_NO_ERROR;
+Bim_flash.c (app):    return CO_ERROR_NO_ERROR;
+Bim_flash.c (app):    return CO_ERROR_NO_ERROR;
