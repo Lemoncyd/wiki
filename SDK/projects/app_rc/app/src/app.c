@@ -266,7 +266,49 @@ uint8_t  remote_scan_rsp_data[] =
  * LOCAL FUNCTION DEFINITIONS
  ****************************************************************************************
  */
+void appm_add_dev_to_ral_list(struct gapc_irk irk)
+{
+	 /*  rsp:
+	  * GAPM_CMP_EVT: When operation completed.
+	  */
+      
+	 uart_printf("%s\r\n",__func__);
+	 struct gapm_list_set_ral_cmd* cmd = KE_MSG_ALLOC_DYN(GAPM_LIST_SET_CMD,
+                    TASK_GAPM, TASK_APP, gapm_list_set_ral_cmd,sizeof(struct gap_ral_dev_info));
+	 
+	 
+	  cmd->operation = GAPM_SET_RAL;
+	  cmd->size= 1;
 
+      memcpy(&cmd->ral_info[0].addr,&irk.addr,sizeof(struct gap_bdaddr)); 
+
+      memcpy(cmd->ral_info[0].peer_irk,irk.irk.key,GAP_KEY_LEN);
+            
+      
+      memcpy(cmd->ral_info[0].local_irk,app_env.loc_irk,GAP_KEY_LEN);
+
+      cmd->ral_info[0].priv_mode = PRIV_TYPE_DEVICE;
+
+#if 0
+            length = NVDS_LEN_PEER_BD_ADDRESS;
+           if (nvds_get(NVDS_TAG_PEER_BD_ADDRESS, &length, (uint8_t *)&peer_bd_addr) != NVDS_OK)
+           {
+               // The address of the bonded peer device should be present in the database
+               ASSERT_ERR(0);
+            }
+
+      memcpy(&cmd->ral_info[0].addr,&peer_bd_addr,sizeof(struct gap_bdaddr)); 
+ #endif     
+	  uart_printf("addr_type = %x\r\n", cmd->ral_info[0].addr.addr_type);
+	  uart_printf("addr = ");
+	  for(int i = 0;i < sizeof(bd_addr_t);i++)
+	  {
+		uart_printf("%x ",cmd->ral_info[0].addr.addr.addr[i]);
+	  }
+	  uart_printf("\r\n");
+		
+	  ke_msg_send(cmd);
+}
 #if (!BLE_APP_AM0)
 static void appm_build_adv_data(uint16_t max_length, uint16_t *p_length, uint8_t *p_buf)
 {
@@ -608,30 +650,46 @@ void appm_create_advertising(void)
         if (app_sec_get_bond_status())
         {
             // BD Address of the peer device
-           struct gap_bdaddr peer_bd_addr;
-//            // Length
-           uint8_t length = NVDS_LEN_PEER_BD_ADDRESS;
-			uart_printf("appm_create_advertising derect\r\n");
-//            // Get the BD Address of the peer device in NVDS
-           if (nvds_get(NVDS_TAG_PEER_BD_ADDRESS, &length, (uint8_t *)&peer_bd_addr) != NVDS_OK)
-           {
-               // The address of the bonded peer device should be present in the database
-               ASSERT_ERR(0);
-            }
+            uart_printf("appm_create_advertising derect\r\n");
+            uint8_t length;
+            struct gapc_irk irk;
+            
+            length = NVDS_LEN_PEER_IRK;
+            if(nvds_get(NVDS_TAG_PEER_IRK, &length, (uint8_t *)&irk)==NVDS_OK)
+            {
+                memcpy(&p_cmd->adv_param.peer_addr, &irk.addr, NVDS_LEN_PEER_BD_ADDRESS);
+            }else
+            {
+                struct gap_bdaddr peer_bd_addr;
 
-		    //p_cmd->adv_param.disc_mode = GAPM_ADV_MODE_NON_DISC;
+                uint8_t length = NVDS_LEN_PEER_BD_ADDRESS;
+    			
+    //            // Get the BD Address of the peer device in NVDS
+               if (nvds_get(NVDS_TAG_PEER_BD_ADDRESS, &length, (uint8_t *)&peer_bd_addr) == NVDS_OK)
+               {
+                   // The address of the bonded peer device should be present in the database
+                   memcpy(&p_cmd->adv_param.peer_addr, &peer_bd_addr, NVDS_LEN_PEER_BD_ADDRESS);
+                   
+                }else
+                {
+                    ASSERT_ERR(0);
+                }
+                
+            }
+            
+		    p_cmd->adv_param.disc_mode = GAPM_ADV_MODE_NON_DISC;
            // Set the DIRECT ADVERTISING mode
-           // p_cmd->adv_param.prop = GAPM_ADV_PROP_DIR_CONN_MASK;
+            p_cmd->adv_param.prop = GAPM_ADV_PROP_DIR_CONN_MASK;
             // Copy the BD address of the peer device and the type of address
-            memcpy(&p_cmd->adv_param.peer_addr, &peer_bd_addr, NVDS_LEN_PEER_BD_ADDRESS);
+            
 			
             p_cmd->adv_param.prim_cfg.adv_intv_min = APP_ADV_FAST_INT;
             p_cmd->adv_param.prim_cfg.adv_intv_max = APP_ADV_FAST_INT;
+            uart_printf("peeraddr type:%d\n",p_cmd->adv_param.peer_addr.addr_type);
 			uart_printf("peeraddr1=%x,%x,%x,%x,%x,%x\r\n",p_cmd->adv_param.peer_addr.addr.addr[0],p_cmd->adv_param.peer_addr.addr.addr[1],p_cmd->adv_param.peer_addr.addr.addr[2],
 									p_cmd->adv_param.peer_addr.addr.addr[3],p_cmd->adv_param.peer_addr.addr.addr[4],p_cmd->adv_param.peer_addr.addr.addr[5]);  
-			uart_printf("peeraddr2=%x,%x,%x,%x,%x,%x\r\n",peer_bd_addr.addr.addr[0],peer_bd_addr.addr.addr[1],peer_bd_addr.addr.addr[2],
-									peer_bd_addr.addr.addr[3],peer_bd_addr.addr.addr[4],peer_bd_addr.addr.addr[5]);  
-			app_env.adv_prop = APP_ADV_PROP_DERECT;
+			
+            app_env.adv_prop = APP_ADV_PROP_DERECT;
         }
         else
         {

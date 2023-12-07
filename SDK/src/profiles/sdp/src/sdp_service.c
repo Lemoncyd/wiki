@@ -89,12 +89,12 @@ void sdp_service_status_reset(uint8_t conidx)
     {
         if(sdp_env_init.sdp_env[i].conidx == conidx)
         {
-            sdp_env_init.used_status[i] = FREE_STATUS;  
-            prf_db_env = sdp_env_init.sdp_env[i].prf_db_env;
+			sdp_env_init.used_status[i] = FREE_STATUS;  
+			prf_db_env = sdp_env_init.sdp_env[i].prf_db_env;
 
-        prf_db_env->sdp_cont->chars_nb=0;
+			prf_db_env->sdp_cont->chars_nb=0;
 
-        prf_db_env->sdp_cont->descs_nb=0;
+			prf_db_env->sdp_cont->descs_nb=0;
 
     		if(prf_db_env->sdp_cont->chars_descs_inf.chars_inf != NULL)
     		{

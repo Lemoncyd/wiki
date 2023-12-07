@@ -476,18 +476,17 @@ void application_mouse_idle_rc32khz(void)
 	uWLLastState = 0x0;
 	uWLCurState = 0x0;
 
-    gpio_set_neg(TEST_PIN3);
     if(RF_flag & (flag_status_sleep/* | flag_system_powerdown*/))
     {
 
-    gpio_set_neg(TEST_PIN3);
+    
     	if((!gpio_get_input(KEY_PAIR))||(!gpio_get_input(KEY_LEFT))||(!gpio_get_input(KEY_RIGHT))
                 ||(!gpio_get_input(KEY_MIDDLE))||(!gpio_get_input(SENSOR_MOTSWK_PIN)))
         {
             return;
         }
 
-        gpio_set_neg(TEST_PIN3);
+        
         uart_printf("in sleep\n");
 //        uart_printf("swp=%2x,w=%2x\r\n", uWheelTest, system_data.wheel);
         RF_POWER_DOWN;
@@ -502,8 +501,7 @@ void application_mouse_idle_rc32khz(void)
         #if(USB_DRIVER)
         usb_deinit();
         #endif
-//        delay_ms(1);
-//        DEBUG_MSG1(0xf1);
+
         wdt_disable();
 
         Timer0_Stop(1);
@@ -514,7 +512,7 @@ void application_mouse_idle_rc32khz(void)
 		}
 		#endif
         Delay_ms(1);
-//        DEBUG_MSG1(0xf2);
+
         SYS_REG0X10_INT_EN |= POS_SYS_REG0X10_INT_EN_GPIO;
 
         if((gpio_get_input(KEY_PAIR)) && (gpio_get_input(KEY_LEFT)) && (gpio_get_input(KEY_RIGHT)) \
@@ -527,15 +525,14 @@ void application_mouse_idle_rc32khz(void)
             key_wakeup_config();//gpio_sleep();
             cpu_24_reduce_voltage_sleep();
         }
- //      LED_Ctrl(1);
-//        DEBUG_MSG1(0xf3);
+
         Timer0_Start(1,2000000); // 2ms
         //×¢²áIO»Øµ÷
         timer_cb_register(0,1,app_timer0_1_int_cb);
 
         SYS_REG0X10_INT_EN |= POS_SYS_REG0X10_INT_EN_TIMER0|POS_SYS_REG0X10_INT_EN_GPIO;
         application_mouse_wake_up_from_32khz();
-//        delay_us(200);		// 200: about 160us.
+
 		if(gpio_get_input(WHEEL_B))
 		{
 	        uWLCurState |= B_0100_0000;

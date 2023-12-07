@@ -11,7 +11,14 @@
 #define SEC_MAX_FSIZE_APP_BLOCK              (0x2A00)
 #define SEC_MAX_FSIZE_STACK_BLOCK            (0x3E00)
 #define SEC_IMAGE_RUN_STACK_CADDR            (0x1f00 )///==(BOOT_MAX_SIZE/272+1)*256
+
+#if defined(__CC_ARM)
 #define SEC_IMAGE_RUN_APP_CADDR              (0x2c400 )///==(BOOT_MAX_SIZE/272+1)*256
+#else
+//#define SEC_IMAGE_RUN_APP_CADDR              (0x2dd00 )///==(BOOT_MAX_SIZE/272+1)*256
+#define SEC_IMAGE_RUN_APP_CADDR              (0x2e200 )
+#endif
+
 #define SEC_IMAGE_RUN_APP_FADDR              (SEC_IMAGE_RUN_APP_CADDR*34/32)/////==(BOOT_MAX_SIZE/272+1)*272
 #define SEC_IMAGE_RUN_STACK_FADDR            (SEC_IMAGE_RUN_STACK_CADDR*34/32) /////==(BOOT_MAX_SIZE/272+1)*272
 #define SEC_IMAGE_OAD_HEADER_APP_FADDR       (SEC_IMAGE_RUN_APP_FADDR-0x10)

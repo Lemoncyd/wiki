@@ -99,7 +99,7 @@ CCFLAGS += -I../../src/ip/ble/ll/api \
 
 LKFLAGS += -L../../libs
 LKFLAGS += -T../../src/system/link_app_allroles.lds
-#LKFLAGS += -Wl,--gc-sections
+LKFLAGS += -Wl,--gc-sections
 LKFLAGS += -Wl,--just-symbols=../../src/system/BK3633_STACK_ALLROLES.elf
 LKFLAGS += --specs=nosys.specs
 
@@ -176,6 +176,7 @@ $(BUILD_DIR)/$(TARGET).elf : $(OBJS)
 	@arm-none-eabi-objcopy -O binary $< $@
 	@arm-none-eabi-objdump -date     $<    > $(<:%.elf=%.dmp)
 	@arm-none-eabi-nm                $<    > $(<:%.elf=%.map)
+	@mkdir -p ./output/app
 ifeq ($(OS),Windows_NT)
 	@arm-none-eabi-readelf.exe       $< -a > $(<:%.elf=%.txt)
 	@encrc -bc -o $(@:%.bin=%_crc.bin) $@
@@ -185,7 +186,6 @@ else
 	@arm-none-eabi-readelf           $< -a > $(<:%.elf=%.txt)
 	@cp -R ./build/$(TARGET).bin ./output/app
 	@./BinConvert  -oad ./output/boot/$(TARGET_BOOT).bin  ./output/stack/$(TARGET_STACK).bin ./output/app/$(TARGET).bin -m 0x1F00 -l 0x2DD00 -v 0x1220 -rom_v 0x1235 -e 00000000 00000000 00000000 00000000
-	@echo ./BinConvert  -oad ./output/boot/$(TARGET_BOOT).bin  ./output/stack/$(TARGET_STACK).bin ./output/app/$(TARGET).bin -m 0x1F00 -l 0x2DD00 -v 0x1220 -rom_v 0x1235 -e 00000000 00000000 00000000 00000000
 endif
 	@echo 'Finished building target: $@'
 	@echo ' '

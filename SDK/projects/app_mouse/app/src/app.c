@@ -358,31 +358,25 @@ static void appm_build_adv_data(uint16_t max_length, uint16_t *p_length, uint8_t
     // Remaining Length
     uint8_t rem_len = max_length;
 
-	#if 0
-	*p_length = sizeof( remote_pair_adv_data );
-
+    #if 0
+    *p_length = sizeof( remote_pair_adv_data );
     memcpy( p_buf, remote_pair_adv_data, *p_length);
-
-	#else
-	//adv type flag
+    #else
+    //adv type flag
     p_buf[0]=0x02;
     p_buf[1]=0x01;
-    //   p_buf[2]=0x06;//06:gen mode 05:limit 04 non
-
+    //p_buf[2]=0x06;//06:gen mode 05:limit 04 non
     if(sys_flag & FLAG_KEY_PAIRED)
     {
-
-    uart_printf("li\r\n");
         p_buf[2]=0x05;
     }
     else
     {
-
-    uart_printf("no\r\n");
-        p_buf[2]=0x04;
+        p_buf[2]=0x05;
     }
     p_buf += 3;
     *p_length += 3;
+    uart_printf("adv flag\r\n",p_buf[2]);
     #if (BLE_APP_HT)
     // Set list of UUIDs
     memcpy(p_buf, APP_HT_ADV_DATA_UUID, APP_HT_ADV_DATA_UUID_LEN);
@@ -457,7 +451,7 @@ void appm_start_advertising(void)
     // And the next expected operation code for the command completed event
     app_env.adv_op = GAPM_START_ACTIVITY;
 
-    ke_timer_set(APP_MOUSE_LED_TIMER,TASK_APP,APP_LED_DURATION);
+    
 }
 
 
@@ -546,7 +540,6 @@ static void appm_send_gapm_reset_cmd(void)
     struct gapm_reset_cmd *p_cmd = KE_MSG_ALLOC(GAPM_RESET_CMD,
                                                 TASK_GAPM, TASK_APP,
                                                 gapm_reset_cmd);
-
     p_cmd->operation = GAPM_RESET;
 
     ke_msg_send(p_cmd);
@@ -679,7 +672,6 @@ void rw_ip_sleep_test(uint32_t time);
 void rw_ip_deep_sleep_test(void);
 void appm_create_advertising(void)
 {
-
     if (app_env.adv_state == APP_ADV_STATE_IDLE)
     {
         // Prepare the GAPM_ACTIVITY_CREATE_CMD message
@@ -690,119 +682,95 @@ void appm_create_advertising(void)
         // Set operation code
         p_cmd->operation = GAPM_CREATE_ADV_ACTIVITY;
 
-
         // Fill the allocated kernel message
         p_cmd->own_addr_type = GAPM_STATIC_ADDR;
         p_cmd->adv_param.type = GAPM_ADV_TYPE_LEGACY;
         p_cmd->adv_param.prop = GAPM_ADV_PROP_UNDIR_CONN_MASK;
-		
-		
         p_cmd->adv_param.prim_cfg.chnl_map = APP_ADV_CHMAP;
         p_cmd->adv_param.prim_cfg.phy = GAP_PHY_LE_1MBPS;
-        //现在直接写了数据，这里并没有实际作用了。
+
+        #if (APP_WHITE_LIST_ENABLE)
+        if(app_sec_get_bond_status())
+        {
+            struct gap_bdaddr whitelist_bdaddr;
+            uint8_t peer_address_len = NVDS_LEN_PEER_BD_ADDRESS;
+
+            uart_printf("appm_create_white_list_dvertising\r\n");
+
+            if(nvds_get(NVDS_TAG_PEER_BD_ADDRESS, &peer_address_len, (uint8_t *)&whitelist_bdaddr) != NVDS_OK)
+            {
+                // An error has occurred during access to the NVDS
+                ASSERT_INFO(0,NVDS_TAG_PEER_BD_ADDRESS,peer_address_len);
+            }
+            appm_add_dev_to_wlist(whitelist_bdaddr);
+            p_cmd->adv_param.filter_pol = ADV_ALLOW_SCAN_WLST_CON_WLST;
+            p_cmd->adv_param.disc_mode = GAPM_ADV_MODE_NON_DISC;
+        }
+        else
+        {
+            p_cmd->adv_param.filter_pol = ADV_ALLOW_SCAN_ANY_CON_ANY;			
+        }
+        #else
+        p_cmd->adv_param.filter_pol = ADV_ALLOW_SCAN_ANY_CON_ANY;
+        #endif
+
         if(sys_flag & FLAG_KEY_PAIRED)
         {
-	        p_cmd->adv_param.disc_mode = GAPM_ADV_MODE_GEN_DISC;//GAPM_ADV_MODE_LIM_DISC;
+            p_cmd->adv_param.disc_mode = GAPM_ADV_MODE_GEN_DISC;//GAPM_ADV_MODE_LIM_DISC;
             p_cmd->adv_param.prim_cfg.adv_intv_min = APP_ADV_INT_MIN;
             p_cmd->adv_param.prim_cfg.adv_intv_max = APP_ADV_INT_MAX;
         }
-        else
+        else if(app_sec_get_bond_status())
         {
             p_cmd->adv_param.disc_mode = GAPM_ADV_MODE_NON_DISC;
-            p_cmd->adv_param.prim_cfg.adv_intv_min = APP_ADV_FAST_INT;
-            p_cmd->adv_param.prim_cfg.adv_intv_max = APP_ADV_FAST_INT;
-        }
+            /*
+             * If the peripheral is already bonded with a central device, use the direct advertising
+             * procedure (BD Address of the peer device is stored in NVDS.
+             */
+            if (sys_flag & FLAG_PEER_PUBLIC_ADDR)
+            {
+                // BD Address of the peer device
+                struct gap_bdaddr peer_bd_addr;
 
+                uint8_t length = NVDS_LEN_PEER_BD_ADDRESS;
+                uart_printf("appm_create_advertising derect\r\n");
+                //Get the BD Address of the peer device in NVDS
+                if (nvds_get(NVDS_TAG_PEER_BD_ADDRESS, &length, (uint8_t *)&peer_bd_addr) != NVDS_OK)
+                {
+                    // The address of the bonded peer device should be present in the database
+                    ASSERT_ERR(0);
+                }
 
-		#if (APP_WHITE_LIST_ENABLE)
+                //p_cmd->adv_param.disc_mode = GAPM_ADV_MODE_NON_DISC;
+                //Set the DIRECT ADVERTISING mode
+                //p_cmd->adv_param.prop = GAPM_ADV_PROP_DIR_CONN_MASK;
+                //Copy the BD address of the peer device and the type of address
+                memcpy(&p_cmd->adv_param.peer_addr, &peer_bd_addr, NVDS_LEN_PEER_BD_ADDRESS);
 
-		if(app_sec_get_bond_status())
-	    {
-	    	struct gap_bdaddr whitelist_bdaddr;
-   		    uint8_t peer_address_len = NVDS_LEN_PEER_BD_ADDRESS;
-			
-	        uart_printf("appm_create_white_list_dvertising\r\n");
-				
-	        if(nvds_get(NVDS_TAG_PEER_BD_ADDRESS, &peer_address_len, (uint8_t *)&whitelist_bdaddr) != NVDS_OK)
-	        {
-	                // An error has occurred during access to the NVDS
-	            ASSERT_INFO(0,NVDS_TAG_PEER_BD_ADDRESS,peer_address_len);
-	        }
-	            
-	        appm_add_dev_to_wlist(whitelist_bdaddr);
-			
-			p_cmd->adv_param.filter_pol = ADV_ALLOW_SCAN_WLST_CON_WLST;
-			p_cmd->adv_param.disc_mode = GAPM_ADV_MODE_NON_DISC;
-			
-	    }else
-	    {
-	    
-			p_cmd->adv_param.filter_pol = ADV_ALLOW_SCAN_ANY_CON_ANY;
-			
-		}
-        
-		#else
-		
-        p_cmd->adv_param.filter_pol = ADV_ALLOW_SCAN_ANY_CON_ANY;
-		
-		#endif
+                p_cmd->adv_param.prim_cfg.adv_intv_min = APP_ADV_FAST_INT;
+                p_cmd->adv_param.prim_cfg.adv_intv_max = APP_ADV_FAST_INT;
+                uart_printf("peeraddr1=%x,%x,%x,%x,%x,%x\r\n",p_cmd->adv_param.peer_addr.addr.addr[0],p_cmd->adv_param.peer_addr.addr.addr[1],p_cmd->adv_param.peer_addr.addr.addr[2],
+                            p_cmd->adv_param.peer_addr.addr.addr[3],p_cmd->adv_param.peer_addr.addr.addr[4],p_cmd->adv_param.peer_addr.addr.addr[5]);
+                uart_printf("peeraddr2=%x,%x,%x,%x,%x,%x\r\n",peer_bd_addr.addr.addr[0],peer_bd_addr.addr.addr[1],peer_bd_addr.addr.addr[2],
+                            peer_bd_addr.addr.addr[3],peer_bd_addr.addr.addr[4],peer_bd_addr.addr.addr[5]);
+                app_env.adv_prop = APP_ADV_PROP_DERECT;
 
-
-
-
-
-        #if (BLE_APP_HID)
-
-
-        /*
-         * If the peripheral is already bonded with a central device, use the direct advertising
-         * procedure (BD Address of the peer device is stored in NVDS.
-         */
-        if (sys_flag & FLAG_PEER_PUBLIC_ADDR)//(app_sec_get_bond_status())
-        {
-            // BD Address of the peer device
-           struct gap_bdaddr peer_bd_addr;
-//            // Length
-           uint8_t length = NVDS_LEN_PEER_BD_ADDRESS;
-			uart_printf("appm_create_advertising derect\r\n");
-//            // Get the BD Address of the peer device in NVDS
-           if (nvds_get(NVDS_TAG_PEER_BD_ADDRESS, &length, (uint8_t *)&peer_bd_addr) != NVDS_OK)
-           {
-               // The address of the bonded peer device should be present in the database
-               ASSERT_ERR(0);
+                p_cmd->adv_param.prop = GAPM_ADV_PROP_DIR_CONN_MASK;
             }
-
-		    //p_cmd->adv_param.disc_mode = GAPM_ADV_MODE_NON_DISC;
-           // Set the DIRECT ADVERTISING mode
-           // p_cmd->adv_param.prop = GAPM_ADV_PROP_DIR_CONN_MASK;
-            // Copy the BD address of the peer device and the type of address
-            memcpy(&p_cmd->adv_param.peer_addr, &peer_bd_addr, NVDS_LEN_PEER_BD_ADDRESS);
-
-            p_cmd->adv_param.prim_cfg.adv_intv_min = APP_ADV_FAST_INT;
-            p_cmd->adv_param.prim_cfg.adv_intv_max = APP_ADV_FAST_INT;
-			uart_printf("peeraddr1=%x,%x,%x,%x,%x,%x\r\n",p_cmd->adv_param.peer_addr.addr.addr[0],p_cmd->adv_param.peer_addr.addr.addr[1],p_cmd->adv_param.peer_addr.addr.addr[2],
-									p_cmd->adv_param.peer_addr.addr.addr[3],p_cmd->adv_param.peer_addr.addr.addr[4],p_cmd->adv_param.peer_addr.addr.addr[5]);
-			uart_printf("peeraddr2=%x,%x,%x,%x,%x,%x\r\n",peer_bd_addr.addr.addr[0],peer_bd_addr.addr.addr[1],peer_bd_addr.addr.addr[2],
-									peer_bd_addr.addr.addr[3],peer_bd_addr.addr.addr[4],peer_bd_addr.addr.addr[5]);
-			app_env.adv_prop = APP_ADV_PROP_DERECT;
-
-			 p_cmd->adv_param.prop = GAPM_ADV_PROP_DIR_CONN_MASK;
+            else
+            {
+                uart_printf("appm_create_advertising nonderect \r\n");
+                //p_cmd->adv_param.disc_mode = GAPM_ADV_MODE_LIM_DISC;
+                p_cmd->adv_param.prim_cfg.adv_intv_min = APP_ADV_INT_MIN;
+                p_cmd->adv_param.prim_cfg.adv_intv_max = APP_ADV_INT_MAX;
+                app_env.adv_prop = APP_ADV_PROP_NONDERECT;
+            }
         }
         else
         {
-        	uart_printf("appm_create_advertising nonderect \r\n");
-			//p_cmd->adv_param.disc_mode = GAPM_ADV_MODE_LIM_DISC;
-
-			app_env.adv_prop = APP_ADV_PROP_NONDERECT;
-
+            uart_printf("no create_advertising\r\n");
+            return;
         }
-        #else //(BLE_APP_HID)
-        p_cmd->adv_param.disc_mode = GAPM_ADV_MODE_GEN_DISC;
-        p_cmd->adv_param.prim_cfg.adv_intv_min = APP_ADV_INT_MIN;
-        p_cmd->adv_param.prim_cfg.adv_intv_max = APP_ADV_INT_MAX;
-        #endif //(BLE_APP_HID)
-
-
         // Send the message
         ke_msg_send(p_cmd);
 
@@ -835,7 +803,7 @@ void appm_delete_advertising(void)
 void appm_adv_fsm_next(void)
 {
     uart_printf("adv_state:%x\r\n",app_env.adv_state);
-    Delay_ms(2);
+
     switch (app_env.adv_state)
     {
         case (APP_ADV_STATE_IDLE):
@@ -928,52 +896,6 @@ uint8_t appm_get_dev_name(uint8_t* name)
     // return name length
     return app_env.dev_name_len;
 }
-#if 0
-void appm_update_adv_state(bool start)
-{
-    // TODO [LT] - Check current advertising state
-	uart_printf("appm_update_adv_state \r\n");
-    if((sys_flag & FLAG_KEY_PAIRED)&&(sys_flag & FLAG_PAIR_RW_INIT_EN))
-    {
-        sys_flag &= ~FLAG_PAIR_RW_INIT_EN;
-        sys_flag &= ~FLAG_PEER_PUBLIC_ADDR;
-     //   sys_flag &= ~FLAG_KEY_PAIRED;
-        ble_addr_add1();
-        appm_init();
-        ke_timer_set(APP_PERIOD_TIMER,TASK_APP,APP_KEYSCAN_DURATION);
-        app_env.adv_state = APP_ADV_STATE_IDLE;
-        appm_adv_fsm_next();
-        return;
-   //     rwble_init(1);
-    }
-    uart_printf("appm_delete_advertising\r\n");
-    appm_delete_advertising();
-/*	if(app_sec_get_bond_status())
-	{
-		if(app_env.adv_prop==APP_ADV_PROP_NONDERECT)
-		{
-
-			appm_delete_advertising();
-		}else
-		{
-			appm_adv_fsm_next();
-		}
-	}else
-	{
-		if(app_env.adv_prop==APP_ADV_PROP_DERECT)
-		{
-
-			appm_delete_advertising();
-		}else
-		{
-			appm_adv_fsm_next();
-		}
-
-	}*/
-
-
-}
-#endif
 void appm_change_device_mode(void)
 {
     rf_mode ^= 1;

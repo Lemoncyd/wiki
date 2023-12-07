@@ -1720,7 +1720,8 @@ static int app_gattc_sdp_timer_handler(ke_msg_id_t const msgid,
                                         ke_task_id_t const dest_id,
                                         ke_task_id_t const src_id)
 {
-			uart_printf("%s \r\n", __func__);
+			uint8_t conidx = KE_IDX_GET(dest_id);
+    	uart_printf("%s \r\n", __func__);
 			
 	     //  ke_timer_set(APP_PERIOD_TIMER,TASK_APP,2000);
 					
@@ -1733,7 +1734,7 @@ static int app_gattc_sdp_timer_handler(ke_msg_id_t const msgid,
                     
                     if(app_sec_env.bond_state==0)
                     {
-                        sdp_service_status_reset();
+                        sdp_service_status_reset(conidx);
                         ke_timer_set(APP_START_SMP_REQ_TIMER, TASK_APP,5);			
                     }
                     else
@@ -1743,7 +1744,7 @@ static int app_gattc_sdp_timer_handler(ke_msg_id_t const msgid,
                 }
                 else 
                 {
-                    sdp_service_status_reset();
+                    sdp_service_status_reset(conidx);
                     ke_state_set(KE_BUILD_ID(TASK_APP,app_env.conidx), APPC_SDP_DISCOVERING);
                     sdp_discover_all_service(app_env.conidx);
                 } 

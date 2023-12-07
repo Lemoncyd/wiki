@@ -79,6 +79,28 @@ void app_sec_init()
         // If read value is invalid, set status to not bonded
         app_sec_env.bonded = false;
     }
+    
+ #if MULTI_BOND
+	
+    uint8_t ltk_buff[36];
+    length = NVDS_LEN_BOND_INDEX;
+	if (nvds_get(NVDS_TAG_BOND_INDEX, &length, (uint8_t *)&app_sec_env.bond_index) != NVDS_OK)
+    {
+        // If read value is invalid, set status to not bonded
+        app_sec_env.bond_index= 0;
+    }
+    app_sec_env.ltk_buff_statu = false;    
+    app_sec_env.bond_num=0;
+    length = NVDS_LEN_LTK;
+    for(uint8_t i=0;i<MAX_BOND_DEVICE;i++)
+    {
+        if (nvds_get(NVDS_TAG_LTK0+i, &length, ltk_buff) == NVDS_OK)
+        {
+             app_sec_env.bond_num++;
+        }
+    }  
+    
+ #endif/* MULTI_BOND */
 
     if ((app_sec_env.bonded != true) && (app_sec_env.bonded != false))
     {
@@ -121,10 +143,22 @@ void app_sec_remove_bond(void)
         }
 
         #if (BLE_APP_HT)
+        #if MULTI_BOND
+		for(uint8_t i=0;i<app_sec_env.bond_num;i++)
+		{
+			if (nvds_del(NVDS_TAG_LTK0+i) != NVDS_OK)
+	        {
+	            ASSERT_ERR(0);
+	        }
+		}
+        app_sec_env.bond_num=0;
+		#else
         if (nvds_del(NVDS_TAG_LTK) != NVDS_OK)
         {
             ASSERT_ERR(0);
         }
+		#endif /* MULTI_BOND */
+
 
         if (nvds_del(NVDS_TAG_PEER_BD_ADDRESS) != NVDS_OK)
         {
@@ -167,7 +201,12 @@ void app_sec_send_security_req(uint8_t conidx)
         cmd->auth      = GAP_AUTH_REQ_NO_MITM_NO_BOND;
         #endif //(BLE_APP_HID || BLE_APP_HT)
 
+        #if BLE_APP_SEC_CON
+        cmd->auth      = GAP_AUTH_REQ_SEC_CON_BOND;
+        #else
         cmd->auth      = GAP_AUTH_REQ_NO_MITM_BOND;
+        #endif /*BLE_APP_SEC_CON*/
+        
         // Send the message
         ke_msg_send(cmd);
     }
@@ -226,12 +265,11 @@ static int gapc_bond_req_ind_handler(ke_msg_id_t const msgid,
     {
         case (GAPC_PAIRING_REQ):
         {
-			app_sec_env.peer_pairing = true;
+						app_sec_env.peer_pairing = true;
             cfm->request = GAPC_PAIRING_RSP;
 
-            #ifndef BLE_APP_AM0
+			#if ((!defined(BLE_APP_AM0)) && (!MULTI_BOND))
             cfm->accept  = false;
-
             // Check if we are already bonded (Only one bonded connection is supported)
             if (!app_sec_env.bonded)
             #endif // !BLE_APP_AM0
@@ -309,11 +347,20 @@ static int gapc_bond_req_ind_handler(ke_msg_id_t const msgid,
 
             #if (NVDS_SUPPORT)
             // Store the generated value in NVDS
-            if (nvds_put(NVDS_TAG_LTK, NVDS_LEN_LTK,
-                         (uint8_t *)&cfm->data.ltk) != NVDS_OK)
+            #if MULTI_BOND
+			uart_printf("%s,%d\r\n",__FUNCTION__,__LINE__);
+			if (nvds_put(NVDS_TAG_LTK0+app_sec_env.bond_index, NVDS_LEN_LTK,(uint8_t *)&cfm->data.ltk) != NVDS_OK)
+            {
+           		 uart_printf("%s,%d\r\n",__FUNCTION__,__LINE__);
+                ASSERT_ERR(0);
+            }
+			#else
+            if (nvds_put(NVDS_TAG_LTK, NVDS_LEN_LTK,(uint8_t *)&cfm->data.ltk) != NVDS_OK)
             {
                 ASSERT_ERR(0);
             }
+			#endif /* MULTI_BOND */
+
             #endif // #if (NVDS_SUPPORT)
         } break;
 
@@ -415,6 +462,26 @@ static int gapc_bond_ind_handler(ke_msg_id_t const msgid,
 
             uart_printf("PAIRING_SUCCEED\r\n");
             // Update the bonding status in the environment
+            #if MULTI_BOND
+
+			app_sec_env.bond_index++;
+			if(app_sec_env.bond_index >= MAX_BOND_DEVICE)
+			{
+				app_sec_env.bond_index= 0;
+			}
+            if(app_sec_env.bond_num<MAX_BOND_DEVICE)
+            app_sec_env.bond_num++;
+
+		    #if (NVDS_SUPPORT)
+            if (nvds_put(NVDS_TAG_BOND_INDEX, NVDS_LEN_BOND_INDEX,
+                         (uint8_t *)&app_sec_env.bond_index) != NVDS_OK)
+            {
+                // An error has occurred during access to the NVDS
+                ASSERT_ERR(0);
+            }
+			#endif
+            #endif /* MULTI_BOND */			
+
             #if (NVDS_SUPPORT)
             if (nvds_put(NVDS_TAG_PERIPH_BONDED, NVDS_LEN_PERIPH_BONDED,
                          (uint8_t *)&app_sec_env.bonded) != NVDS_OK)
@@ -455,10 +522,18 @@ static int gapc_bond_ind_handler(ke_msg_id_t const msgid,
         {
            #if (NVDS_SUPPORT)
            // Store peer identity in NVDS
+           #if MULTI_BOND
+           if (nvds_put(NVDS_TAG_PEER_IRK0+app_sec_env.bond_index, NVDS_LEN_PEER_IRK, (uint8_t *)&param->data.irk) != NVDS_OK)
+           {
+               ASSERT_ERR(0);
+           }
+           #else
            if (nvds_put(NVDS_TAG_PEER_IRK, NVDS_LEN_PEER_IRK, (uint8_t *)&param->data.irk) != NVDS_OK)
            {
                ASSERT_ERR(0);
            }
+           #endif /* MULTI_BOND */
+           
            #endif // (NVDS_SUPPORT)
 			
 			uart_printf("irk.key = ");
@@ -490,11 +565,37 @@ static int gapc_bond_ind_handler(ke_msg_id_t const msgid,
             {
                 #if (NVDS_SUPPORT)
                 // Store LTK in NVDS
-                if (nvds_put(NVDS_TAG_LTK, NVDS_LEN_LTK,(uint8_t *)&param->data.ltk.ltk.key[0]) != NVDS_OK)
+                #if MULTI_BOND
+				uart_printf("%s,%d\r\n",__FUNCTION__,__LINE__);
+                if (nvds_put(NVDS_TAG_LTK0+app_sec_env.bond_index, NVDS_LEN_LTK,(uint8_t *)&param->data.ltk.ltk.key[0]) != NVDS_OK)
+                {
+                	uart_printf("%s,%d\r\n",__FUNCTION__,__LINE__);
+                    ASSERT_ERR(0);
+                }
+				#else
+				if (nvds_put(NVDS_TAG_LTK, NVDS_LEN_LTK,(uint8_t *)&param->data.ltk.ltk.key[0]) != NVDS_OK)
                 {
                     ASSERT_ERR(0);
                 }
+				#endif /* MULTI_BOND */
+
                 #endif // (NVDS_SUPPORT)
+				
+				uart_printf("ltk key:");
+				for(uint8_t i = 0; i < 16; i++)
+				{
+					uart_printf("%02x", param->data.ltk.ltk.key[i]);
+				}
+				uart_printf("\n");
+				
+				uart_printf("rand nb:");
+				for(uint8_t i = 0; i < 16; i++)
+				{
+					uart_printf("%02x", param->data.ltk.randnb.nb[i]);
+				}
+				uart_printf("\n");
+				
+					
             }
             #endif // (BLE_APP_SEC_CON)
         }
@@ -530,8 +631,15 @@ static int gapc_encrypt_req_ind_handler(ke_msg_id_t const msgid,
 
     cfm->found    = false;
 
-    if(1)// (app_sec_env.bonded)
-    {
+    
+    #if MULTI_BOND
+        if(app_sec_env.ltk_buff_statu == true)
+        {
+                cfm->found    = true;
+                cfm->key_size = 16;
+                memcpy(&cfm->ltk, app_sec_env.ltk_buff, sizeof(struct gap_sec_key));
+        }
+    #else
         #if (NVDS_SUPPORT)
         // Retrieve the required informations from NVDS
         if (nvds_get(NVDS_TAG_LTK, &length, (uint8_t *)&ltk) == NVDS_OK)
@@ -546,7 +654,11 @@ static int gapc_encrypt_req_ind_handler(ke_msg_id_t const msgid,
                 uart_printf("encrypt_req_ind121\n");
             }
 			
-			
+			uart_printf("ediv=%d\n",ltk.ediv);
+            for(int i=0;i<sizeof(struct rand_nb);i++)
+            {
+                uart_printf("%d ",param->rand_nb.nb[i]);
+                }
             /*
              * else we are bonded with another device, disconnect the link
              */
@@ -556,7 +668,7 @@ static int gapc_encrypt_req_ind_handler(ke_msg_id_t const msgid,
             ASSERT_ERR(0);
         }
         #endif // #if (NVDS_SUPPORT)
-    }
+    #endif /* MULTI_BOND */
     /*
      * else the peer device is not known, an error should trigger a new pairing procedure.
      */

@@ -3,7 +3,7 @@
 
 #define REG_EM_ET_SIZE 16
 
-#define REG_EM_ET_BASE_ADDR 0x00814000
+#define REG_EM_ET_BASE_ADDR 0x00810000
 
 
 #endif // __REG_EM_ET_H_

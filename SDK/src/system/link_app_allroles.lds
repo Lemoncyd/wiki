@@ -6,7 +6,7 @@
 MEMORY
 {
     /*flash   (rx): ORIGIN = 0x2DD00, LENGTH = 512K*/
-    flash   (rx): ORIGIN = 0x2DD00, LENGTH = 512K
+    flash   (rx): ORIGIN = 0x2E200, LENGTH = 512K
     ram   (rw!x): ORIGIN = 0x00400F00, LENGTH = 60K
 }
 
@@ -16,11 +16,11 @@ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 ENTRY(_vector_start);
 
 /*_vector_start = 0x00024C00; //for define CFG_DBG*/
-_vector_start = 0x2DD00;
+/*_vector_start = 0x2DD00;*/
 SECTIONS
 {
      /*. = 0x00024C00; //for define CFG_DBG*/
-    . = 0x2DD00;
+    . = 0x2E200;
     .vectors :
     {
         *(*.vectors)
@@ -29,7 +29,7 @@ SECTIONS
     . = ALIGN(32);
 
    /* FAST_CALL_SEG 0x00024F00://for define CFG_DBG*/
-    FAST_CALL_SEG 0x2E000:
+    FAST_CALL_SEG 0x2E500:
    {
         /*Do not change the section order, for image*/
         *(sys_fiq_entry)

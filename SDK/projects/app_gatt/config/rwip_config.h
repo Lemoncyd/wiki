@@ -122,7 +122,7 @@
 //   <e> CFG_SEC_CON
 //   	<i> select BLE SEC CON
 //   </e>
-#if ( 0 )
+#if ( 1 )
   #define CFG_SEC_CON
 #endif
 
@@ -192,7 +192,7 @@
 
 //	 <o> CFG_RAL <1-10>
 //   <i> CFG NUMBER OF DEVICE IN RAL (1 -- 10)
-#define CFG_RAL			4
+#define CFG_RAL			6
 
 //	 <o> CFG_ACT <1-10>
 //   <i> CFG NUMBER OF ACTIVITIES IN BLE SIMULTANEOUS (1 -- 10)

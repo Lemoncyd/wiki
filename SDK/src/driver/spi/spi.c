@@ -88,7 +88,7 @@ void spi_write_read(uint8_t *wbuf, uint32_t w_size, uint8_t *rbuf, uint32_t r_si
         return;
     
     spi_waitbusying();
-    
+    SPI_REG0X1_CN=0;
     SPI_REG0X2_STAT |= (1<<POS_SPI_REG0X2_TX_FINISH_INT);
     SPI_REG0X2_STAT |= (1<<POS_SPI_REG0X2_RX_FINISH_INT);
     SYS_REG0X10_INT_EN |= (0x01 << POS_SYS_REG0X10_INT_EN_SPI);
@@ -117,7 +117,7 @@ void spi_write_read(uint8_t *wbuf, uint32_t w_size, uint8_t *rbuf, uint32_t r_si
                     
     if(r_size>0)
     {
-        while(0==(spi_send_state_get()));
+        while( (0==(spi_send_state_get())) && (SPI_REG0X2_STAT&0x4) );
         
         while(r_size--)
         {
@@ -138,7 +138,7 @@ void spi_write(uint8_t *wbuf, uint32_t w_size)
         w_size = 64;
     }	
     spi_waitbusying();
-    
+    SPI_REG0X1_CN=0;
     SPI_REG0X2_STAT |= (1<<POS_SPI_REG0X2_TX_FINISH_INT);
     SYS_REG0X10_INT_EN |= (0x01 << POS_SYS_REG0X10_INT_EN_SPI);  
     
@@ -171,8 +171,9 @@ void spi_read( uint8_t *rbuf, uint32_t r_size)
         r_size = 4095;
     }
     spi_waitbusying();
-    
-    SPI_REG0X2_STAT |= (1<<POS_SPI_REG0X2_TX_FINISH_INT);
+
+    SPI_REG0X1_CN=0;
+    SPI_REG0X2_STAT |= (1<<POS_SPI_REG0X2_RX_FINISH_INT);
     SYS_REG0X10_INT_EN |= (0x01 << POS_SYS_REG0X10_INT_EN_SPI);
 
     while(SPI_REG0X2_STAT&0x4)
@@ -180,15 +181,15 @@ void spi_read( uint8_t *rbuf, uint32_t r_size)
         tempdata = SPI_REG0X3_DAT;
         uart_printf("clear rx fifo \r\n");	
     }
-	
-    SPI_REG0X1_CN = (r_size<<POS_SPI_REG0X1_RX_TRANS_LEN)|(1<<POS_SPI_REG0X1_RX_EN)|(1<<POS_SPI_REG0X1_RX_FINISH_INT_EN);  //开始接收
+
+    SPI_REG0X1_CN = (r_size<<POS_SPI_REG0X1_RX_TRANS_LEN)|(1<<POS_SPI_REG0X1_RX_EN)|(1<<POS_SPI_REG0X1_RX_FINISH_INT_EN);
 
     tempdata=0;
-	
+
     while(1)
     {
-    	if(SPI_REG0X2_STAT&0x4)  //fifo 有数据
-    	{
+        if(SPI_REG0X2_STAT&0x4)  //fifo 有数据
+        {
             *rbuf = (SPI_REG0X3_DAT & 0xff);
             r_size--;
             if(r_size == 0)
@@ -196,6 +197,7 @@ void spi_read( uint8_t *rbuf, uint32_t r_size)
                 break;
             }
             rbuf++;
+            tempdata=0;
         }
         else
         {
@@ -273,6 +275,7 @@ void spi_waitbusying(void)
     while(spi_param.spi_state==0)
     {
        uart_printf("spi_waitbusying\n");
+       Delay_us(10);
     }
     spi_param.spi_state=0;
 }

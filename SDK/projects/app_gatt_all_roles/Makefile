@@ -97,7 +97,7 @@ CCFLAGS += -I../../src/ip/ble/ll/api \
 
 LKFLAGS += -L../../libs
 LKFLAGS += -T../../src/system/link_app_allroles.lds
-#LKFLAGS += -Wl,--gc-sections
+LKFLAGS += -Wl,--gc-sections
 LKFLAGS += -Wl,--just-symbols=../../src/system/BK3633_STACK_ALLROLES.elf
 LKFLAGS += --specs=nosys.specs
 
@@ -174,15 +174,16 @@ $(BUILD_DIR)/$(TARGET).elf : $(OBJS)
 	@arm-none-eabi-objcopy -O binary $< $@
 	@arm-none-eabi-objdump -date     $<    > $(<:%.elf=%.dmp)
 	@arm-none-eabi-nm                $<    > $(<:%.elf=%.map)
+	@mkdir -p ./output/app
 ifeq ($(OS),Windows_NT)
 	@arm-none-eabi-readelf.exe       $< -a > $(<:%.elf=%.txt)
 	@encrc -bc -o $(@:%.bin=%_crc.bin) $@
 	@cp -R ./build/BK3633_GATT_ALLROLES.bin ./output/app
-	@./output/BinConvert.exe  -oad ./output/boot/BK3633_BIM_ALLROLES.bin  ./output/stack/BK3633_STACK_ALLROLES.bin ./output/app/BK3633_GATT_ALLROLES.bin -m 0x1F00 -l 0x2DD00 -v 0x1220 -rom_v 0x1235 -e 00000000 00000000 00000000 00000000
+	@./output/BinConvert.exe  -oad ./output/boot/BK3633_BIM_ALLROLES.bin  ./output/stack/BK3633_STACK_ALLROLES.bin ./output/app/BK3633_GATT_ALLROLES.bin -m 0x1F00 -l 0x2E200 -v 0x0022 -rom_v 0x000F -e 00000000 00000000 00000000 00000000
 else
 	@arm-none-eabi-readelf           $< -a > $(<:%.elf=%.txt)
 	@cp -R ./build/BK3633_GATT_ALLROLES.bin ./output/app
-	@./BinConvert  -oad ./output/boot/BK3633_BIM_ALLROLES.bin  ./output/stack/BK3633_STACK_ALLROLES.bin ./output/app/BK3633_GATT_ALLROLES.bin -m 0x1F00 -l 0x2DD00 -v 0x1220 -rom_v 0x1235 -e 00000000 00000000 00000000 00000000
+	@./BinConvert  -oad ./output/boot/BK3633_BIM_ALLROLES.bin  ./output/stack/BK3633_STACK_ALLROLES.bin ./output/app/BK3633_GATT_ALLROLES.bin -m 0x1F00 -l 0x2E200 -v 0x0022 -rom_v 0x000F -e 00000000 00000000 00000000 00000000
 endif
 	@echo 'Finished building target: $@'
 	@echo ' '

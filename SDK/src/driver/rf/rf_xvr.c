@@ -385,6 +385,7 @@ void  xvr_reg_initial(void) {
            
 	addXVR_Reg0x0 = 0xC4B0323F  ;
 	XVR_ANALOG_REG_BAK[0] = 0xC4B0323F;
+
 	if( get_sys_mode()!=DUT_FCC_MODE )
 	{
 	  addXVR_Reg0x1 = 0x8295C200  ;
@@ -392,9 +393,13 @@ void  xvr_reg_initial(void) {
 	}
 	else
 	{
+        addXVR_Reg0x0 = 0xC4B03230  ;
+        XVR_ANALOG_REG_BAK[0] = 0xC4B03230;
 		//uart_printf("DUT set xvr reg1\n");
-		addXVR_Reg0x1 = 0X8295C300;
-		XVR_ANALOG_REG_BAK[1] = 0X8295C300;
+		// addXVR_Reg0x1 = 0X8295C300;
+		// XVR_ANALOG_REG_BAK[1] = 0X8295C300;
+		addXVR_Reg0x1 = 0X82A1C100;
+		XVR_ANALOG_REG_BAK[1] = 0X82A1C100;
 	}
 	
 	addXVR_Reg0x2 = 0x2F42A000  ;
@@ -402,7 +407,7 @@ void  xvr_reg_initial(void) {
 	addXVR_Reg0x3 = 0x60035C62  ;
 	XVR_ANALOG_REG_BAK[3] = 0x60035C62;
 	
-	if( get_sys_mode()!=DUT_FCC_MODE )
+	if( get_sys_mode()!= DUT_FCC_MODE )
 	{
 	  //addXVR_Reg0x4 = 0xFF56AACF  ;
 	  //XVR_ANALOG_REG_BAK[4] = 0xFF56AACF;//0xFFD6BBCC
@@ -411,22 +416,35 @@ void  xvr_reg_initial(void) {
 	}
 	else
 	{
-		///uart_printf("DUT set xvr reg4\n");
-		addXVR_Reg0x4 = 0xFFD741CF  ;
-		XVR_ANALOG_REG_BAK[4] = 0xFFD741CF;
+        ///uart_printf("DUT set xvr reg4\n");
+        addXVR_Reg0x4 = 0xFFD771CF  ;
+        XVR_ANALOG_REG_BAK[4] = 0xFFD771CF;
 	}
 	
 	
 	addXVR_Reg0x5 = 0x4620501F  ;
 	XVR_ANALOG_REG_BAK[5] = 0x4620501F; //0x4620501F 03.31 // 0x4420501F 04.01
-	
+    if(get_sys_mode() != DUT_FCC_MODE)
+    {	
 #if(LDO_MODE)	
-	addXVR_Reg0x6 = 0x8487CC00;//0x80B7CE20  ;
-	XVR_ANALOG_REG_BAK[6] = 0x8487CC00;//0x80B7CE20;
+	    addXVR_Reg0x6 = 0x8487CC00;//0x80B7CE20  ;
+	    XVR_ANALOG_REG_BAK[6] = 0x8487CC00;//0x80B7CE20;
 #else
-    addXVR_Reg0x6 = 0x84A7CC00;//0x8097CE20  ;
-	XVR_ANALOG_REG_BAK[6] = 0x84A7CC00;//0x8097CE20;
+        addXVR_Reg0x6 = 0x84A7CC00;//0x8097CE20  ;
+	    XVR_ANALOG_REG_BAK[6] = 0x84A7CC00;//0x8097CE20;
 #endif
+    }
+    else
+    {
+#if(LDO_MODE)	
+	    addXVR_Reg0x6 = 0x8487CC80;
+	    XVR_ANALOG_REG_BAK[6] = 0x8487CC80;
+#else
+        addXVR_Reg0x6 = 0x84A7CC80;
+	    XVR_ANALOG_REG_BAK[6] = 0x84A7CC80;
+#endif
+        
+    }
     
 	addXVR_Reg0x7 = 0xAA023FC0;//0xAA023DC0  ;
 	XVR_ANALOG_REG_BAK[7] = 0xAA023FC0;//0xAA023DC0;
@@ -542,7 +560,7 @@ void  xvr_reg_initial(void) {
 
     XVR_ANALOG_REG_BAK[0x1e]  |= 0x80000000;
     addXVR_Reg0x1e = XVR_ANALOG_REG_BAK[0x1e];
-    CLK32K_AutoCali_init();
+    CLK32K_AutoCali_init(); 
     Delay_ms(50);
 #else
     XVR_ANALOG_REG_BAK[9] |= (0x01 << 26);
@@ -551,12 +569,9 @@ void  xvr_reg_initial(void) {
 	XVR_ANALOG_REG_BAK[0x1e] = 0x00010180;
 #endif
       
-     
-
 	xtal_cal_set(0x35);
-
+	//xtal_cal_set(0x4f);
 }
-
 void rf_init(struct rwip_rf_api *api)
 {
 	////IP
@@ -625,7 +640,14 @@ void rf_init(struct rwip_rf_api *api)
         
         ip_radiocntl1_set(0x00000020);
         //uart_printf("ip RADIOCNTL1 addr:0x%08x,val:0x%08x\r\n",ip_RADIOCNTL1_ADDR,ip_radiocntl1_get());
-        ip_timgencntl_set(0x01df0120);		////Beken,
+        if(get_sys_mode() != DUT_FCC_MODE){
+            ip_timgencntl_set(0x01df0120);		////Beken,
+        }else{
+            ip_timgencntl_set(0x01df00f0);
+        }
+
+        
+	
         //uart_printf("ip_TIMGENCNTL addr:0x%08x,val:0x%08x\r\n",ip_TIMGENCNTL_ADDR,ip_timgencntl_get());
 	#endif
 
@@ -662,11 +684,18 @@ void rf_init(struct rwip_rf_api *api)
         #endif
 
 		/* BLE RADIOPWRUPDN0 */
-		ble_radiopwrupdn0_pack(/*uint8_t syncposition0*/ 0,
-							   /*uint8_t rxpwrup0*/ 	 0x50,
-							   /*uint8_t txpwrdn0*/ 	 0x07,
-							   /*uint8_t txpwrup0*/ 	 0x55);
-        ble_radiopwrupdn0_set(0x00650065);
+		// ble_radiopwrupdn0_pack(/*uint8_t syncposition0*/ 0,
+		// 					   /*uint8_t rxpwrup0*/ 	 0x50,
+		// 					   /*uint8_t txpwrdn0*/ 	 0x07,
+		// 					   /*uint8_t txpwrup0*/ 	 0x55);
+        if(get_sys_mode() != DUT_FCC_MODE){
+            ble_radiopwrupdn0_set(0x00650065);
+        }else{
+            ble_radiopwrupdn0_pack(/*uint8_t syncposition0*/ 0,
+                                    /*uint8_t rxpwrup0*/ 	 0x20,
+                                    /*uint8_t txpwrdn0*/ 	 0x00,
+                                    /*uint8_t txpwrup0*/ 	 0x65);
+        }
         //uart_printf("BLE_RADIOPWRUPDN0 addr:0x%08x,val:0x%08x\r\n",BLE_RADIOPWRUPDN0_ADDR,ble_radiopwrupdn0_get());
         
         /* BLE RADIOPWRUPDN1 */
@@ -696,7 +725,11 @@ void rf_init(struct rwip_rf_api *api)
 		ble_radiotxrxtim0_pack(/*uint8_t rfrxtmda0*/   0,
 							   /*uint8_t rxpathdly0*/  0x6,
 							   /*uint8_t txpathdly0*/  0x6);
-        ble_radiotxrxtim0_set(0x00000606);  //0x00001007
+        if(get_sys_mode() != DUT_FCC_MODE){
+            ble_radiotxrxtim0_set(0x00000606);
+        }else{
+            ble_radiotxrxtim0_set(0x00000805);  //0x00001007 0x00000503
+        }
         //uart_printf("BLE_RADIOTXRXTIM0 addr:0x%08x,val:0x%08x\r\n",BLE_RADIOTXRXTIM0_ADDR,ble_radiotxrxtim0_get());
 
 #ifdef CFG_CENTRAL	
@@ -854,10 +887,10 @@ uint32_t value_kcal_result_2M;
 void kmod_calibration(void) 
 {
 
-/* 1¡¢ÔÚ³õÊ¼»¯0X26µÄ [16:28] = 0x1084 
-			2¡¢ÔÚ0X30µÄBT ÉèÖÃ³É BT = 1È¥Ð£×¼
+/* 1ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½0X26ï¿½ï¿½ [16:28] = 0x1084 
+			2ï¿½ï¿½ï¿½ï¿½0X30ï¿½ï¿½BT ï¿½ï¿½ï¿½Ã³ï¿½ BT = 1È¥Ð£×¼
 	
-		3¡¢Ð£×¼Íê³Éºó½«ÔÚ0X30µÄBT ÉèÖÃ³É BT = 0.5
+		3ï¿½ï¿½Ð£×¼ï¿½ï¿½Éºï¿½ï¿½ï¿½0X30ï¿½ï¿½BT ï¿½ï¿½ï¿½Ã³ï¿½ BT = 0.5
 	
 	
 	*/
@@ -1030,6 +1063,7 @@ void kmod_fm_gain_set_2M(void)
 
 void CLK32K_AutoCali_init(void)
 {
+    #if (!CALI_32K_MANU_ENABLE)
     XVR_ANALOG_REG_BAK[0xc] &= ~(0x01 << 15);
     addXVR_Reg0xc = XVR_ANALOG_REG_BAK[0xc]; 
 
@@ -1043,12 +1077,52 @@ void CLK32K_AutoCali_init(void)
     Delay_ms(10);
     XVR_ANALOG_REG_BAK[0xc] = 0x1388d004;
     addXVR_Reg0xc = 0x1388d004;
+    #else
+    volatile uint32_t temp_reg = 0;
+    XVR_ANALOG_REG_BAK[0x9] &= ~(0x01 << 6);
+    addXVR_Reg0x9 = XVR_ANALOG_REG_BAK[0x9]; 
+
+    XVR_ANALOG_REG_BAK[0xc] &= ~(0x01 << 15);
+    addXVR_Reg0xc = XVR_ANALOG_REG_BAK[0xc]; 
+
+    XVR_ANALOG_REG_BAK[0xc] |= (0x01 << 15);
+    addXVR_Reg0xc = XVR_ANALOG_REG_BAK[0xc];
+    Delay_ms(30);   ///Delay_ms(100);
+    temp_reg = addPMU_Reg0x5;
+    uart_printf("addPMU_Reg0x5 = 0x%x\n", addPMU_Reg0x5);
+    ///backset 1
+    XVR_ANALOG_REG_BAK[0xc] &= ~(0x1ff << 4);
+    XVR_ANALOG_REG_BAK[0xc] |= ((temp_reg >> 9) && 0x1ff) << 4;
+
+    ///backset 2
+    XVR_ANALOG_REG_BAK[0xc] &= ~(0x0f);
+    XVR_ANALOG_REG_BAK[0xc] |= ((temp_reg >> 18) && 0x0f);
+
+    addXVR_Reg0xc = XVR_ANALOG_REG_BAK[0xc];
+
+    ///backset 3
+    XVR_ANALOG_REG_BAK[0x9] &= ~(0x07 << 3);
+    XVR_ANALOG_REG_BAK[0x9] |= ((temp_reg >> 22) && 0x7) << 3;
+    addXVR_Reg0x9 = XVR_ANALOG_REG_BAK[0x9];
+
+    //manu set
+    XVR_ANALOG_REG_BAK[0xc] |= (0x01 << 13);
+    addXVR_Reg0xc = XVR_ANALOG_REG_BAK[0xc];
+
+    XVR_ANALOG_REG_BAK[0xc] &= ~(0x01 << 15);
+    addXVR_Reg0xc = XVR_ANALOG_REG_BAK[0xc]; 
+
+    XVR_ANALOG_REG_BAK[0xc] |= (0x01 << 15);
+    addXVR_Reg0xc = XVR_ANALOG_REG_BAK[0xc];
+    uart_printf("XVR_ANALOG_REG_BAK[0x9] = 0x%x\n", XVR_ANALOG_REG_BAK[0x9]);
+    uart_printf("XVR_ANALOG_REG_BAK[0xc] = 0x%x\n", XVR_ANALOG_REG_BAK[0xc]);
+    #endif
 }
 
 
-//ÅäÖÃµ¥ÔØ²¨·¢Éä
-//freq:ÆµµãÉèÖÃ£¬Ë«Æµµã(2-80)
-//power:¹¦ÂÊµÈ¼¶(0x1-0xf)
+//ï¿½ï¿½ï¿½Ãµï¿½ï¿½Ø²ï¿½ï¿½ï¿½ï¿½ï¿½
+//freq:Æµï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½Ë«Æµï¿½ï¿½(2-80)
+//power:ï¿½ï¿½ï¿½ÊµÈ¼ï¿½(0x1-0xf)
 void singleWaveCfg(uint8_t freq, uint8_t power_level)
 {
 	uint32_t val = 0;
@@ -1065,8 +1139,8 @@ void singleWaveCfg(uint8_t freq, uint8_t power_level)
 }
 
 
-//ÐÞ¸Ä·¢Éä¹¦ÂÊ,Ä¬ÈÏÎªµÈ¼¶7
-//power_level:¹¦ÂÊµÈ¼¶(0x0-0xf) :4->0db,7->4.5db f->9db
+//ï¿½Þ¸Ä·ï¿½ï¿½ä¹¦ï¿½ï¿½,Ä¬ï¿½ï¿½Îªï¿½È¼ï¿½7
+//power_level:ï¿½ï¿½ï¿½ÊµÈ¼ï¿½(0x0-0xf) :4->0db,7->4.5db f->9db
 void set_power(uint8_t power_level)
 {
 	uint32_t val = 0;
@@ -1079,8 +1153,8 @@ void set_power(uint8_t power_level)
 	addXVR_Reg0x24 |= val;
 }
 
-///¾§ÌåÆµÆ«µ÷Õû
-///cal_dataÄ¬ÈÏÎª0x35,·¶Î§0x00~0x7f
+///ï¿½ï¿½ï¿½ï¿½ÆµÆ«ï¿½ï¿½ï¿½ï¿½
+///cal_dataÄ¬ï¿½ï¿½Îª0x35,ï¿½ï¿½Î§0x00~0x7f
 void xtal_cal_set(uint8_t cal_data)
 {
     if(cal_data>0x7f)

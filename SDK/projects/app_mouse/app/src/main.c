@@ -138,7 +138,6 @@ const struct rwip_eif_api uart_api =
 
 
 uint32_t time_count=0;
-extern void handle_key_task(void);
 extern volatile uint32_t sys_flag;
 extern uint8_t rf_mode;// 0:2.4,1:BLE
 //extern struct app_sec_env_tag app_sec_env;
@@ -153,13 +152,13 @@ void bdaddr_env_init(void)
     //get local addr
 
     length = NVDS_LEN_RF_MODE;
-    rf_mode = RF_24_MODE; //default
+    rf_mode = RF_BLE_MODE; //default
     if (nvds_get(NVDS_TAG_RF_MODE, &length, (uint8_t *)&peer_addr)  == NVDS_OK)
     {
         if(peer_addr == 1)
-            {
+        {
             rf_mode = RF_BLE_MODE;
-            }
+        }
     }
     else
     {
@@ -217,9 +216,6 @@ void bdaddr_env_init(void)
             }
         }
     }
-
-
-
 }
 
 
@@ -251,16 +247,13 @@ void dump_data(uint8_t* data, uint16_t length)
 
 void platform_reset(uint32_t error)
 {
-    void (*pReset)(void);
 
     uart_printf("reset error = %x\r\n", error);
     // Disable interrupts
     GLOBAL_INT_STOP();
-
-
+    
     // Restart FW
-    pReset = (void * )(0x0);
-    pReset();
+    cpu_reset();    
 
 }
 
@@ -284,89 +277,66 @@ void enter_dut_fcc_mode(void)
 	    #endif
 	}
 }  
-extern void app_check_key(void);
+extern void app_hid_mouse(void);
 
 void enter_normal_app_mode(void)
 {
-
-	while(rf_mode == RF_BLE_MODE)
-	{
+    while(rf_mode == RF_BLE_MODE)
+    {
         // schedule all pending events
+        //DEBUG_MSG(0x05);
+
         rwip_schedule();
+        //DEBUG_MSG(0x06);
 
         //adc_get_value(1);
-
-		oad_updating_user_section_pro();
+        oad_updating_user_section_pro();
+        
+        app_hid_mouse();
+        
         // Checks for sleep have to be done with interrupt disabled
-     /*   if(detect_key_start == 1)
-		{
-			time_count++;
-			if(time_count>12000)
-			{
-				handle_key_task( );
-				time_count=0;
-			}
-		}
-		else*/
-		{
-	        // Checks for sleep have to be done with interrupt disabled
-            GLOBAL_INT_DISABLE();
-          //  pair_key_check();
-            if(ke_state_get(TASK_APP) == APPM_CONNECTED)
+        GLOBAL_INT_DISABLE();
+        
+        if(ke_state_get(TASK_APP) == APPM_CONNECTED)
+        {
+            app_mouse_wheel_scan();
+        }
+        
+        //Check if the processor clock can be gated/
+        #if 1
+        //if( (0==uart_download_check()) )
+        {
+            switch(rwip_sleep())
             {
-                app_mouse_wheel_scan();
-            }
-	        // Check if the processor clock can be gated
-          /*  if(rf_mode == RF_24_MODE)
-            {
-                uart_printf("to 24 mian\r\n");
+                case RWIP_DEEP_SLEEP:
+                {
+                    // add here platform specific deep sleep code
+                    DEBUG_MSG(0x01);
+                    
+                    cpu_reduce_voltage_sleep();
+                    cpu_wakeup();
+                    DEBUG_MSG(0x02);;
+                }
                 break;
-            }*/
-	 #if 1
-	    //    if(  (0==uart_download_check()) )
-	        {
-	            switch(rwip_sleep())
-	            {
-	                case RWIP_DEEP_SLEEP:
-	                {
-	                    // add here platform specific deep sleep code
-                        key_process();
-                        hid_send_keycode();
-                     //   app_check_key();
-                        gpio_set(TEST_PIN1,1);
-	                    cpu_reduce_voltage_sleep();
-	                    cpu_wakeup();
-                        gpio_set(TEST_PIN1,0);
-	                }
-	                break;
-	                case RWIP_CPU_SLEEP:
-	                {
-	                    // Wait for interrupt
-	                    //WFI();
-	                    gpio_set(TEST_PIN2,1);
-	                    cpu_idle_sleep();
-                        gpio_set(TEST_PIN2,0);
-	                }
-	                break;
-	                case RWIP_ACTIVE:
-	                default:
-	                {
-	                    // nothing to do.
-	                } break;
-	            }
-	        }
-
-         //   #ifdef __MOUSE__
-         //   app_check_pair_and_mode_change();
-         //   #endif
-
-
-	#endif
-	        // Checks for sleep have to be done with interrupt disabled
-	        GLOBAL_INT_RESTORE();
-		}
+                case RWIP_CPU_SLEEP:
+                {
+                    DEBUG_MSG(0x03);
+                    cpu_idle_sleep();
+                    DEBUG_MSG(0x04);
+                }
+                break;
+                case RWIP_ACTIVE:
+                default:
+                {
+                    // nothing to do.
+                } break;
+            }
+        }
+        #endif
+        // Checks for sleep have to be done with interrupt disabled
+        GLOBAL_INT_RESTORE();
         stack_integrity_check();
-	}
+    }
 }
 #if(USB_DRIVER)
 
@@ -488,13 +458,10 @@ int main(void)
 {
     mouse_en =1;
     icu_init();
-
     wdt_disable();
-
     intc_init();
-
     sys_mode_init(NORMAL_MODE);
-
+    
     gpio_config(0x00,INPUT,PULL_HIGH);
     Delay_ms(1);
     if(0==gpio_get_input(0x00))
@@ -504,37 +471,33 @@ int main(void)
             sys_mode_init(DUT_FCC_MODE);
     }
 
-    uart_init(115200);
-    uart2_init(1000000);
+    //uart_init(115200);
+    uart_init(1000000);
 
     gpio_init();
-
   //  timer_init();
-
     flash_init();
 
-
-
-#if (NVDS_SUPPORT)
+    #if (NVDS_SUPPORT)
     nvds_init();
-#endif
+    #endif
     bdaddr_env_init();
     srand(co_default_bdaddr.addr[0]+co_default_bdaddr.addr[5]);
     rom_env_init(&rom_env);
     // Initialize RW SW stack
     rwip_init(0);
   
-    uart_printf("rw_main  start!!!=%x \r\n",EM_BLE_END);
+    uart_printf("rw_main start!!!=%x,%x \r\n",EM_BLE_END,EM_BLE_TX_DESC_END);
 
     if((system_mode & DUT_FCC_MODE) == DUT_FCC_MODE) //dut mode
-	{
+    {
         uart_printf("enter_dut_fcc_mode \r\n");
         GLOBAL_INT_START();
-		mcu_clk_switch(MCU_CLK_80M);
-		enter_dut_fcc_mode();
-	}
-	else //normal mode
-	{
+        mcu_clk_switch(MCU_CLK_80M);
+        enter_dut_fcc_mode();
+    }
+    else //normal mode
+    {
         uart_printf("enter_normal_app_mode \r\n");
 
         icu_set_sleep_mode(MCU_REDUCE_VO_SLEEP);
@@ -549,24 +512,22 @@ int main(void)
         adc_init(1,1);
         #endif
 
-		gpio_init();
+        gpio_init();
 
         mcu_clk_switch(MCU_CLK_16M);
 
         GLOBAL_INT_START();
 
-		
-		#if(USB_DRIVER)
-		usb_init(usb_mod_enable,usb_mod_ie_enable);
-		AplUsb_SetRxCbk(USB_ENDPID_Hid_DBG_OUT, (void*)Ep2_RxCbk);
-		AplUsb_SetTxCbk(USB_ENDPID_Audio_MIC,(void*)MicIn_cbk);
-		AplUsb_SetRxCbk(USB_ENDPID_Audio_SPK, (void*)AudioOut_Cbk);
-		AplUsb_SetRxCbk(USB_ENDPID_Hid_MSE_OUT, (void*)Hid_RxCbk);
-		#endif
 
+        #if 0///(USB_DRIVER)
+        usb_init(usb_mod_enable,usb_mod_ie_enable);
+        AplUsb_SetRxCbk(USB_ENDPID_Hid_DBG_OUT, (void*)Ep2_RxCbk);
+        AplUsb_SetTxCbk(USB_ENDPID_Audio_MIC,(void*)MicIn_cbk);
+        AplUsb_SetRxCbk(USB_ENDPID_Audio_SPK, (void*)AudioOut_Cbk);
+        AplUsb_SetRxCbk(USB_ENDPID_Hid_MSE_OUT, (void*)Hid_RxCbk);
+        #endif
 
-		key_init();
-
+        key_init();
         while(1)
         {
             if (rf_mode == RF_24_MODE)
@@ -581,6 +542,7 @@ int main(void)
             }
             else
             {
+                uart_printf("ble mode \r\n");
                 enter_normal_app_mode();
             }
 	    }

@@ -893,7 +893,7 @@ struct gapm_adv_period_cfg
     /// Length of switching pattern (number of antenna IDs in the pattern)
     uint8_t     switching_pattern_len;
     /// Antenna IDs
-    uint8_t     antenna_id[__ARRAY_EMPTY];
+    uint8_t     antenna_id[0x10];
 };
 
 /// Advertising parameters for advertising creation
@@ -1266,6 +1266,7 @@ struct gapm_addr_solved_ind
     bd_addr_t addr;
     /// IRK that correctly solved the random address
     struct gap_sec_key irk;
+    uint8_t index;
 };
 
 /// Name of peer device indication
@@ -1913,7 +1914,7 @@ struct gapm_per_sync_iq_sampling_ctrl_cmd
     /// Length of switching pattern
     uint8_t  switching_pattern_len;
     /// Antenna IDs
-    uint8_t  antenna_id[__ARRAY_EMPTY];
+    uint8_t  antenna_id[0x10];
 };
 
 /// Indicate reception of a IQ Report event over a periodic advertising sync activity

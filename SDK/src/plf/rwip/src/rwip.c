@@ -238,6 +238,7 @@ uint32_t  rwip_heap_env[RWIP_CALC_HEAP_LEN(RWIP_HEAP_ENV_SIZE)];
 #if (BLE_HOST_PRESENT)
 /// Memory allocated for Attribute database
 #if (CFG_CON>1)
+
 uint32_t rwip_heap_db[RWIP_CALC_HEAP_LEN(RWIP_HEAP_DB_SIZE)];
 #else
 uint32_t KE_HEAP rwip_heap_db[RWIP_CALC_HEAP_LEN(RWIP_HEAP_DB_SIZE)];
@@ -1155,16 +1156,17 @@ uint8_t rwip_sleep(void)
         // A timer ISR is not yet handled or will be raised soon
         // note the sleep duration could be negative, that's why it's useful to check if a minimum requirement is ok
         // at least one half slot.
+
         if(sleep_duration <= RWIP_MINIMUM_SLEEP_TIME)
         {
             break;
         }
+         
         DBG_SWDIAG(SLEEP, ALGO, 3);
 
         /************************************************************************
          **************           CHECK SLEEP TIME                 **************
          ************************************************************************/
-//        sleep_duration1 = sleep_duration;
         sleep_duration -= RWIP_MINIMUM_SLEEP_TIME;
         sleep_duration = rwip_slot_2_lpcycles(sleep_duration);
 
@@ -1176,6 +1178,7 @@ uint8_t rwip_sleep(void)
             break;
         }
         DBG_SWDIAG(SLEEP, ALGO, 4);
+
 
         #if (H4TL_SUPPORT)
         /************************************************************************

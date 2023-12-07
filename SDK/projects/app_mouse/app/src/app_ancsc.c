@@ -303,7 +303,7 @@ static int app_ancsc_data_ntf_handler(ke_msg_id_t const msgid,
 		}
 	     
 	}
-       // DEBUG_MSG(0X8A);
+
 	   
 	    #if 0
 		if ( *(param->value ) == 'b')	//  bili

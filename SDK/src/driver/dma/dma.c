@@ -1,6 +1,7 @@
 #include "dma.h"       // uart definition
 #include "spi.h"
 extern spi_param_t	spi_param;
+extern void uart1_dma_isr_callback(uint8_t channel);
 
 void dma_config_write(uint8_t channel,uint8_t req_mux,uint32_t src_addr,uint32_t dst_addr,uint16_t buf_len,uint8_t dest_data_width)
 {

@@ -733,7 +733,7 @@ static const appm_add_svc_func_t appm_add_svc_func_list[APPM_SVC_LIST_STOP] =
 /// Application Environment Structure
 struct app_env_tag app_env;
 
-uint8_t cur_adv_data_type=adv_data_type_first;
+uint8_t cur_adv_data_type=adv_data_type_unreg;
 
 /*
  * LOCAL FUNCTION DEFINITIONS

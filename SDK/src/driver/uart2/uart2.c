@@ -104,11 +104,9 @@ void uart2_isr(void)
     unsigned long uart_int_status;
     unsigned char uart_fifo_rdata;	
     uart_int_status = UART2_REG0X5;
-    uart_printf("%s\r\n",__func__);
     if ( uart_int_status & ( (1<<POS_UART2_REG0X5_RX_FIFO_NEED_READ)|(1<<POS_UART2_REG0X5_UART_RX_STOP_END ) ) )
     {    
-        while(UART2_REG0X2 & (1<<POS_UART2_REG0X2_FIFO_RD_READY)
-)
+        while(UART2_REG0X2 & (1<<POS_UART2_REG0X2_FIFO_RD_READY))
         {
             uart_fifo_rdata = (UART2_REG0X3>>8);
 

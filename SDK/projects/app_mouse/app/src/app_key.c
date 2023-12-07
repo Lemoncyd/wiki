@@ -186,36 +186,12 @@ extern uint8_t rf_mode;// 0:2.4,1:BLE
 
 static void app_gpio_int_cb(void)
 {
-	uart_printf("gpio int1\r\n");
-	//uart_printf("reg35=%x\r\n",addAON_GPIO_Reg0x35);
+    uart_printf("app_gpio_int_cb\r\n");
     key_sleep_en = 1;
+    key_wakeup_set();
 
-	key_wakeup_set();
-	//uart_printf("reg33=%x\r\n",addAON_GPIO_Reg0x33);
-	//uart_printf("reg31=%x\r\n",addAON_GPIO_Reg0x31);
-	//uart_printf("reg35=%x\r\n",addAON_GPIO_Reg0x35);
-	//uart_printf("reg03=%x\r\n",addPMU_Reg0x3);
-	//uart_printf("reg04=%x\r\n",addPMU_Reg0x4);
-	//restart adv
-	//ke_msg_send_basic(APP_ADV_ENABLE_TIMER,TASK_APP,TASK_APP);
-    if(rf_mode == RF_BLE_MODE)
-    {
-        if((app_env.adv_state == APP_ADV_STATE_CREATED)&&
-        	(ke_state_get(TASK_APP) == APPM_READY))
-        {
-            appm_start_advertising();
-        }
-        #if 0
-        detect_key_start = 1;
-    	#else
-    	if(!ke_timer_active(APP_PERIOD_TIMER, TASK_APP))
-    	{
-    			uart_printf("start_key_timer=%d,%d\r\n",APP_PERIOD_TIMER,ke_state_get(TASK_APP));
-    			//ke_msg_send_basic(APP_PERIOD_TIMER,TASK_APP,TASK_APP);
-    			ke_timer_set(APP_PERIOD_TIMER,TASK_APP,APP_KEYSCAN_DURATION);
-    	}
-    	#endif
-    }
+    ke_timer_set(APP_PERIOD_TIMER,TASK_APP,10);
+
 }
 void app_timer0_1_int_cb(void)
 {
@@ -296,22 +272,6 @@ void app_timer1_2_int_cb(void)
 
 }
 
-void start_key_timer(void)
-{
-	if(detect_key_start>=2)
-	{
-		if(!ke_timer_active(APP_PERIOD_TIMER, TASK_APP))
-		{
-			uart_printf("start_key_timer=%d,%d\r\n",APP_PERIOD_TIMER,detect_key_start);
-			ke_msg_send_basic(APP_PERIOD_TIMER,TASK_APP,TASK_APP);
-            //ke_timer_set(APP_PERIOD_TIMER,TASK_APP,APP_KEYSCAN_DURATION);
-		}
-		detect_key_start=0;
-	}else if(detect_key_start != 0)
-	{
-		detect_key_start++;
-	}
-}
 
 #ifdef __MOUSE__
 
@@ -350,8 +310,10 @@ void key_init(void)  // As GPIO Output
     gpio_config(TEST_PIN2, OUTPUT, PULL_NONE);
     gpio_config(TEST_PIN3, OUTPUT, PULL_NONE);
     gpio_config(TEST_PIN4, OUTPUT, PULL_NONE);
+
+
     key_wakeup_config();
-    app_enable_deep_sleep_wakeup();
+    //app_enable_deep_sleep_wakeup();
 }
 
 #else
@@ -471,41 +433,26 @@ void app_check_pair_and_mode_change(void)
         }
         else
         {
-		uart_printf("User clear adv mode\r\n");
-		app_clear_bond_flag = 0;
-        sys_flag |= FLAG_KEY_PAIRED;
-		if(ke_state_get(TASK_APP) == APPM_CONNECTED)
-		{
-			appm_disconnect();
-		}
-        else
-		{
-		    uart_printf("adv st=%xr\n",app_env.adv_state);
-          //  if((sys_flag & FLAG_KEY_PAIRED)&&(sys_flag & FLAG_PAIR_RW_INIT_EN))
+            uart_printf("User clear adv mode\r\n");
+            app_clear_bond_flag = 0;
+            sys_flag |= FLAG_KEY_PAIRED;
+            if(ke_state_get(TASK_APP) == APPM_CONNECTED)
             {
+                appm_disconnect();
+            }
+            else
+            {
+                uart_printf("adv st=%xr\n",app_env.adv_state);
                 sys_flag &= ~FLAG_PAIR_RW_INIT_EN;
                 sys_flag &= ~FLAG_PEER_PUBLIC_ADDR;
-             //   sys_flag &= ~FLAG_KEY_PAIRED;
-                ble_addr_add1();
-                appm_init();
-                ke_timer_set(APP_PERIOD_TIMER,TASK_APP,APP_KEYSCAN_DURATION);
-                app_env.adv_state = APP_ADV_STATE_IDLE;
-              //  appm_create_advertising();
-            //    return;
-           //     rwble_init(1);
+                //sys_flag &= ~FLAG_KEY_PAIRED;
+                //ble_addr_add1();
+                //appm_init();
+                appm_delete_advertising();
+                //app_env.adv_state = APP_ADV_STATE_IDLE;
             }
-		/*	if(app_env.adv_state == APP_ADV_STATE_CREATED)
-			{
-			    appm_delete_advertising();
-			}else
-			{
-				appm_adv_fsm_next();
-				restart_adv_after_stop = 1;
-			}*/
-    		}
-		}
-
-	}
+        }
+    }
 
     if( mouse_val.pair_key==PAIR_KEY_MODE_CHANGE)
     {
@@ -1390,17 +1337,16 @@ void key_process(void)
 {
     static uint8_t temp_cnt=0;
 
-#ifdef __MOUSE__
+    #ifdef __MOUSE__
     app_mouse_key_scan();
-     if(!gpio_get_input(KEY_LEFT))
-        {
-	//uart_printf("sensor\r\n");
+    if(!gpio_get_input(KEY_LEFT))
+    {
         app_sensor_check();
-        }
+    }
     else
     {
-       system_data.sensor_val.x=0;
-       system_data.sensor_val.y=0;
+        system_data.sensor_val.x=0;
+        system_data.sensor_val.y=0;
     }
     if(app_val.read_start_time<0x10)
     {
@@ -1518,10 +1464,10 @@ void key_wakeup_set(void)
 
 #ifdef __MOUSE__
 
-    addAON_GPIO_Reg0x33 = 0;
-    addPMU_Reg0x3=0;
+    //addAON_GPIO_Reg0x33 = 0;
+    //addPMU_Reg0x3=0;
     addAON_GPIO_Reg0x35 = 0xffffffff ;
-	clrf_SYS_Reg0x10_int_aon_gpio_en;
+    clrf_SYS_Reg0x10_int_aon_gpio_en;
 
 #else
 
@@ -1565,7 +1511,7 @@ void gpio_sleep(void)
     REG_GPIO_WUATOD_STATUS = 0xffffffff ;
 
     addPMU_Reg0x3=addAON_GPIO_Reg0x33;
-    SYS_REG0X10_INT_FLAG |=(0x01 << POS_SYS_REG0X10_INT_EN_GPIO);
+
     SYS_REG0X10_INT_EN |= (0x01 << POS_SYS_REG0X10_INT_EN_GPIO);
 
 }
@@ -1622,7 +1568,7 @@ void key_wakeup_config(void)
     }
 
 	//Clear period timer
-	ke_timer_clear(APP_PERIOD_TIMER, TASK_APP);
+	//ke_timer_clear(APP_PERIOD_TIMER, TASK_APP);
 	for(i=0; i<KEYBOARD_MAX_COL_SIZE; i++)
     {
 
@@ -1658,23 +1604,21 @@ app_key_type key_status_check(void)
 #else
     static uint8_t key_down_status=0;
 
-		if((stan_key_len == 0)&&(sys_flag & FLAG_KEY_ACTIVE))
-		{
-		    if(key_down_status==1)
-            {
-			    key_down_status=0;
-                uart_printf("key FREE\r\n");
-            }
-
-			return (ALL_KEY_FREE);
-		}
-		else
-		{
-            key_down_status=1;
-            uart_printf("key DOWN\r\n");
-			return (GENERAL_KEY_DOWN);
-
-	}
+    if((stan_key_len == 0)&&(sys_flag & FLAG_KEY_ACTIVE))
+    {
+        if(key_down_status==1)
+        {
+            key_down_status=0;
+            uart_printf("key FREE\r\n");
+        }
+        return (ALL_KEY_FREE);
+    }
+    else
+    {
+        key_down_status=1;
+        uart_printf("key DOWN\r\n");
+        return (GENERAL_KEY_DOWN);
+    }
 #endif
 }
 
@@ -1685,15 +1629,9 @@ extern  struct app_hid_env_tag app_hid_env;
 /*·¢ËÍ°´¼ü¼üÖµ*/
 void hid_send_keycode( void )
 {
-#ifdef __MOUSE__
-  /*  struct hogpd_enable_req * req = KE_MSG_ALLOC(HOGPD_ENABLE_REQ,
-                                                    prf_get_task_from_id(TASK_ID_HOGPD),
-                                                    TASK_APP,
-                                                    hogpd_enable_req);
-     app_env.conidx = KE_IDX_GET(src_id);*/
-
-
-    if((tx_buff_count)&&(ke_state_get(TASK_APP) == APPM_CONNECTED)&& (app_hid_env.state  == APP_HID_READY)&&(send_key_en==0))
+        
+    #ifdef __MOUSE__
+    if((tx_buff_count)&&(ke_state_get(TASK_APP) == APPM_CONNECTED)&& (app_hid_env.state == APP_HID_READY)&&(send_key_en==0))
     {
         send_key_en = 1;
 
@@ -1704,7 +1642,7 @@ void hid_send_keycode( void )
         tx_buff_count--;
     }
 
-#else
+    #else
     if((tx_buff_count)&&(ke_state_get(TASK_APP) == APPM_CONNECTED)&&(sys_flag &FLAG_CONNECT))
     {
 		if(voice_key_press_status && (bt_tx_buff[tx_buff_tail][2] == KEY_VOICE)
@@ -1733,7 +1671,6 @@ void hid_send_keycode( void )
 				app_hid_send_report(&bt_tx_buff[tx_buff_tail][0],tx_buff_len[tx_buff_tail]);
 			}
 		}
-
         tx_buff_tail++;
         tx_buff_tail %= SEND_BUFFER_CNT;
         tx_buff_count--;
@@ -1754,17 +1691,16 @@ void hid_send_keycode( void )
 			if(app_env.adv_state == APP_ADV_STATE_CREATED)
 			{
 			    appm_delete_advertising();//¨°?¨ª¡ê?11?2£¤¡ê??¡À?¨®¨¦?3y
-			//	appm_update_adv_state(true);
+
 			}else
 			{
 			    appm_stop_advertising(); //?y?¨²1?2£¤¡Á¡ä¡ê??¨¨¨ª¡ê?1¡ê??¨´¨¦?3y
-			//	appm_adv_fsm_next();*/
 				need_delete_current_adv_activity = 1;
 			}
 		}
 
 	}
-#endif
+    #endif
 }
 
 /*! \fn void driver_timer0_reset(void)

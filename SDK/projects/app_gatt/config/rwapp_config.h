@@ -133,6 +133,7 @@
 #if (BLE_APP_AM0)
 #define BLE_APP_SEC_CON      1
 #else //(BLE_APP_AM0)
+//#define BLE_APP_SEC_CON      1
 #define BLE_APP_SEC_CON      0
 #endif ////(BLE_APP_AM0)
 

@@ -50,6 +50,13 @@ struct app_sec_env_tag
 	bool peer_encrypt;
 	bool bond_lost;
 	bool pairing_fail;
+    #if MULTI_BOND
+    uint8_t bond_index;
+    uint8_t bond_num;
+    uint8_t ltk_buff[36];
+    uint8_t ltk_buff_statu;
+    #endif /* MULTI_BOND */
+
 };
 
 /*

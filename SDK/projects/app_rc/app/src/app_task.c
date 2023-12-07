@@ -292,14 +292,17 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
                 memcpy(&cmd->addr.addr[0],&co_default_bdaddr.addr[0],6);
                 
                 // Check if address is a static random address
-                if ((cmd->addr.addr[5] & 0xc0) == 0xc0)
+                if ((cmd->addr.addr[5] & 0x40) == 0x40)
                 {
                     // Host privacy enabled by default
                     cmd->privacy_cfg |= GAPM_PRIV_CFG_PRIV_ADDR_BIT;
                 }
                 
+                cmd->privacy_cfg |= GAPM_PRIV_CFG_PRIV_EN_BIT;
+                cmd->renew_dur = 5;
                 
-
+                uart_printf("host privacy enable privacy_cfg=%d\r\n",cmd->privacy_cfg);
+                
                 #if (BLE_APP_AM0)
                 cmd->audio_cfg   = GAPM_MASK_AUDIO_AM0_SUP;
                 #endif //(BLE_APP_AM0)
@@ -394,6 +397,16 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
             #endif //(BLE_APP_SEC)
             app_env.rand_cnt = 0;
 
+            if (app_sec_get_bond_status() == true)
+            {
+                uint8_t length;
+                struct gapc_irk irk;
+                length = NVDS_LEN_PEER_IRK;
+               if (nvds_get(NVDS_TAG_PEER_IRK, &length, (uint8_t *)&irk) == NVDS_OK)
+               {
+                    appm_add_dev_to_ral_list( irk);
+               }
+            }
 
              // Go to the create db state
             ke_state_set(TASK_APP, APPM_CREATE_DB);
@@ -461,7 +474,13 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
        
         case (GAPM_CREATE_ADV_ACTIVITY):
         {
-            appm_set_adv_data();   
+            if(app_env.adv_prop == APP_ADV_PROP_DERECT)
+            {
+                appm_start_advertising();
+            }else
+            {
+                appm_set_adv_data();   
+            }
         }break;
         
         case (GAPM_START_ACTIVITY):

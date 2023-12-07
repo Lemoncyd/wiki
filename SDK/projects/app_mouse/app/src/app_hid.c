@@ -475,42 +475,37 @@ void app_hid_enable_prf(uint8_t conidx)
 
 void app_hid_send_report(uint8_t *data, uint8_t len)
 {
-  //  uart_printf("%s, app_hid_state = 0x%x,len=%d\r\n", __func__, app_hid_env.state,len);
-	//app_hid_env.state = APP_HID_READY;
-	uart_printf("app_hid_state = %x,len=%d\r\n", app_hid_env.state,len);
+	//uart_printf("app_hid_state = %x,len=%d\r\n", app_hid_env.state,len);
 	switch (app_hid_env.state)
 	{
 	    case (APP_HID_READY):
 	    {
 	        // Check if the report can be sent
-	 		struct hogpd_report_upd_req * req = KE_MSG_ALLOC_DYN(HOGPD_REPORT_UPD_REQ,
+            struct hogpd_report_upd_req * req = KE_MSG_ALLOC_DYN(HOGPD_REPORT_UPD_REQ,
 	                                                      prf_get_task_from_id(TASK_ID_HOGPD),
 	                                                      TASK_APP,
 	                                                      hogpd_report_upd_req,
 	                                                      APP_HID_HID_REPORT_MAX_LEN);
 
-			uint8_t report_buff[APP_HID_HID_REPORT_MAX_LEN];
-			uint8_t status = 0;
+            uint8_t report_buff[APP_HID_HID_REPORT_MAX_LEN];
+            uint8_t status = 0;
 
-			memset(&report_buff[0], 0, APP_HID_HID_REPORT_MAX_LEN);
+            memset(&report_buff[0], 0, APP_HID_HID_REPORT_MAX_LEN);
 
-			if((len == APP_HID_MOUSE_REPORT_LEN)||
-                (len == APP_HID_MOUSE1_REPORT_LEN)||
-                (len == APP_HID_MOUSE2_REPORT_LEN))
+            if((len == APP_HID_MOUSE_REPORT_LEN)||(len == APP_HID_MOUSE1_REPORT_LEN)|| (len == APP_HID_MOUSE2_REPORT_LEN))
             {
-            uart_printf("1,");
                 status = 1;
 
-			 	report_buff[0] = data[0];
-			 	report_buff[1] = data[1];
-			 	report_buff[2] = data[2];
-			 	report_buff[3] = data[3];
-			 	report_buff[4] = data[4];
-			 	report_buff[5] = data[5];
-			 	report_buff[6] = data[6];
-				report_buff[7] = data[7];
+                report_buff[0] = data[0];
+                report_buff[1] = data[1];
+                report_buff[2] = data[2];
+                report_buff[3] = data[3];
+                report_buff[4] = data[4];
+                report_buff[5] = data[5];
+                report_buff[6] = data[6];
+                report_buff[7] = data[7];
 
-	         	// Allocate the HOGPD_REPORT_UPD_REQ message
+                // Allocate the HOGPD_REPORT_UPD_REQ message
                 req->conidx  = app_hid_env.conidx;
                 //now fill report
                 req->report.hid_idx  = app_hid_env.conidx;
@@ -575,6 +570,7 @@ void app_hid_send_report(uint8_t *data, uint8_t len)
 			if(status)
 			{
 				ke_msg_send(req);
+                app_hid_env.state = APP_HID_IDLE;
 			}
 			else
 			{
@@ -911,15 +907,11 @@ static int hogpd_report_upd_handler(ke_msg_id_t const msgid,
 {
 //	uart_printf("%s,(%d) \r\n",__func__,__LINE__);
     send_key_en = 0;
-   	if(param->status != GAP_ERR_NO_ERROR)
-	{
-	//	uart_printf("%s,(%d) \r\n",__func__,__LINE__);
-		// Go back to the ready state
+    if(param->status == GAP_ERR_NO_ERROR)
+    {
+        // Go back to the ready state
         app_hid_env.state = APP_HID_READY;
-	}
-
-	//app_hid_set_send_flag(true);
-
+    }
     return (KE_MSG_CONSUMED);
 }
 
@@ -1051,6 +1043,34 @@ const struct ke_msg_handler app_hid_msg_handler_list[] =
 };
 
 const struct app_subtask_handlers app_hid_handlers = APP_HANDLERS(app_hid);
+
+ void app_hid_mouse(void)
+{
+    rwip_time_t current_time;
+    static rwip_time_t last_time;
+
+    if(ke_state_get(TASK_APP) != APPM_CONNECTED)
+        return;
+    current_time = rwip_time_get();
+    
+    if(current_time.hs>=last_time.hs)
+    {
+        if((current_time.hs-last_time.hs)>=BLE_UAPDATA_MAX_INTVALUE*4-1)
+        {
+            DEBUG_MSG(0x10);
+            last_time.hs=current_time.hs;
+            key_process();
+            hid_send_keycode();
+            app_check_key();
+            DEBUG_MSG(0x11);
+        }
+    }
+    else
+    {
+        last_time.hs=current_time.hs;
+    }
+    
+ }
 
 #endif //(BLE_APP_HID)
 

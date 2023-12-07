@@ -171,6 +171,7 @@ $(BUILD_DIR)/$(TARGET).elf : $(OBJS)
 	@arm-none-eabi-objcopy -O binary $< $@
 	@arm-none-eabi-objdump -date     $<    > $(<:%.elf=%.dmp)
 	@arm-none-eabi-nm                $<    > $(<:%.elf=%.map)
+	@mkdir -p ./output/app
 ifeq ($(OS),Windows_NT)
 	@arm-none-eabi-readelf.exe       $< -a > $(<:%.elf=%.txt)
 	@encrc -bc -o $(@:%.bin=%_crc.bin) $@

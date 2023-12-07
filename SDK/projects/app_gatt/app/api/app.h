@@ -111,12 +111,26 @@ enum app_nvds_tag
     NVDS_LEN_MOUSE_SAFE_ENERGY          = 2,
 
     /// EDIV (2bytes), RAND NB (8bytes),  LTK (16 bytes), Key Size (1 byte)
+#if MULTI_BOND
+    /// EDIV (2bytes), RAND NB (8bytes),  LTK (16 bytes), Key Size (1 byte)
+    NVDS_TAG_LTK0                        = 0x3E,
+    NVDS_TAG_LTK1                        = 0x3F,
+    NVDS_TAG_LTK2                        = 0x40,
+    NVDS_TAG_LTK_NUM,
+#else
+	/// EDIV (2bytes), RAND NB (8bytes),  LTK (16 bytes), Key Size (1 byte)
     NVDS_TAG_LTK                        = 0x3E,
+#endif	/* MULTI_BOND */
     NVDS_LEN_LTK                        = 28,
 
     /// PAIRING
     NVDS_TAG_PAIRING                    = 0x3F,
     NVDS_LEN_PAIRING                    = 54,
+    
+#if MULTI_BOND
+	NVDS_TAG_BOND_INDEX                    = 0x80,
+    NVDS_LEN_BOND_INDEX                    = 1,
+#endif /* MULTI_BOND */
 
     /// Audio mode 0 task
     NVDS_TAG_AM0_FIRST                  = 0x90,
@@ -127,7 +141,14 @@ enum app_nvds_tag
     NVDS_LEN_LOC_IRK                    = KEY_LEN,
 
     /// Peer device Resolving identity key (+identity address)
+#if MULTI_BOND
+    NVDS_TAG_PEER_IRK0                 = 0xA1,
+    NVDS_TAG_PEER_IRK1                 = 0XA2,
+    NVDS_TAG_PEER_IRK2                 = 0XA3,
+#else
     NVDS_TAG_PEER_IRK                   = 0xA1,
+#endif /* MULTI_BOND */
+    
     NVDS_LEN_PEER_IRK                   = sizeof(struct gapc_irk),
 };
 #endif // (NVDS_SUPPORT)
@@ -154,6 +175,11 @@ enum app_adv_state
     APP_ADV_STATE_STOPPING,
 
 };
+
+
+#if MULTI_BOND
+#define MAX_BOND_DEVICE (NVDS_TAG_LTK_NUM-NVDS_TAG_LTK0)
+#endif /* MULTI_BOND */
 
 /*
  * TYPE DEFINITIONS

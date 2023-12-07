@@ -88,7 +88,7 @@ CCFLAGS += -I../../src/ip/ble/ll/api \
 
 LKFLAGS += -L../../libs
 LKFLAGS += -T../../src/system/link_app.lds
-#LKFLAGS += -Wl,--gc-sections
+LKFLAGS += -Wl,--gc-sections
 LKFLAGS += -Wl,--just-symbols=../../src/system/bk3633_stack_gcc.elf
 LKFLAGS += --specs=nosys.specs
 
@@ -161,6 +161,7 @@ $(BUILD_DIR)/$(TARGET).elf : $(OBJS)
 	@arm-none-eabi-objcopy -O binary $< $@
 	@arm-none-eabi-objdump -date     $<    > $(<:%.elf=%.dmp)
 	@arm-none-eabi-nm                $<    > $(<:%.elf=%.map)
+	@mkdir -p ./output/app
 ifeq ($(OS),Windows_NT)
 	@arm-none-eabi-readelf.exe       $< -a > $(<:%.elf=%.txt)
 	@encrc -bc -o $(@:%.bin=%_crc.bin) $@

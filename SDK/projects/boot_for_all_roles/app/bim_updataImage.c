@@ -373,9 +373,14 @@ void bim_erase_image_sec(void)
     bim_printf("erase_image start \n");
     if(hdr_back.uid == OAD_APP_PART_UID)  //128k
     {
+        /*FW for project all_roles compiled by gcc is oversize, no need to erase*/
+        #if defined(__CC_ARM)   
         ///erase 160k~328k
         flash_erase(0x2f000,0X1000);
         flash_erase_one_block(0X30000);
+        #else
+        flash_erase(0X31000,0xF000); 
+        #endif
         flash_erase_one_block(0X40000);
         flash_erase(0x50000,0X2000);
     }

@@ -72,8 +72,12 @@
 //Á¬½Ó³¬Ê±
 #define BLE_UAPDATA_TIMEOUT				600
 
+#define MULTI_BOND 0
 
+#define CALI_32K_MANU_ENABLE            0
 
+//#define __APP_ATTR_ARM __attribute__((section("APP_BLE_FIQ")))
+#define __APP_ATTR_ARM 
 #endif // USER_CONFIG_H_
 
 

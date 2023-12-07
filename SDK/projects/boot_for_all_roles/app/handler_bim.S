@@ -20,9 +20,10 @@
 
     //.equ SYSirq_FIQ_Handler,0x00024F00  //for define CFG_DBG	
     //.equ SYSirq_IRQ_Handler,0x00024F20 //for define CFG_DBG
-    .equ SYSirq_FIQ_Handler,0x2E000
-    .equ SYSirq_IRQ_Handler,0x2E020
-
+    //.equ SYSirq_FIQ_Handler,0x2E000
+    //.equ SYSirq_IRQ_Handler,0x2E020
+    .equ SYSirq_FIQ_Handler,0x2E500
+    .equ SYSirq_IRQ_Handler,0x2E520
 
     
     .extern Irq_Exception

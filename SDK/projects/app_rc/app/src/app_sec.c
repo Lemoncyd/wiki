@@ -469,6 +469,8 @@ static int gapc_bond_ind_handler(ke_msg_id_t const msgid,
 				uart_printf("0x%x ",param->data.irk.addr.addr.addr[i]);
 			}
 			uart_printf("\r\n");
+            appm_add_dev_to_ral_list(param->data.irk);
+            
         } break;
 
         case (GAPC_PAIRING_FAILED):

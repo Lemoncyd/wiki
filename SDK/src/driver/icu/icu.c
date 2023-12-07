@@ -39,6 +39,8 @@ void icu_init(void)
 #ifndef CFG_JTAG_DEBUG	
     clrf_SYS_Reg0x0_jtag_mode;   ///close JTAG
 #endif
+    addPMU_Reg0x1 &= ~(1<<11);
+
     set_SYS_Reg0x2_core_sel(0x01);
     set_SYS_Reg0x2_core_div(0x0);///16M CLK
 
@@ -48,7 +50,7 @@ void icu_init(void)
     addPMU_Reg0x14=0x6666;
 
 #if(LDO_MODE)
-    addPMU_Reg0x13 |= ((1<<12)+(1<<28));    
+    addPMU_Reg0x13 |= ((1<<12)+(1<<28));
 #endif
     
 }
@@ -84,6 +86,7 @@ void cpu_reduce_voltage_sleep()
     //set_flash_clk(0x08);
     set_SYS_Reg0x2_core_sel(0x01);
     set_SYS_Reg0x2_core_div(0x0);
+#if(LDO_MODE==0)
 #if(LDO_MODE_IN_SLEEP)
     ///切换到LDO模式
     addXVR_Reg0x6 = 0x8487CC00;//0x80B7CE20  ;
@@ -91,7 +94,7 @@ void cpu_reduce_voltage_sleep()
     addXVR_Reg0xa = 0x9C03F86B;//0x9C27785B  ;
     XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86B;//0x9C27785B;
 #endif
-
+#endif
     setf_SYS_Reg0x17_enb_busrt_sel; 
     setf_SYS_Reg0x17_CLK96M_PWD;
     setf_SYS_Reg0x17_HP_LDO_PWD;
@@ -121,12 +124,14 @@ void cpu_reduce_voltage_sleep()
     delay_nop++;
     set_SYS_Reg0x2_core_sel(0x01);
 
+#if(LDO_MODE==0)
 #if(LDO_MODE_IN_SLEEP)
     ///切换到buck模式
     addXVR_Reg0x6 = 0x84A7CC00;//0x8097CE20  ;
     XVR_ANALOG_REG_BAK[6] = 0x84A7CC00;//0x8097CE20;
     addXVR_Reg0xa = 0x9C03F86F;//0x9C27785B  ;
     XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86F;//0x9C27785B;
+#endif
 #endif
 }
 
@@ -284,18 +289,30 @@ void cpu_delay( volatile unsigned int times)
 
 void deep_sleep(void)
 {   
-	addXVR_Reg0x6 = 0x85A7CC00;
-	cpu_delay( 1000 ) ;		
-		
-	addXVR_Reg0x7 = 0xAA023FC0;		
-	cpu_delay( 1000 ) ;			
+    gpio_config(0x07,INPUT,PULL_HIGH);
+    gpio_wakeup_config(0x07);///set wakeup gpio,set your need gpio
+    cpu_delay( 1000 ) ;
 
-	addXVR_Reg0xa = 0x9C04785F;	
-	cpu_delay( 1000 ) ;		
-		
-	addXVR_Reg0x1c= 0x919CDDC5;
-	cpu_delay( 1000 ) ;
-    ///gpio_wakeup_config(9);睡眠之前需要根据实际情况设置用于唤醒的GPIO
+    addXVR_Reg0x6 = 0x85A7CC00;
+
+    cpu_delay( 1000 ) ;
+
+    addXVR_Reg0x7 = 0xAA023FC0;
+    cpu_delay( 1000 ) ;
+    
+    #if (LDO_MODE)
+    addXVR_Reg0xa = 0x9C04785b;
+    addPMU_Reg0x1 |= (1<<11);
+    #else
+    addXVR_Reg0xa = 0x9C04785F;
+    #endif
+
+    //addXVR_Reg0xa = 0x9C04785F;
+    cpu_delay( 1000 ) ;
+
+    addXVR_Reg0x1c= 0x919CDDC5;//addXVR_Reg0x1c = 0x999CDDC5 
+    cpu_delay( 1000 ) ;
+
     set_PMU_Reg0x4_gotosleep(0x3633);
     while(1);
 }

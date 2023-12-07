@@ -130,6 +130,83 @@ static uint8_t app_get_handler(const struct app_subtask_handlers *handler_list_d
     return (KE_MSG_CONSUMED);
 }
 
+#if MULTI_BOND
+void appm_find_ltk(bd_addr_t addr)
+{
+      uint8_t length;
+      struct gapc_irk irk;
+
+      length = NVDS_LEN_PEER_IRK;
+      for(uint8_t i=0;i<app_sec_env.bond_num;i++)
+      {
+          if (nvds_get(NVDS_TAG_PEER_IRK0+i, &length, (uint8_t *)&irk) == NVDS_OK)
+          {
+                if(!memcmp(addr.addr,&irk.addr.addr,GAP_BD_ADDR_LEN))
+                {
+                    uart_printf("get ltk ok\r\n",i);
+                    nvds_get(NVDS_TAG_LTK0+i, &length,app_sec_env.ltk_buff) ;
+                    app_sec_env.ltk_buff_statu = true;
+                    break;    
+                }
+          }
+      }  
+
+
+}
+void appm_gapm_resolv_dev_addr(bd_addr_t addr)
+{
+      uint8_t length;
+      struct gapc_irk irk;
+      
+      uart_printf("%s,%d\r\n",__func__,app_sec_env.bond_num);
+	  struct gapm_resolv_addr_cmd* cmd = KE_MSG_ALLOC_DYN(GAPM_RESOLV_ADDR_CMD,
+                    TASK_GAPM, TASK_APP, gapm_resolv_addr_cmd,sizeof(struct gap_sec_key)*app_sec_env.bond_num);
+	 
+	  cmd->operation = GAPM_RESOLV_ADDR;
+	  cmd->nb_key = 0;
+	 
+	  memcpy(cmd->addr.addr,addr.addr,sizeof(bd_addr_t));
+      
+      length = NVDS_LEN_PEER_IRK;
+      for(uint8_t i=0;i<app_sec_env.bond_num;i++)
+      {
+          if (nvds_get(NVDS_TAG_PEER_IRK0+i, &length, (uint8_t *)&irk) == NVDS_OK)
+          {
+                uart_printf("get irk%d ok\r\n",i);
+                memcpy(cmd->irk[cmd->nb_key++].key,irk.irk.key,sizeof(struct gap_sec_key));         
+          }
+      }  
+	 
+	  ke_msg_send(cmd);
+}
+static int gapm_addr_solved_ind_handler(ke_msg_id_t const msgid,
+                                 struct gapm_addr_solved_ind const *p_ind,
+                                 ke_task_id_t const dest_id,
+                                 ke_task_id_t const src_id)
+{
+
+    uint8_t length;
+        
+    uart_printf("%s\r\n",__func__);
+
+    uart_printf("index:%d,addr ",p_ind->index);
+    for(int i = 0;i < 6;i++)
+    {
+        uart_printf(":%02x ",p_ind->addr.addr[i]);
+        
+    }uart_printf("\r\n");
+
+        length = NVDS_LEN_LTK;
+
+     if (nvds_get(NVDS_TAG_LTK0+p_ind->index, &length,app_sec_env.ltk_buff) == NVDS_OK)  
+     {
+    	 uart_printf("get ltk ok\r\n");
+         app_sec_env.ltk_buff_statu = true;
+      }      
+
+    return (KE_MSG_CONSUMED);  
+}
+#endif /* MULTI_BOND */
 /*
  * MESSAGE HANDLERS
  ****************************************************************************************
@@ -700,19 +777,30 @@ static int gapc_connection_req_ind_handler(ke_msg_id_t const msgid,
 
         // We are now in connected State
         ke_state_set(dest_id, APPM_CONNECTED);
-
-        #if 1//(BLE_APP_SEC && !defined(BLE_APP_AM0))
-        //if (app_sec_get_bond_status())
-        {
-            // Ask for the peer device to either start encryption
-          //  app_sec_send_security_req(app_env.conidx);
-        }
-        #endif // (BLE_APP_SEC && !defined(BLE_APP_AM0))
-
-        
-		app_sec_env.bonded = false;
-		app_sec_env.peer_pairing = false;
+   #if MULTI_BOND
+        app_sec_env.peer_pairing = false;
 		app_sec_env.peer_encrypt = false;
+        app_sec_env.ltk_buff_statu = false;
+   
+        if(app_sec_env.bonded)
+        {
+            
+            if(param->peer_addr_type == 1)
+            {
+                appm_gapm_resolv_dev_addr(param->peer_addr);//resolv addr
+            }else
+            {
+                uart_printf("%s\r\n",__func__);
+                appm_find_ltk(param->peer_addr);   // static addr
+            }
+         }
+         ke_timer_set(APP_SEND_SECURITY_REQ,TASK_APP,60);
+   #else
+   app_sec_env.bonded = false;
+   app_sec_env.peer_pairing = false;
+   app_sec_env.peer_encrypt = false;        
+   #endif /* MULTI_BOND */
+        
         phy_change_state=0;
 
         ke_timer_set(APP_GATTC_EXC_MTU_CMD,TASK_APP,20);
@@ -1137,7 +1225,7 @@ static int gattc_mtu_changed_ind_handler(ke_msg_id_t const msgid,
     
     if(phy_change_state==0)
     {
-        appm_update_phy_param(GAP_PHY_LE_CODED,GAP_PHY_LE_CODED,GAPC_PHY_OPT_LE_CODED_125K_RATE);
+        appm_update_phy_param(GAP_PHY_LE_2MBPS,GAP_PHY_LE_2MBPS,GAP_PHY_LE_2MBPS);
     }
     
  	return (KE_MSG_CONSUMED);
@@ -1283,7 +1371,9 @@ KE_MSG_HANDLER_TAB(appm)
     {GAPM_ACTIVITY_STOPPED_IND, (ke_msg_func_t)gapm_activity_stopped_ind_handler},
     {GAPM_CMP_EVT,              (ke_msg_func_t)gapm_cmp_evt_handler},
     {GAPM_GEN_RAND_NB_IND,      (ke_msg_func_t)gapm_gen_rand_nb_ind_handler},
-
+ #if MULTI_BOND
+    {GAPM_ADDR_SOLVED_IND,       (ke_msg_func_t)gapm_addr_solved_ind_handler},
+ #endif /* MULTI_BOND */
     // GAPC messages
     {GAPC_GET_DEV_INFO_REQ_IND, (ke_msg_func_t)gapc_get_dev_info_req_ind_handler},
     {GAPC_SET_DEV_INFO_REQ_IND, (ke_msg_func_t)gapc_set_dev_info_req_ind_handler},

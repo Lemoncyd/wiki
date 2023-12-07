@@ -16,7 +16,7 @@ OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 ENTRY(_vector_start);
 
 /*_vector_start = 0x00024C00; //for define CFG_DBG*/
-_vector_start = 0x25b00;
+/*_vector_start = 0x25b00;*/
 SECTIONS
 {
      /*. = 0x00024C00; //for define CFG_DBG*/

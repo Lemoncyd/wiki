@@ -44,7 +44,7 @@
 #define TIMER_DRIVER				1
 #define I2S_DRIVER					0
 
-#define uart_printf              uart2_printf
+#define uart_printf              uart0_printf
 
 #define __MOUSE__
 
@@ -53,8 +53,11 @@
 #define APP_DFLT_DEVICE_NAME            ("BK3633")
 #define APP_DFLT_DEVICE_NAME_LEN        (sizeof(APP_DFLT_DEVICE_NAME))
 
-#define APP_SCNRSP_DATA         "\x09\xFF\x00\x60\x42\x4B\x2D\x42\x4C\x45"
-#define APP_SCNRSP_DATA_LEN     (10)
+//#define APP_SCNRSP_DATA         "\x09\xFF\x00\x60\x42\x4B\x2D\x42\x4C\x45"
+//#define APP_SCNRSP_DATA_LEN     (10)
+
+#define APP_SCNRSP_DATA         "\x09\x09\x42\x4B\x33\x36\x33\x33"
+#define APP_SCNRSP_DATA_LEN     (8)
 
 
 
@@ -65,14 +68,14 @@
 /// Advertising maximum interval - 40ms (64*0.625ms)
 #define APP_ADV_INT_MAX         (80)
 /// Fast advertising interval
-#define APP_ADV_FAST_INT        (1)
+#define APP_ADV_FAST_INT        (4)
 
 
 
 //最小连接间隔
-#define BLE_UAPDATA_MIN_INTVALUE		9
+#define BLE_UAPDATA_MIN_INTVALUE		6
 //最大连接间隔
-#define BLE_UAPDATA_MAX_INTVALUE		9
+#define BLE_UAPDATA_MAX_INTVALUE		6
 //连接Latency
 #define BLE_UAPDATA_LATENCY				0//100
 //连接超时

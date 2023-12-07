@@ -26,7 +26,7 @@ void gpio_config(uint8_t gpio, Dir_Type dir, Pull_Type pull)
     uint32_t  gpio_temp=0;
     uint8_t port = ((gpio&0xf0)>>4);
     uint8_t  pin = (gpio&0xf);
-
+    
     switch(dir)
     {
         case OUTPUT:	       
@@ -37,12 +37,13 @@ void gpio_config(uint8_t gpio, Dir_Type dir, Pull_Type pull)
             gpio_temp |= (1<<GPIO_OUTPUT_EN);
             gpio_temp |= (1<<GPIO_INPUT_EN);
             break;
-    	case FLOAT:		
-    		gpio_temp &= ~(1<<GPIO_INPUT_EN);
+        case FLOAT:		
+            gpio_temp &= ~(1<<GPIO_INPUT_EN);
             gpio_temp |= (1<<GPIO_OUTPUT_EN);
             break;
-        case SC_FUN:		
-    		gpio_temp |= (1<<GPIO_2FUN_EN);
+        case SC_FUN:
+            gpio_temp |= (1<<GPIO_OUTPUT_EN);
+            gpio_temp |= (1<<GPIO_2FUN_EN);
             break;
     }
 
@@ -189,7 +190,7 @@ void gpio_cb_register(GPIO_INT_CALLBACK_T cb)
 void gpio_isr(void)
 {
 
-    SYS_REG0X10_INT_EN &= ~(0x01 << POS_SYS_REG0X10_INT_EN_GPIO);
+    //SYS_REG0X10_INT_EN &= ~(0x01 << POS_SYS_REG0X10_INT_EN_GPIO);
     if(gpio_int_cb)
     {
         (*gpio_int_cb)();
@@ -218,18 +219,16 @@ void gpio_wakeup(uint8_t gpio)
 void DEBUG_MSG(uint8_t x)
 {
 #if GPIO_DBG_MSG
-    gpio_set(0x13,0);
-
-    gpio_set(0x30,(x&0x01));
-    gpio_set(0x31,(x&0x02));
-    gpio_set(0x32,(x&0x04));
-    gpio_set(0x33,(x&0x08));
-    gpio_set(0x34,(x&0x10));
-    gpio_set(0x35,(x&0x20));
-    gpio_set(0x36,(x&0x40));
-    gpio_set(0x37,(x&0x80));
-    
-    gpio_set(0x13,1);
+    addAON_GPIO_Reg0xe=0x00;
+    addAON_GPIO_Reg0x2=(x&0x01)<<1;
+    addAON_GPIO_Reg0x3=(x&0x02);
+    addAON_GPIO_Reg0x4=(x&0x04)>>1;
+    addAON_GPIO_Reg0x5=(x&0x08)>>2;
+    addAON_GPIO_Reg0x6=(x&0x10)>>3;
+    addAON_GPIO_Reg0x7=(x&0x20)>>4;
+    addAON_GPIO_Reg0xc=(x&0x40)>>5;
+    addAON_GPIO_Reg0xd=(x&0x80)>>6;
+    addAON_GPIO_Reg0xe=0x02;
 #endif
 }
 

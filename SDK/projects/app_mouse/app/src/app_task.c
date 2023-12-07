@@ -334,44 +334,6 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
         break;
 
         case (GAPM_PROFILE_TASK_ADD)://0x1b
-  /*      {
-            // Add the next requested service
-            #if (BLE_APP_SEC)
-            if (app_sec_get_bond_status()==true)
-            {
-                #if (NVDS_SUPPORT)
-                // If Bonded retrieve the local IRK from NVDS
-                if (nvds_get(NVDS_TAG_LOC_IRK, &key_len, app_env.loc_irk) == NVDS_OK)
-                {
-                    // Set the IRK in the GAP
-                    struct gapm_set_irk_cmd *cmd = KE_MSG_ALLOC(GAPM_SET_IRK_CMD,
-                                                                TASK_GAPM, TASK_APP,
-                                                                gapm_set_irk_cmd);
-                    ///  - GAPM_SET_IRK:
-                    cmd->operation = GAPM_SET_IRK;
-                    memcpy(&cmd->irk.key[0], &app_env.loc_irk[0], KEY_LEN);
-                    ke_msg_send(cmd);
-                }
-                else
-                #endif //(NVDS_SUPPORT)
-
-                {
-                     // If cannot read IRK from NVDS ASSERT
-                     ASSERT_ERR(0);
-                }
-            }
-            else // Need to start the generation of new IRK
-            #endif //(BLE_APP_SEC)
-            {
-                struct gapm_gen_rand_nb_cmd *cmd = KE_MSG_ALLOC(GAPM_GEN_RAND_NB_CMD,
-                                                                TASK_GAPM, TASK_APP,
-                                                                gapm_gen_rand_nb_cmd);
-                cmd->operation   = GAPM_GEN_RAND_NB;
-                app_env.rand_cnt = 1;
-                ke_msg_send(cmd);
-            }
-        }*/
-
         {
             // Add the next requested service
             if (!appm_add_svc())
@@ -382,20 +344,14 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
                 // No more service to add, start advertising
                 #if (BLE_PERIPHERAL)
                 // No more service to add, create advertising
-
-                uart_printf("4=%x\r\n",app_env.adv_state);
+                uart_printf("app_env.adv_state=%x\r\n",app_env.adv_state);
                 if(app_env.adv_state==APP_ADV_STATE_IDLE)
                 {
-                    // appm_adv_fsm_next();
-                //    appm_init();
                     appm_create_advertising();
                 }
                 else
-                	appm_delete_advertising();
+                    appm_delete_advertising();
                 #endif
-
-
-				ke_timer_set(APP_PERIOD_TIMER,TASK_APP,100);
             }
         }
         break;
@@ -453,44 +409,6 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
             appm_add_svc();
 
         }
-
-
-   /*     {
-            // ASSERT_INFO(param->status == GAP_ERR_NO_ERROR, param->operation, param->status);
-
-            #if (BLE_APP_SEC)
-            #if (NVDS_SUPPORT)
-            //if (app_sec_get_bond_status()==false)
-            if (nvds_get(NVDS_TAG_LOC_IRK, &key_len, app_env.loc_irk) != NVDS_OK)
-            {
-                if (nvds_put(NVDS_TAG_LOC_IRK, KEY_LEN, (uint8_t *)&app_env.loc_irk) != NVDS_OK)
-                {
-                    ASSERT_INFO(0, 0, 0);
-                }
-            }
-            #endif
-            #endif //(BLE_APP_SEC)
-            app_env.rand_cnt = 0;
-
-            // Add the next requested service
-            if (!appm_add_svc())
-            {
-                // Go to the ready state
-                ke_state_set(TASK_APP, APPM_READY);
-                ke_timer_set(APP_PERIOD_TIMER,TASK_APP,APP_KEYSCAN_DURATION);
-
-                // No more service to add, start advertising
-                uart_printf("4=%x\r\n",app_env.adv_state);
-
-                if(app_env.adv_state==APP_ADV_STATE_IDLE)
-                    {
-                    appm_init();
-					appm_create_advertising();
-                    }
-				else
-                	appm_delete_advertising();
-            }
-        }*/
         break;
 
         // Device Configuration updated
@@ -506,15 +424,14 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
             appm_add_svc();
         }
         break;
-		case (GAPM_STOP_ACTIVITY):
-            uart_printf("GAPM_STOP_ACTIVITY\r\n");
-		{
+        case (GAPM_STOP_ACTIVITY):
+        {
             if(need_delete_current_adv_activity)
             {
                 need_delete_current_adv_activity = 0;
-				appm_delete_advertising();
-			//	appm_update_adv_state(true);
-            }else
+                appm_delete_advertising();
+            }
+            else
             {
                 // Go created state
                 app_env.adv_state = APP_ADV_STATE_CREATED;
@@ -522,13 +439,11 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
         }break;
         case (GAPM_CREATE_ADV_ACTIVITY):
         {
-            uart_printf("GAPM_CREATE_ADV_ACTIVITY\r\n");
              appm_set_adv_data();
              break;
         }
         case (GAPM_START_ACTIVITY):
         {
-             uart_printf("GAPM_START_ACTIVITY\r\n");
              app_env.adv_state = APP_ADV_STATE_STARTED;
 
              break;
@@ -538,40 +453,30 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
              app_env.adv_state = APP_ADV_STATE_IDLE;
         }break;
         case (GAPM_SET_ADV_DATA):
-  		{
-             uart_printf("GAPM_SET_SCAN_RSP_DATA\r\n");
-
-
-
-            uart_printf("2\r\n");
-			appm_set_scan_rsp_data();
+        {
+            appm_set_scan_rsp_data();
 
         } break;
         case (GAPM_SET_SCAN_RSP_DATA):
         {
-             uart_printf("GAPM_SET_SCAN_RSP_DATA\r\n");
             // Sanity checks
             ASSERT_INFO(app_env.adv_op == param->operation, app_env.adv_op, param->operation);
             ASSERT_INFO(param->status == GAP_ERR_NO_ERROR, param->status, app_env.adv_op);
-
             // Perform next operation
-
-            uart_printf("6\r\n");
-		 	appm_start_advertising();
-         //   appm_adv_fsm_next();
+            appm_start_advertising();
         } break;
 
         case (GAPM_DELETE_ALL_ACTIVITIES) :
         {
             // Re-Invoke Advertising
             app_env.adv_state = APP_ADV_STATE_IDLE;
+            //appm_create_advertising();
+            ble_addr_add1();
+            appm_init();
 
-            uart_printf("3\r\n");
-			appm_create_advertising();
-//appm_adv_fsm_next();
         } break;
         case GAPM_ADD_DEV_IN_WLIST:
-			break;
+        break;
 
         default:
         {
@@ -773,7 +678,7 @@ static int gapc_connection_req_ind_handler(ke_msg_id_t const msgid,
         // Enable HID Service
         if(!(sys_flag & FLAG_KEY_PAIRED))
         app_hid_enable_prf(app_env.conidx);
-        latency_disable = 0;
+        latency_disable = 1;
         sys_flag &= ~FLAG_KEY_PAIRED;
         #endif //(BLE_APP_HID)
 
@@ -828,7 +733,7 @@ static int gapc_param_update_req_ind_handler(ke_msg_id_t const msgid,
 {
     app_env.conidx = KE_IDX_GET(src_id);
     uart_printf("gapc_param_update_req_ind_handler\n");
-    ke_timer_set(APP_PERIOD_TIMER,TASK_APP,APP_KEYSCAN_DURATION);
+    //ke_timer_set(APP_PERIOD_TIMER,TASK_APP,APP_KEYSCAN_DURATION);
 
     // Check if the received Connection Handle was valid
     if (app_env.conidx != GAP_INVALID_CONIDX)
@@ -1004,24 +909,20 @@ static int gapc_disconnect_ind_handler(ke_msg_id_t const msgid,
     if(sys_flag & FLAG_KEY_PAIRED)
     {
         sys_flag |= FLAG_PAIR_RW_INIT_EN;
-        uart_printf("5\r\n");
-
-  //      appm_update_adv_state(true);
-        appm_start_advertising();
+        appm_delete_advertising();
     }
     else if( mouse_val.pair_key==PAIR_KEY_MODE_CHANGE)
     {
         mouse_val.pair_key = PAIR_KEY_IDLE;
         uart_printf("dis change 24\r\n");
         mouse_val.pair_key=PAIR_KEY_IDLE;
-		system_data.sensor_val.bDisplayBTMode = 0x0;
+        system_data.sensor_val.bDisplayBTMode = 0x0;
         appm_change_device_mode();   // 在这里加却换2.4的程序   //  !!!!!!!!!!!!!aileen
-    //    app_led_show(0,0,0,1);
     }
-	else if(need_delete_current_adv_activity)
+    else if(need_delete_current_adv_activity)
     {
-		need_delete_current_adv_activity = 0;
-		appm_delete_advertising();
+        need_delete_current_adv_activity = 0;
+        appm_delete_advertising();
     }
     app_hid_env.state = APP_HID_DISABLED;
 
@@ -1294,7 +1195,7 @@ static int app_send_security_req_handler(ke_msg_id_t const msgid,
 static int app_ancs_req_handler(ke_msg_id_t const msgid, void const *param,
         ke_task_id_t const dest_id, ke_task_id_t const src_id)
 {
-	uart_printf("app_ancs_req_handler msgid=%d,%d \r\n",msgid,APP_PERIOD_TIMER);
+	uart_printf("app_ancs_req_handler msgid=%d \r\n",msgid);
     #if (BLE_APP_ANCS)
     app_ancsc_enable_prf(app_env.conhdl);
     #endif
@@ -1318,74 +1219,46 @@ static int app_period_timer_handler(ke_msg_id_t const msgid,
                                           ke_task_id_t const dest_id,
                                           ke_task_id_t const src_id)
 {
-	static uint16_t key_free_dalay_cnt=0;
-
-//	uart_printf("kt_hd=%x\r\n",app_hid_env.state);
-	//gpio_triger(0x15);
-
-
-    #ifdef __MOUSE__
-   app_check_pair_and_mode_change();
- /*   if(app_hid_env.state==APP_HID_READY)
+    static uint8_t uLedDutyCnt = 0;
+    static uint16_t adv_time_cnt = 0;
+    adv_time_cnt++;
+    if(ke_state_get(TASK_APP) == APPM_CONNECTED)
     {
-    	key_process();
-    	hid_send_keycode();
-    }*/
-
-    #endif
-//	key_process();
-//	hid_send_keycode();
-
-
-#if (SYSTEM_SLEEP)
-	app_key_state = key_status_check();
-
-	if(app_key_state == ALL_KEY_FREE)
-	{
-		key_free_dalay_cnt++;
-
-		if(key_free_dalay_cnt>=200)
-		{
-            key_free_dalay_cnt = 0;
-            latency_disable = 1;
-
-        uart_printf("key sleep\r\n");
-			key_wakeup_config();
-			detect_key_start = 0;
-            key_sleep_en = 0;
-            ke_timer_clear(APP_PERIOD_TIMER,TASK_APP);
-		}
-        else
-        {
-            ke_timer_set(APP_PERIOD_TIMER,TASK_APP,APP_KEYSCAN_DURATION);
-        }
-
-	}
-    else if(app_key_state == GENERAL_KEY_DOWN)
-    {
-
-        latency_disable = 0;
-        key_free_dalay_cnt=0;
-   //     uart_printf("kt_set \r\n");
-        if(key_sleep_en)
-        {
-            key_sleep_en = 0;
-            ke_msg_send_basic(APP_PERIOD_TIMER,TASK_APP,TASK_APP);
-        }
-        else
-        {
-            ke_timer_set(APP_PERIOD_TIMER,TASK_APP,APP_KEYSCAN_DURATION);
-        }
-      //
+        gpio_set(LED_BT,1);
     }
-
-
-#else
-	ke_timer_set(APP_PERIOD_TIMER,TASK_APP,APP_KEYSCAN_DURATION);
-#endif
-
-	return KE_MSG_CONSUMED;
-
+    else
+    {
+        if(adv_time_cnt>3000)//>30s stop adv
+        {
+            gpio_set(LED_BT,1);
+            appm_stop_advertising();
+            key_wakeup_config();
+        }
+        else
+        {
+            ke_timer_set(APP_PERIOD_TIMER,TASK_APP,APP_KEYSCAN_DURATION);
+            app_check_pair_and_mode_change();
+            if(sys_flag & FLAG_KEY_PAIRED)
+            {
+                uLedDutyCnt++;
+                if(uLedDutyCnt>100)
+                {
+                    uLedDutyCnt = 0;
+                     gpio_set_neg(LED_BT);
+                }
+            }
+            else
+            {
+                uLedDutyCnt++;
+                if(uLedDutyCnt>20)
+                {
+                    uLedDutyCnt = 0;
+                     gpio_set_neg(LED_BT);
+                }
+            }
+        }
+    }
+    return KE_MSG_CONSUMED;
 }
 
 /*******************************************************************************
@@ -1436,127 +1309,37 @@ static int app_mouse_led_handler(ke_msg_id_t const msgid,
 
 void app_check_key(void)
 {
-	static uint8_t uLedDutyCnt = 0;
-	static uint16_t key_free_dalay_cnt=0;
-    ke_timer_clear(APP_PERIOD_TIMER,TASK_APP);
+    static uint16_t key_free_dalay_cnt=0;
+    static uint16_t key_state=0;
 
-    #ifdef __MOUSE__
-   app_check_pair_and_mode_change();
- /*   if(app_hid_env.state==APP_HID_READY)
+    app_check_pair_and_mode_change();
+
+    app_key_state = key_status_check();
+    if((app_key_state == ALL_KEY_FREE)&&(key_state==0))
     {
-    	key_process();
-    	hid_send_keycode();
-    }*/
-
-    #endif
-//	key_process();
-//	hid_send_keycode();
-
-	if(ke_state_get(TASK_APP) == APPM_CONNECTED)
-	{
-		//BlueLedOn();
-	}
-	else
-	{
-		if(++uLedDutyCnt > APP_LEDDUTY_DB)
-		{
-			uLedDutyCnt = 0;
-			//BlueLedToggle();
-		}
-	}
-
-	app_key_state = key_status_check();
-
-	if(app_key_state == ALL_KEY_FREE)
-	{
-		key_free_dalay_cnt++;
-
-		if(key_free_dalay_cnt>=200)
-		{
+        key_free_dalay_cnt++;
+        if(key_free_dalay_cnt>=200)
+        {
             key_free_dalay_cnt = 0;
-            latency_disable = 1;
-
-        uart_printf("key sleep1\r\n");
-			key_wakeup_config();
-			detect_key_start = 0;
+            latency_disable = 0;
+            key_state=1;
+            uart_printf("key sleep1\r\n");
+            key_wakeup_config();
+            detect_key_start = 0;
             key_sleep_en = 0;
-		}
-
-
-	}
-    else if(app_key_state == GENERAL_KEY_DOWN)
+        }
+    }
+    else if((app_key_state == GENERAL_KEY_DOWN)&&(key_state==1))
     {
-
-        latency_disable = 0;
+        latency_disable = 1;
         key_free_dalay_cnt=0;
+        key_state=0;
     }
 
 }
 
 #endif
 
-void handle_key_task(void)
-{
-	static uint8_t uLedDutyCnt = 0;
-	static uint16_t key_free_dalay_cnt=0;
-
-//	uart_printf("kt_hd\r\n");
-	//gpio_triger(0x04);
-	if(ke_state_get(TASK_APP) == APPM_CONNECTED)
-	{
-		//BlueLedOn();
-	}
-	else
-	{
-		if(++uLedDutyCnt > APP_LEDDUTY_DB)
-		{
-			uLedDutyCnt = 0;
-			//BlueLedToggle();
-		}
-	}
-    if(ke_state_get(TASK_APP) != APPM_CONNECTED)
-    {
-        return;
-    }
-
-	key_process();
-	hid_send_keycode();
-
-#if (SYSTEM_SLEEP)
-	app_key_state = key_status_check();
-
-
-	if(app_key_state != ALL_KEY_FREE_DELAY)
-	{
-		//uart_printf("kt_set \r\n");
-		//ke_timer_set(APP_PERIOD_TIMER,TASK_APP,APP_KEYSCAN_DURATION);
-	}
-
-	if(app_key_state == ALL_KEY_FREE)
-	{
-		key_free_dalay_cnt++;
-
-		if(key_free_dalay_cnt>=200)
-		{
-			app_key_state=ALL_KEY_FREE_DELAY;
-			key_wakeup_config();
-			detect_key_start = 0;
-			uart_printf("key sleep\r\n");
-		}
-	}
-	else if((app_key_state == VOICE_KEY_DOWN)||(app_key_state == GENERAL_KEY_DOWN))
-		key_free_dalay_cnt=0;
-
-
-#else
-	ke_timer_set(APP_PERIOD_TIMER,TASK_APP,APP_KEYSCAN_DURATION);
-#endif
-
-
-
-
-
-}
 /**
 *******************************************************************************
 
