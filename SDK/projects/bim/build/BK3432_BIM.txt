@@ -1,0 +1,262 @@
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           ARM
+  Version:                           0x1
+  Entry point address:               0x0
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          79224 (bytes into file)
+  Flags:                             0x5000200, Version5 EABI, soft-float ABI
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         2
+  Size of section headers:           40 (bytes)
+  Number of section headers:         11
+  Section header string table index: 10
+
+Section Headers:
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .vectors          PROGBITS        00000000 010000 0002e8 00  AX  0   0 16
+  [ 2] .text             PROGBITS        000002e8 0102e8 000ea0 00  AX  0   0  8
+  [ 3] .bss              NOBITS          00400020 020020 003578 00  WA  0   0  4
+  [ 4] .stack            PROGBITS        00403598 011188 001100 00      0   0  1
+  [ 5] .comment          PROGBITS        00000000 012288 000049 01  MS  0   0  1
+  [ 6] .ARM.attributes   ARM_ATTRIBUTES  00000000 0122d1 000029 00      0   0  1
+  [ 7] .debug_frame      PROGBITS        00000000 0122fc 000054 00      0   0  4
+  [ 8] .symtab           SYMTAB          00000000 012350 000bb0 10      9 155  4
+  [ 9] .strtab           STRTAB          00000000 012f00 000619 00      0   0  1
+  [10] .shstrtab         STRTAB          00000000 013519 00005c 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  y (purecode), p (processor specific)
+
+There are no section groups in this file.
+
+Program Headers:
+  Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
+  LOAD           0x010000 0x00000000 0x00000000 0x01188 0x01188 R E 0x10000
+  LOAD           0x000020 0x00400020 0x00001188 0x00000 0x03578 RW  0x10000
+
+ Section to Segment mapping:
+  Segment Sections...
+   00     .vectors .text 
+   01     .bss 
+
+There is no dynamic section in this file.
+
+There are no relocations in this file.
+
+There are no unwind sections in this file.
+
+Symbol table '.symtab' contains 187 entries:
+   Num:    Value  Size Type    Bind   Vis      Ndx Name
+     0: 00000000     0 NOTYPE  LOCAL  DEFAULT  UND 
+     1: 00000000     0 SECTION LOCAL  DEFAULT    1 
+     2: 000002e8     0 SECTION LOCAL  DEFAULT    2 
+     3: 00400020     0 SECTION LOCAL  DEFAULT    3 
+     4: 00403598     0 SECTION LOCAL  DEFAULT    4 
+     5: 00000000     0 SECTION LOCAL  DEFAULT    5 
+     6: 00000000     0 SECTION LOCAL  DEFAULT    6 
+     7: 00000000     0 SECTION LOCAL  DEFAULT    7 
+     8: 00000000     0 FILE    LOCAL  DEFAULT  ABS startup_bim.o
+     9: 00019300     0 NOTYPE  LOCAL  DEFAULT  ABS SYSirq_FIQ_Handler
+    10: 00019320     0 NOTYPE  LOCAL  DEFAULT  ABS SYSirq_IRQ_Handler
+    11: 00403598     0 NOTYPE  LOCAL  DEFAULT    4 $d
+    12: 00000020     0 NOTYPE  LOCAL  DEFAULT    1 _reset_handler
+    13: 00000000     0 NOTYPE  LOCAL  DEFAULT    1 $a
+    14: 000002ac     0 NOTYPE  LOCAL  DEFAULT    1 _STACK_SIZE_UND
+    15: 000002a8     0 NOTYPE  LOCAL  DEFAULT    1 _STACK_ADDR_UND
+    16: 0000029c     0 NOTYPE  LOCAL  DEFAULT    1 _STACK_SIZE_IRQ
+    17: 00000298     0 NOTYPE  LOCAL  DEFAULT    1 _STACK_ADDR_IRQ
+    18: 00000294     0 NOTYPE  LOCAL  DEFAULT    1 _STACK_SIZE_FIQ
+    19: 00000290     0 NOTYPE  LOCAL  DEFAULT    1 _STACK_ADDR_FIQ
+    20: 000002a4     0 NOTYPE  LOCAL  DEFAULT    1 _STACK_SIZE_SVC
+    21: 000002a0     0 NOTYPE  LOCAL  DEFAULT    1 _STACK_ADDR_SVC
+    22: 000001b8     0 NOTYPE  LOCAL  DEFAULT    1 _data_init
+    23: 000001d8     0 NOTYPE  LOCAL  DEFAULT    1 _zi_init
+    24: 000001fc     0 NOTYPE  LOCAL  DEFAULT    1 $d
+    25: 00000218     0 NOTYPE  LOCAL  DEFAULT    1 __irq_handler
+    26: 00000238     0 NOTYPE  LOCAL  DEFAULT    1 __fiq_handler
+    27: 00000218     0 NOTYPE  LOCAL  DEFAULT    1 $a
+    28: 00019320     0 NOTYPE  LOCAL  DEFAULT  ABS *ABS*0x19320
+    29: 00019300     0 NOTYPE  LOCAL  DEFAULT  ABS *ABS*0x19300
+    30: 00000290     0 NOTYPE  LOCAL  DEFAULT    1 $d
+    31: 000002b0     0 NOTYPE  LOCAL  DEFAULT    1 $d
+    32: 00000000     0 FILE    LOCAL  DEFAULT  ABS 
+    33: 0000041d    40 FUNC    LOCAL  DEFAULT    2 uart_send
+    34: 0000041c     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    35: 0000043c     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    36: 00000444     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    37: 00000445    36 FUNC    LOCAL  DEFAULT    2 make_crc32
+    38: 00000464     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    39: 00403054  1024 OBJECT  LOCAL  DEFAULT    3 crc32_table
+    40: 00000468     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    41: 00000469    70 FUNC    LOCAL  DEFAULT    2 cmd_response.part.0
+    42: 000004b0     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    43: 000004b1   104 FUNC    LOCAL  DEFAULT    2 operate_flash_cm[...]
+    44: 0000050c     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    45: 0040003c  4104 OBJECT  LOCAL  DEFAULT    3 bim_uart_data
+    46: 00000518     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    47: 00000519   100 FUNC    LOCAL  DEFAULT    2 bim_flash_readwo[...]
+    48: 0000055c     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    49: 0000057c     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    50: 0000057d   104 FUNC    LOCAL  DEFAULT    2 bim_flash_writew[...]
+    51: 000005c4     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    52: 000005e4     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    53: 000005e5   124 FUNC    LOCAL  DEFAULT    2 bim_flash_write.[...]
+    54: 0000065c     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    55: 00000660     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    56: 00000661    96 FUNC    LOCAL  DEFAULT    2 bim_flash_erase_[...]
+    57: 000006a4     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    58: 000006c0     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    59: 000006c1    32 FUNC    LOCAL  DEFAULT    2 bim_erase_backup_sec
+    60: 000006dc     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    61: 000006e0     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    62: 000006e1    92 FUNC    LOCAL  DEFAULT    2 bim_icu_init.con[...]
+    63: 00000720     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    64: 0000073c     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    65: 0000073d    56 FUNC    LOCAL  DEFAULT    2 make_crc32_table[...]
+    66: 0000076c     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    67: 00000774     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    68: 00000775   124 FUNC    LOCAL  DEFAULT    2 bim_flash_read.c[...]
+    69: 000007ec     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    70: 000007f0     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    71: 000007f1   380 FUNC    LOCAL  DEFAULT    2 uart_cmd_dispath[...]
+    72: 00000948     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    73: 0000096c     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    74: 0000096d   684 FUNC    LOCAL  DEFAULT    2 bim_uart_data_ca[...]
+    75: 0000098e     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    76: 00000be8     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    77: 0040348e   256 OBJECT  LOCAL  DEFAULT    3 read_buff.1
+    78: 00000c18     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    79: 00000f34     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    80: 00401044  8196 OBJECT  LOCAL  DEFAULT    3 bim_uart_rx_buf
+    81: 00000fe0     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    82: 00000ff8     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    83: 00001008     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    84: 0000100e     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    85: 00001014     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    86: 0000101a     0 NOTYPE  LOCAL  DEFAULT    2 $t
+    87: 00001020     0 NOTYPE  LOCAL  DEFAULT    2 $a
+    88: 000010a4     0 NOTYPE  LOCAL  DEFAULT    2 $d
+    89: 00400020     0 NOTYPE  LOCAL  DEFAULT    3 $d
+    90: 00400020    12 OBJECT  LOCAL  DEFAULT    3 bim_flash_env
+    91: 0040002c    16 OBJECT  LOCAL  DEFAULT    3 bim_uart_cmd
+    92: 0040002c     0 NOTYPE  LOCAL  DEFAULT    3 $d
+    93: 0040003c     0 NOTYPE  LOCAL  DEFAULT    3 $d
+    94: 00401044     0 NOTYPE  LOCAL  DEFAULT    3 $d
+    95: 00403048     0 NOTYPE  LOCAL  DEFAULT    3 $d
+    96: 00403048     2 OBJECT  LOCAL  DEFAULT    3 bim_uart_temp.2
+    97: 0040304c     0 NOTYPE  LOCAL  DEFAULT    3 $d
+    98: 0040304c     4 OBJECT  LOCAL  DEFAULT    3 check_cnt.0
+    99: 00403050     1 OBJECT  LOCAL  DEFAULT    3 cmd_status.7
+   100: 00403050     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   101: 00403054     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   102: 00403454     1 OBJECT  LOCAL  DEFAULT    3 erase_fenable
+   103: 00403454     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   104: 00403458     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   105: 00403458    16 OBJECT  LOCAL  DEFAULT    3 hdr_back
+   106: 00403468     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   107: 00403468    16 OBJECT  LOCAL  DEFAULT    3 hdr_img
+   108: 00403478     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   109: 00403478     2 OBJECT  LOCAL  DEFAULT    3 index.5
+   110: 0040347a     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   111: 0040347a     2 OBJECT  LOCAL  DEFAULT    3 index_cnt.3
+   112: 0040347c     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   113: 0040347c     2 OBJECT  LOCAL  DEFAULT    3 length.6
+   114: 0040347e    16 OBJECT  LOCAL  DEFAULT    3 read_buf.4
+   115: 0040347e     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   116: 0040348e     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   117: 0040358e     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   118: 0040358e     2 OBJECT  LOCAL  DEFAULT    3 rom_ver.3
+   119: 00403590     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   120: 00403590     2 OBJECT  LOCAL  DEFAULT    3 scmd_length.4
+   121: 00403592     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   122: 00403592     2 OBJECT  LOCAL  DEFAULT    3 uart_buff_read.1
+   123: 00403594     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   124: 00403594     2 OBJECT  LOCAL  DEFAULT    3 uart_buff_write
+   125: 00403596     1 OBJECT  LOCAL  DEFAULT    3 uart_download_status
+   126: 00403596     0 NOTYPE  LOCAL  DEFAULT    3 $d
+   127: 00000997     0 NOTYPE  LOCAL  DEFAULT    2 $d
+   128: 00000998     0 NOTYPE  LOCAL  DEFAULT    2 $t
+   129: 00000000     0 FILE    LOCAL  DEFAULT  ABS _thumb1_case_uqi.o
+   130: 000002e8     0 NOTYPE  LOCAL  DEFAULT    2 $t
+   131: 00000000     0 FILE    LOCAL  DEFAULT  ABS _udivsi3.o
+   132: 000002fc     0 NOTYPE  LOCAL  DEFAULT    2 $a
+   133: 000002fc     0 NOTYPE  LOCAL  DEFAULT    2 .udivsi3_skip_di[...]
+   134: 00000010     0 NOTYPE  LOCAL  DEFAULT    7 $d
+   135: 000003f8     0 NOTYPE  LOCAL  DEFAULT    2 $a
+   136: 00000000     0 FILE    LOCAL  DEFAULT  ABS _dvmd_tls.o
+   137: 00000418     0 NOTYPE  LOCAL  DEFAULT    2 $t
+   138: 00000000     0 FILE    LOCAL  DEFAULT  ABS memcpy-stub.c
+   139: 000010b4     0 NOTYPE  LOCAL  DEFAULT    2 $t
+   140: 000002d8    12 FUNC    LOCAL  DEFAULT    1 __bim_main_from_arm
+   141: 000002d8     0 NOTYPE  LOCAL  DEFAULT    1 $a
+   142: 000002e0     0 NOTYPE  LOCAL  DEFAULT    1 $d
+   143: 00001161     8 FUNC    LOCAL  DEFAULT    2 ____enable_irq_f[...]
+   144: 00001160     0 NOTYPE  LOCAL  DEFAULT    2 $t
+   145: 00001164     0 NOTYPE  LOCAL  DEFAULT    2 $a
+   146: 00001168    12 FUNC    LOCAL  DEFAULT    2 ____aeabi_idiv0_[...]
+   147: 00001168     0 NOTYPE  LOCAL  DEFAULT    2 $a
+   148: 00001170     0 NOTYPE  LOCAL  DEFAULT    2 $d
+   149: 00001175     8 FUNC    LOCAL  DEFAULT    2 ____disable_irq_[...]
+   150: 00001174     0 NOTYPE  LOCAL  DEFAULT    2 $t
+   151: 00001178     0 NOTYPE  LOCAL  DEFAULT    2 $a
+   152: 0000117d     8 FUNC    LOCAL  DEFAULT    2 ____aeabi_uidiv_[...]
+   153: 0000117c     0 NOTYPE  LOCAL  DEFAULT    2 $t
+   154: 00001180     0 NOTYPE  LOCAL  DEFAULT    2 $a
+   155: 0000100f     6 FUNC    GLOBAL DEFAULT    2 PrefetchAbort_Ex[...]
+   156: 00400020     0 NOTYPE  GLOBAL DEFAULT    2 _data_addr_begin
+   157: 00000258     0 FUNC    GLOBAL DEFAULT    1 __disable_irq
+   158: 0000101b     6 FUNC    GLOBAL DEFAULT    2 Reserved_Exception
+   159: 00000248     0 FUNC    GLOBAL DEFAULT    1 __enable_irq
+   160: 000010b5   166 FUNC    GLOBAL DEFAULT    2 memcpy
+   161: 00000200     0 NOTYPE  GLOBAL DEFAULT    1 _swi_handler
+   162: 000001fc     0 NOTYPE  GLOBAL DEFAULT    1 _undefined_handler
+   163: 000002fc   252 FUNC    GLOBAL HIDDEN     2 __udivsi3
+   164: 00400020     0 NOTYPE  GLOBAL DEFAULT    3 _bss_start
+   165: 000002e9    18 FUNC    GLOBAL HIDDEN     2 __gnu_thumb1_case_uqi
+   166: 00403598     0 NOTYPE  GLOBAL DEFAULT    3 _bss_end
+   167: 00000204     0 NOTYPE  GLOBAL DEFAULT    1 _pabort_handler
+   168: 0000027c     0 FUNC    GLOBAL DEFAULT    1 __disable_fiq
+   169: 00000000     0 NOTYPE  GLOBAL DEFAULT  ABS _vector_start
+   170: 00000210     0 NOTYPE  GLOBAL DEFAULT    1 _irq_handler
+   171: 00001009     6 FUNC    GLOBAL DEFAULT    2 SoftwareInterrup[...]
+   172: 00001020   148 FUNC    GLOBAL DEFAULT    2 Irq_Exception
+   173: 00000419     2 FUNC    WEAK   HIDDEN     2 __aeabi_ldiv0
+   174: 00000214     0 NOTYPE  GLOBAL DEFAULT    1 _fiq_handler
+   175: 00000c19   968 FUNC    GLOBAL DEFAULT    2 bim_main
+   176: 000002fc     0 FUNC    GLOBAL HIDDEN     2 __aeabi_uidiv
+   177: 00001188     0 NOTYPE  GLOBAL DEFAULT    3 _data_addr_end
+   178: 0000020c     0 NOTYPE  GLOBAL DEFAULT    1 _reserved_handler
+   179: 00000208     0 NOTYPE  GLOBAL DEFAULT    1 _dabort_handler
+   180: 0000026c     0 FUNC    GLOBAL DEFAULT    1 __enable_fiq
+   181: 000003f8    32 FUNC    GLOBAL HIDDEN     2 __aeabi_uidivmod
+   182: 00001015     6 FUNC    GLOBAL DEFAULT    2 DataAbort_Exception
+   183: 00001188     0 NOTYPE  GLOBAL DEFAULT    3 data_load_begin
+   184: 00001188     0 NOTYPE  GLOBAL DEFAULT  ABS _data_load_begin
+   185: 00000419     2 FUNC    WEAK   HIDDEN     2 __aeabi_idiv0
+   186: 00000fe1    40 FUNC    GLOBAL DEFAULT    2 Undefined_Exception
+
+No version information found in this file.
+Attribute Section: aeabi
+File Attributes
+  Tag_CPU_name: "5TE"
+  Tag_CPU_arch: v5TE
+  Tag_ARM_ISA_use: Yes
+  Tag_THUMB_ISA_use: Thumb-1
+  Tag_ABI_PCS_wchar_t: 4
+  Tag_ABI_FP_denormal: Needed
+  Tag_ABI_FP_exceptions: Needed
+  Tag_ABI_FP_number_model: IEEE 754
+  Tag_ABI_align_needed: 8-byte
+  Tag_ABI_enum_size: small
+  Tag_ABI_optimization_goals: Aggressive Size

@@ -1,0 +1,2038 @@
+build/BK3432_BIM.elf
+SYMBOL TABLE:
+00000000 l    d  .vectors	00000000 .vectors
+000002e8 l    d  .text	00000000 .text
+00400020 l    d  .bss	00000000 .bss
+00403598 l    d  .stack	00000000 .stack
+00000000 l    d  .comment	00000000 .comment
+00000000 l    d  .ARM.attributes	00000000 .ARM.attributes
+00000000 l    d  .debug_frame	00000000 .debug_frame
+00000000 l    df *ABS*	00000000 startup_bim.o
+00019300 l       *ABS*	00000000 SYSirq_FIQ_Handler
+00019320 l       *ABS*	00000000 SYSirq_IRQ_Handler
+00000020 l       .vectors	00000000 _reset_handler
+000002ac l       .vectors	00000000 _STACK_SIZE_UND
+000002a8 l       .vectors	00000000 _STACK_ADDR_UND
+0000029c l       .vectors	00000000 _STACK_SIZE_IRQ
+00000298 l       .vectors	00000000 _STACK_ADDR_IRQ
+00000294 l       .vectors	00000000 _STACK_SIZE_FIQ
+00000290 l       .vectors	00000000 _STACK_ADDR_FIQ
+000002a4 l       .vectors	00000000 _STACK_SIZE_SVC
+000002a0 l       .vectors	00000000 _STACK_ADDR_SVC
+000001b8 l       .vectors	00000000 _data_init
+000001d8 l       .vectors	00000000 _zi_init
+00000218 l       .vectors	00000000 __irq_handler
+00000238 l       .vectors	00000000 __fiq_handler
+00019320 l       *ABS*	00000000 *ABS*0x19320
+00019300 l       *ABS*	00000000 *ABS*0x19300
+00000000 l    df *ABS*	00000000 
+0000041c l     F .text	00000028 uart_send
+00000444 l     F .text	00000024 make_crc32
+00403054 l     O .bss	00000400 crc32_table
+00000468 l     F .text	00000046 cmd_response.part.0
+000004b0 l     F .text	00000068 operate_flash_cmd_response.constprop.0
+0040003c l     O .bss	00001008 bim_uart_data
+00000518 l     F .text	00000064 bim_flash_readword.constprop.0
+0000057c l     F .text	00000068 bim_flash_writeword.constprop.0
+000005e4 l     F .text	0000007c bim_flash_write.constprop.0
+00000660 l     F .text	00000060 bim_flash_erase_sector.constprop.0
+000006c0 l     F .text	00000020 bim_erase_backup_sec
+000006e0 l     F .text	0000005c bim_icu_init.constprop.0
+0000073c l     F .text	00000038 make_crc32_table.isra.0
+00000774 l     F .text	0000007c bim_flash_read.constprop.0
+000007f0 l     F .text	0000017c uart_cmd_dispath.constprop.0
+0000096c l     F .text	000002ac bim_uart_data_callback
+0040348e l     O .bss	00000100 read_buff.1
+00401044 l     O .bss	00002004 bim_uart_rx_buf
+00400020 l     O .bss	0000000c bim_flash_env
+0040002c l     O .bss	00000010 bim_uart_cmd
+00403048 l     O .bss	00000002 bim_uart_temp.2
+0040304c l     O .bss	00000004 check_cnt.0
+00403050 l     O .bss	00000001 cmd_status.7
+00403454 l     O .bss	00000001 erase_fenable
+00403458 l     O .bss	00000010 hdr_back
+00403468 l     O .bss	00000010 hdr_img
+00403478 l     O .bss	00000002 index.5
+0040347a l     O .bss	00000002 index_cnt.3
+0040347c l     O .bss	00000002 length.6
+0040347e l     O .bss	00000010 read_buf.4
+0040358e l     O .bss	00000002 rom_ver.3
+00403590 l     O .bss	00000002 scmd_length.4
+00403592 l     O .bss	00000002 uart_buff_read.1
+00403594 l     O .bss	00000002 uart_buff_write
+00403596 l     O .bss	00000001 uart_download_status
+00000000 l    df *ABS*	00000000 _thumb1_case_uqi.o
+00000000 l    df *ABS*	00000000 _udivsi3.o
+000002fc l       .text	00000000 .udivsi3_skip_div0_test
+00000000 l    df *ABS*	00000000 _dvmd_tls.o
+00000000 l    df *ABS*	00000000 memcpy-stub.c
+000002d8 l     F .vectors	0000000c __bim_main_from_arm
+00001160 l     F .text	00000008 ____enable_irq_from_thumb
+00001168 l     F .text	0000000c ____aeabi_idiv0_from_arm
+00001174 l     F .text	00000008 ____disable_irq_from_thumb
+0000117c l     F .text	00000008 ____aeabi_uidiv_from_thumb
+0000100e g     F .text	00000006 PrefetchAbort_Exception
+00400020 g       .text	00000000 _data_addr_begin
+00000258 g     F .vectors	00000000 __disable_irq
+0000101a g     F .text	00000006 Reserved_Exception
+00000248 g     F .vectors	00000000 __enable_irq
+000010b4 g     F .text	000000a6 memcpy
+00000200 g       .vectors	00000000 _swi_handler
+000001fc g       .vectors	00000000 _undefined_handler
+000002fc g     F .text	000000fc .hidden __udivsi3
+00400020 g       .bss	00000000 _bss_start
+000002e8 g     F .text	00000012 .hidden __gnu_thumb1_case_uqi
+00403598 g       .bss	00000000 _bss_end
+00000204 g       .vectors	00000000 _pabort_handler
+0000027c g     F .vectors	00000000 __disable_fiq
+00000000 g       *ABS*	00000000 _vector_start
+00000210 g       .vectors	00000000 _irq_handler
+00001008 g     F .text	00000006 SoftwareInterrupt_Exception
+00001020 g     F .text	00000094 Irq_Exception
+00000418  w    F .text	00000002 .hidden __aeabi_ldiv0
+00000214 g       .vectors	00000000 _fiq_handler
+00000c18 g     F .text	000003c8 bim_main
+000002fc g     F .text	00000000 .hidden __aeabi_uidiv
+00001188 g       .bss	00000000 _data_addr_end
+0000020c g       .vectors	00000000 _reserved_handler
+00000208 g       .vectors	00000000 _dabort_handler
+0000026c g     F .vectors	00000000 __enable_fiq
+000003f8 g     F .text	00000020 .hidden __aeabi_uidivmod
+00001014 g     F .text	00000006 DataAbort_Exception
+00001188 g       .bss	00000000 data_load_begin
+00001188 g       *ABS*	00000000 _data_load_begin
+00000418  w    F .text	00000002 .hidden __aeabi_idiv0
+00000fe0 g     F .text	00000028 Undefined_Exception
+
+
+
+Disassembly of section .vectors:
+
+00000000 <_reset_handler-0x20>:
+   0:	ea000006 	b	20 <_reset_handler>
+   4:	e59ff1f0 	ldr	pc, [pc, #496]	; 1fc <_undefined_handler>
+   8:	e59ff1f0 	ldr	pc, [pc, #496]	; 200 <_swi_handler>
+   c:	e59ff1f0 	ldr	pc, [pc, #496]	; 204 <_pabort_handler>
+  10:	e59ff1f0 	ldr	pc, [pc, #496]	; 208 <_dabort_handler>
+  14:	e59ff1f0 	ldr	pc, [pc, #496]	; 20c <_reserved_handler>
+  18:	e59ff1f0 	ldr	pc, [pc, #496]	; 210 <_irq_handler>
+  1c:	e59ff1f0 	ldr	pc, [pc, #496]	; 214 <_fiq_handler>
+
+00000020 <_reset_handler>:
+  20:	e10f0000 	mrs	r0, CPSR
+  24:	e38000c0 	orr	r0, r0, #192	; 0xc0
+  28:	e121f000 	msr	CPSR_c, r0
+  2c:	e10f0000 	mrs	r0, CPSR
+  30:	e3c0001f 	bic	r0, r0, #31
+  34:	e380001f 	orr	r0, r0, #31
+  38:	e121f000 	msr	CPSR_c, r0
+  3c:	e59f0268 	ldr	r0, [pc, #616]	; 2ac <_STACK_SIZE_UND>
+  40:	e59f1260 	ldr	r1, [pc, #608]	; 2a8 <_STACK_ADDR_UND>
+  44:	e59f2264 	ldr	r2, [pc, #612]	; 2b0 <_STACK_SIZE_UND+0x4>
+  48:	e1a0d001 	mov	sp, r1
+  4c:	e0410000 	sub	r0, r1, r0
+  50:	e1500001 	cmp	r0, r1
+  54:	b5802000 	strlt	r2, [r0]
+  58:	b2800004 	addlt	r0, r0, #4
+  5c:	bafffffb 	blt	50 <_reset_handler+0x30>
+  60:	e10f0000 	mrs	r0, CPSR
+  64:	e3c0001f 	bic	r0, r0, #31
+  68:	e3800017 	orr	r0, r0, #23
+  6c:	e121f000 	msr	CPSR_c, r0
+  70:	e59f0234 	ldr	r0, [pc, #564]	; 2ac <_STACK_SIZE_UND>
+  74:	e59f122c 	ldr	r1, [pc, #556]	; 2a8 <_STACK_ADDR_UND>
+  78:	e59f2230 	ldr	r2, [pc, #560]	; 2b0 <_STACK_SIZE_UND+0x4>
+  7c:	e1a0d001 	mov	sp, r1
+  80:	e0410000 	sub	r0, r1, r0
+  84:	e1500001 	cmp	r0, r1
+  88:	b5802000 	strlt	r2, [r0]
+  8c:	b2800004 	addlt	r0, r0, #4
+  90:	bafffffb 	blt	84 <_reset_handler+0x64>
+  94:	e10f0000 	mrs	r0, CPSR
+  98:	e3c0001f 	bic	r0, r0, #31
+  9c:	e380001b 	orr	r0, r0, #27
+  a0:	e121f000 	msr	CPSR_c, r0
+  a4:	e59f0200 	ldr	r0, [pc, #512]	; 2ac <_STACK_SIZE_UND>
+  a8:	e59f11f8 	ldr	r1, [pc, #504]	; 2a8 <_STACK_ADDR_UND>
+  ac:	e59f21fc 	ldr	r2, [pc, #508]	; 2b0 <_STACK_SIZE_UND+0x4>
+  b0:	e1a0d001 	mov	sp, r1
+  b4:	e0410000 	sub	r0, r1, r0
+  b8:	e1500001 	cmp	r0, r1
+  bc:	b5802000 	strlt	r2, [r0]
+  c0:	b2800004 	addlt	r0, r0, #4
+  c4:	bafffffb 	blt	b8 <_reset_handler+0x98>
+  c8:	e10f0000 	mrs	r0, CPSR
+  cc:	e3c0001f 	bic	r0, r0, #31
+  d0:	e3800012 	orr	r0, r0, #18
+  d4:	e121f000 	msr	CPSR_c, r0
+  d8:	e59f01bc 	ldr	r0, [pc, #444]	; 29c <_STACK_SIZE_IRQ>
+  dc:	e59f11b4 	ldr	r1, [pc, #436]	; 298 <_STACK_ADDR_IRQ>
+  e0:	e59f21cc 	ldr	r2, [pc, #460]	; 2b4 <_STACK_SIZE_UND+0x8>
+  e4:	e1a0d001 	mov	sp, r1
+  e8:	e0410000 	sub	r0, r1, r0
+  ec:	e1500001 	cmp	r0, r1
+  f0:	b5802000 	strlt	r2, [r0]
+  f4:	b2800004 	addlt	r0, r0, #4
+  f8:	bafffffb 	blt	ec <_reset_handler+0xcc>
+  fc:	e10f0000 	mrs	r0, CPSR
+ 100:	e3c0001f 	bic	r0, r0, #31
+ 104:	e3800011 	orr	r0, r0, #17
+ 108:	e121f000 	msr	CPSR_c, r0
+ 10c:	e59f0180 	ldr	r0, [pc, #384]	; 294 <_STACK_SIZE_FIQ>
+ 110:	e59f1178 	ldr	r1, [pc, #376]	; 290 <_STACK_ADDR_FIQ>
+ 114:	e59f219c 	ldr	r2, [pc, #412]	; 2b8 <_STACK_SIZE_UND+0xc>
+ 118:	e1a0d001 	mov	sp, r1
+ 11c:	e0410000 	sub	r0, r1, r0
+ 120:	e1500001 	cmp	r0, r1
+ 124:	b5802000 	strlt	r2, [r0]
+ 128:	b2800004 	addlt	r0, r0, #4
+ 12c:	bafffffb 	blt	120 <_reset_handler+0x100>
+ 130:	e3a08000 	mov	r8, #0
+ 134:	e3a09000 	mov	r9, #0
+ 138:	e3a0a000 	mov	sl, #0
+ 13c:	e3a0b000 	mov	fp, #0
+ 140:	e3a0c000 	mov	ip, #0
+ 144:	e10f0000 	mrs	r0, CPSR
+ 148:	e3c0001f 	bic	r0, r0, #31
+ 14c:	e3800013 	orr	r0, r0, #19
+ 150:	e121f000 	msr	CPSR_c, r0
+ 154:	e59f0148 	ldr	r0, [pc, #328]	; 2a4 <_STACK_SIZE_SVC>
+ 158:	e59f1140 	ldr	r1, [pc, #320]	; 2a0 <_STACK_ADDR_SVC>
+ 15c:	e59f2158 	ldr	r2, [pc, #344]	; 2bc <_STACK_SIZE_UND+0x10>
+ 160:	e1a0d001 	mov	sp, r1
+ 164:	e0410000 	sub	r0, r1, r0
+ 168:	e1500001 	cmp	r0, r1
+ 16c:	b5802000 	strlt	r2, [r0]
+ 170:	b2800004 	addlt	r0, r0, #4
+ 174:	bafffffb 	blt	168 <_reset_handler+0x148>
+ 178:	eb00000e 	bl	1b8 <_data_init>
+ 17c:	eb000015 	bl	1d8 <_zi_init>
+ 180:	e3a00000 	mov	r0, #0
+ 184:	e3a01000 	mov	r1, #0
+ 188:	e3a02000 	mov	r2, #0
+ 18c:	e3a03000 	mov	r3, #0
+ 190:	e3a04000 	mov	r4, #0
+ 194:	e3a05000 	mov	r5, #0
+ 198:	e3a06000 	mov	r6, #0
+ 19c:	e3a07000 	mov	r7, #0
+ 1a0:	e3a08000 	mov	r8, #0
+ 1a4:	e3a09000 	mov	r9, #0
+ 1a8:	e3a0a000 	mov	sl, #0
+ 1ac:	e3a0b000 	mov	fp, #0
+ 1b0:	e3a0c000 	mov	ip, #0
+ 1b4:	ea000047 	b	2d8 <__bim_main_from_arm>
+
+000001b8 <_data_init>:
+ 1b8:	e59f0100 	ldr	r0, [pc, #256]	; 2c0 <_STACK_SIZE_UND+0x14>
+ 1bc:	e59f1100 	ldr	r1, [pc, #256]	; 2c4 <_STACK_SIZE_UND+0x18>
+ 1c0:	e59f2100 	ldr	r2, [pc, #256]	; 2c8 <_STACK_SIZE_UND+0x1c>
+ 1c4:	e1510002 	cmp	r1, r2
+ 1c8:	34904004 	ldrcc	r4, [r0], #4
+ 1cc:	34814004 	strcc	r4, [r1], #4
+ 1d0:	3afffffb 	bcc	1c4 <_data_init+0xc>
+ 1d4:	e12fff1e 	bx	lr
+
+000001d8 <_zi_init>:
+ 1d8:	e59f00ec 	ldr	r0, [pc, #236]	; 2cc <_STACK_SIZE_UND+0x20>
+ 1dc:	e59f10ec 	ldr	r1, [pc, #236]	; 2d0 <_STACK_SIZE_UND+0x24>
+ 1e0:	e1a03001 	mov	r3, r1
+ 1e4:	e1a04000 	mov	r4, r0
+ 1e8:	e3a02000 	mov	r2, #0
+ 1ec:	e1540003 	cmp	r4, r3
+ 1f0:	34842004 	strcc	r2, [r4], #4
+ 1f4:	3afffffc 	bcc	1ec <_zi_init+0x14>
+ 1f8:	e12fff1e 	bx	lr
+
+000001fc <_undefined_handler>:
+ 1fc:	00000fe1 	.word	0x00000fe1
+
+00000200 <_swi_handler>:
+ 200:	00001009 	.word	0x00001009
+
+00000204 <_pabort_handler>:
+ 204:	0000100f 	.word	0x0000100f
+
+00000208 <_dabort_handler>:
+ 208:	00001015 	.word	0x00001015
+
+0000020c <_reserved_handler>:
+ 20c:	0000101b 	.word	0x0000101b
+
+00000210 <_irq_handler>:
+ 210:	00000218 	.word	0x00000218
+
+00000214 <_fiq_handler>:
+ 214:	00000238 	.word	0x00000238
+
+00000218 <__irq_handler>:
+ 218:	e92d5fff 	push	{r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, sl, fp, ip, lr}
+ 21c:	e3a00501 	mov	r0, #4194304	; 0x400000
+ 220:	e5901000 	ldr	r1, [r0]
+ 224:	e3510001 	cmp	r1, #1
+ 228:	0b00037c 	bleq	1020 <Irq_Exception>
+ 22c:	eb00643b 	bl	19320 <*ABS*0x19320>
+ 230:	e8bd5fff 	pop	{r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, sl, fp, ip, lr}
+ 234:	e25ef004 	subs	pc, lr, #4
+
+00000238 <__fiq_handler>:
+ 238:	e92d5fff 	push	{r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, sl, fp, ip, lr}
+ 23c:	eb00642f 	bl	19300 <*ABS*0x19300>
+ 240:	e8bd5fff 	pop	{r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, sl, fp, ip, lr}
+ 244:	e25ef004 	subs	pc, lr, #4
+
+00000248 <__enable_irq>:
+ 248:	e10f0000 	mrs	r0, CPSR
+ 24c:	e3c00080 	bic	r0, r0, #128	; 0x80
+ 250:	e121f000 	msr	CPSR_c, r0
+ 254:	e12fff1e 	bx	lr
+
+00000258 <__disable_irq>:
+ 258:	e10f0000 	mrs	r0, CPSR
+ 25c:	e3801080 	orr	r1, r0, #128	; 0x80
+ 260:	e121f001 	msr	CPSR_c, r1
+ 264:	e2000080 	and	r0, r0, #128	; 0x80
+ 268:	e12fff1e 	bx	lr
+
+0000026c <__enable_fiq>:
+ 26c:	e10f0000 	mrs	r0, CPSR
+ 270:	e3c00040 	bic	r0, r0, #64	; 0x40
+ 274:	e121f000 	msr	CPSR_c, r0
+ 278:	e12fff1e 	bx	lr
+
+0000027c <__disable_fiq>:
+ 27c:	e10f0000 	mrs	r0, CPSR
+ 280:	e3801040 	orr	r1, r0, #64	; 0x40
+ 284:	e121f001 	msr	CPSR_c, r1
+ 288:	e2000040 	and	r0, r0, #64	; 0x40
+ 28c:	e12fff1e 	bx	lr
+
+00000290 <_STACK_ADDR_FIQ>:
+ 290:	0040c000 	.word	0x0040c000
+
+00000294 <_STACK_SIZE_FIQ>:
+ 294:	00000500 	.word	0x00000500
+
+00000298 <_STACK_ADDR_IRQ>:
+ 298:	0040bb00 	.word	0x0040bb00
+
+0000029c <_STACK_SIZE_IRQ>:
+ 29c:	00000500 	.word	0x00000500
+
+000002a0 <_STACK_ADDR_SVC>:
+ 2a0:	0040b600 	.word	0x0040b600
+
+000002a4 <_STACK_SIZE_SVC>:
+ 2a4:	00000500 	.word	0x00000500
+
+000002a8 <_STACK_ADDR_UND>:
+ 2a8:	0040b100 	.word	0x0040b100
+
+000002ac <_STACK_SIZE_UND>:
+ 2ac:	00000200 	.word	0x00000200
+ 2b0:	aaaaaaaa 	.word	0xaaaaaaaa
+ 2b4:	bbbbbbbb 	.word	0xbbbbbbbb
+ 2b8:	cccccccc 	.word	0xcccccccc
+ 2bc:	dddddddd 	.word	0xdddddddd
+ 2c0:	00001188 	.word	0x00001188
+ 2c4:	00400020 	.word	0x00400020
+ 2c8:	00001188 	.word	0x00001188
+ 2cc:	00400020 	.word	0x00400020
+ 2d0:	00403598 	.word	0x00403598
+ 2d4:	00000000 	.word	0x00000000
+
+000002d8 <__bim_main_from_arm>:
+ 2d8:	e59fc000 	ldr	ip, [pc]	; 2e0 <__bim_main_from_arm+0x8>
+ 2dc:	e12fff1c 	bx	ip
+ 2e0:	00000c19 	.word	0x00000c19
+ 2e4:	00000000 	.word	0x00000000
+
+Disassembly of section .text:
+
+000002e8 <__gnu_thumb1_case_uqi>:
+     2e8:	b402      	push	{r1}
+     2ea:	4671      	mov	r1, lr
+     2ec:	0849      	lsrs	r1, r1, #1
+     2ee:	0049      	lsls	r1, r1, #1
+     2f0:	5c09      	ldrb	r1, [r1, r0]
+     2f2:	0049      	lsls	r1, r1, #1
+     2f4:	448e      	add	lr, r1
+     2f6:	bc02      	pop	{r1}
+     2f8:	4770      	bx	lr
+     2fa:	46c0      	nop			; (mov r8, r8)
+
+000002fc <__udivsi3>:
+     2fc:	e2512001 	subs	r2, r1, #1
+     300:	012fff1e 	bxeq	lr
+     304:	3a000036 	bcc	3e4 <__udivsi3+0xe8>
+     308:	e1500001 	cmp	r0, r1
+     30c:	9a000022 	bls	39c <__udivsi3+0xa0>
+     310:	e1110002 	tst	r1, r2
+     314:	0a000023 	beq	3a8 <__udivsi3+0xac>
+     318:	e311020e 	tst	r1, #-536870912	; 0xe0000000
+     31c:	01a01181 	lsleq	r1, r1, #3
+     320:	03a03008 	moveq	r3, #8
+     324:	13a03001 	movne	r3, #1
+     328:	e3510201 	cmp	r1, #268435456	; 0x10000000
+     32c:	31510000 	cmpcc	r1, r0
+     330:	31a01201 	lslcc	r1, r1, #4
+     334:	31a03203 	lslcc	r3, r3, #4
+     338:	3afffffa 	bcc	328 <__udivsi3+0x2c>
+     33c:	e3510102 	cmp	r1, #-2147483648	; 0x80000000
+     340:	31510000 	cmpcc	r1, r0
+     344:	31a01081 	lslcc	r1, r1, #1
+     348:	31a03083 	lslcc	r3, r3, #1
+     34c:	3afffffa 	bcc	33c <__udivsi3+0x40>
+     350:	e3a02000 	mov	r2, #0
+     354:	e1500001 	cmp	r0, r1
+     358:	20400001 	subcs	r0, r0, r1
+     35c:	21822003 	orrcs	r2, r2, r3
+     360:	e15000a1 	cmp	r0, r1, lsr #1
+     364:	204000a1 	subcs	r0, r0, r1, lsr #1
+     368:	218220a3 	orrcs	r2, r2, r3, lsr #1
+     36c:	e1500121 	cmp	r0, r1, lsr #2
+     370:	20400121 	subcs	r0, r0, r1, lsr #2
+     374:	21822123 	orrcs	r2, r2, r3, lsr #2
+     378:	e15001a1 	cmp	r0, r1, lsr #3
+     37c:	204001a1 	subcs	r0, r0, r1, lsr #3
+     380:	218221a3 	orrcs	r2, r2, r3, lsr #3
+     384:	e3500000 	cmp	r0, #0
+     388:	11b03223 	lsrsne	r3, r3, #4
+     38c:	11a01221 	lsrne	r1, r1, #4
+     390:	1affffef 	bne	354 <__udivsi3+0x58>
+     394:	e1a00002 	mov	r0, r2
+     398:	e12fff1e 	bx	lr
+     39c:	03a00001 	moveq	r0, #1
+     3a0:	13a00000 	movne	r0, #0
+     3a4:	e12fff1e 	bx	lr
+     3a8:	e3510801 	cmp	r1, #65536	; 0x10000
+     3ac:	21a01821 	lsrcs	r1, r1, #16
+     3b0:	23a02010 	movcs	r2, #16
+     3b4:	33a02000 	movcc	r2, #0
+     3b8:	e3510c01 	cmp	r1, #256	; 0x100
+     3bc:	21a01421 	lsrcs	r1, r1, #8
+     3c0:	22822008 	addcs	r2, r2, #8
+     3c4:	e3510010 	cmp	r1, #16
+     3c8:	21a01221 	lsrcs	r1, r1, #4
+     3cc:	22822004 	addcs	r2, r2, #4
+     3d0:	e3510004 	cmp	r1, #4
+     3d4:	82822003 	addhi	r2, r2, #3
+     3d8:	908220a1 	addls	r2, r2, r1, lsr #1
+     3dc:	e1a00230 	lsr	r0, r0, r2
+     3e0:	e12fff1e 	bx	lr
+     3e4:	e12fff1f 	bx	pc
+     3e8:	e1a00000 	nop			; (mov r0, r0)
+     3ec:	e3500000 	cmp	r0, #0
+     3f0:	13e00000 	mvnne	r0, #0
+     3f4:	ea00035b 	b	1168 <____aeabi_idiv0_from_arm>
+
+000003f8 <__aeabi_uidivmod>:
+     3f8:	e3510000 	cmp	r1, #0
+     3fc:	0afffff8 	beq	3e4 <__udivsi3+0xe8>
+     400:	e92d4003 	push	{r0, r1, lr}
+     404:	ebffffbc 	bl	2fc <__udivsi3>
+     408:	e8bd4006 	pop	{r1, r2, lr}
+     40c:	e0030092 	mul	r3, r2, r0
+     410:	e0411003 	sub	r1, r1, r3
+     414:	e12fff1e 	bx	lr
+
+00000418 <__aeabi_idiv0>:
+     418:	4770      	bx	lr
+     41a:	46c0      	nop			; (mov r8, r8)
+
+0000041c <uart_send>:
+     41c:	2280      	movs	r2, #128	; 0x80
+     41e:	b530      	push	{r4, r5, lr}
+     420:	4b06      	ldr	r3, [pc, #24]	; (43c <uart_send+0x20>)
+     422:	4c07      	ldr	r4, [pc, #28]	; (440 <uart_send+0x24>)
+     424:	1841      	adds	r1, r0, r1
+     426:	0352      	lsls	r2, r2, #13
+     428:	4288      	cmp	r0, r1
+     42a:	d100      	bne.n	42e <uart_send+0x12>
+     42c:	bd30      	pop	{r4, r5, pc}
+     42e:	681d      	ldr	r5, [r3, #0]
+     430:	4215      	tst	r5, r2
+     432:	d0fc      	beq.n	42e <uart_send+0x12>
+     434:	7805      	ldrb	r5, [r0, #0]
+     436:	3001      	adds	r0, #1
+     438:	6025      	str	r5, [r4, #0]
+     43a:	e7f5      	b.n	428 <uart_send+0xc>
+     43c:	00806308 	.word	0x00806308
+     440:	0080630c 	.word	0x0080630c
+
+00000444 <make_crc32>:
+     444:	b570      	push	{r4, r5, r6, lr}
+     446:	25ff      	movs	r5, #255	; 0xff
+     448:	4c06      	ldr	r4, [pc, #24]	; (464 <make_crc32+0x20>)
+     44a:	188a      	adds	r2, r1, r2
+     44c:	4291      	cmp	r1, r2
+     44e:	d100      	bne.n	452 <make_crc32+0xe>
+     450:	bd70      	pop	{r4, r5, r6, pc}
+     452:	780b      	ldrb	r3, [r1, #0]
+     454:	0a06      	lsrs	r6, r0, #8
+     456:	4043      	eors	r3, r0
+     458:	402b      	ands	r3, r5
+     45a:	009b      	lsls	r3, r3, #2
+     45c:	5918      	ldr	r0, [r3, r4]
+     45e:	3101      	adds	r1, #1
+     460:	4070      	eors	r0, r6
+     462:	e7f3      	b.n	44c <make_crc32+0x8>
+     464:	00403054 	.word	0x00403054
+
+00000468 <cmd_response.part.0>:
+     468:	b530      	push	{r4, r5, lr}
+     46a:	b085      	sub	sp, #20
+     46c:	466c      	mov	r4, sp
+     46e:	2304      	movs	r3, #4
+     470:	7023      	strb	r3, [r4, #0]
+     472:	330a      	adds	r3, #10
+     474:	7063      	strb	r3, [r4, #1]
+     476:	2301      	movs	r3, #1
+     478:	70e3      	strb	r3, [r4, #3]
+     47a:	33df      	adds	r3, #223	; 0xdf
+     47c:	7123      	strb	r3, [r4, #4]
+     47e:	331c      	adds	r3, #28
+     480:	7163      	strb	r3, [r4, #5]
+     482:	2300      	movs	r3, #0
+     484:	71a0      	strb	r0, [r4, #6]
+     486:	70a1      	strb	r1, [r4, #2]
+     488:	1f08      	subs	r0, r1, #4
+     48a:	4283      	cmp	r3, r0
+     48c:	db07      	blt.n	49e <cmd_response.part.0+0x36>
+     48e:	3103      	adds	r1, #3
+     490:	0609      	lsls	r1, r1, #24
+     492:	4668      	mov	r0, sp
+     494:	0e09      	lsrs	r1, r1, #24
+     496:	f7ff ffc1 	bl	41c <uart_send>
+     49a:	b005      	add	sp, #20
+     49c:	bd30      	pop	{r4, r5, pc}
+     49e:	001c      	movs	r4, r3
+     4a0:	5cd5      	ldrb	r5, [r2, r3]
+     4a2:	3301      	adds	r3, #1
+     4a4:	446c      	add	r4, sp
+     4a6:	061b      	lsls	r3, r3, #24
+     4a8:	71e5      	strb	r5, [r4, #7]
+     4aa:	0e1b      	lsrs	r3, r3, #24
+     4ac:	e7ed      	b.n	48a <cmd_response.part.0+0x22>
+	...
+
+000004b0 <operate_flash_cmd_response.constprop.0>:
+     4b0:	b530      	push	{r4, r5, lr}
+     4b2:	4c16      	ldr	r4, [pc, #88]	; (50c <operate_flash_cmd_response.constprop.0+0x5c>)
+     4b4:	2304      	movs	r3, #4
+     4b6:	44a5      	add	sp, r4
+     4b8:	466c      	mov	r4, sp
+     4ba:	7023      	strb	r3, [r4, #0]
+     4bc:	330a      	adds	r3, #10
+     4be:	7063      	strb	r3, [r4, #1]
+     4c0:	33f1      	adds	r3, #241	; 0xf1
+     4c2:	70a3      	strb	r3, [r4, #2]
+     4c4:	3bfe      	subs	r3, #254	; 0xfe
+     4c6:	70e3      	strb	r3, [r4, #3]
+     4c8:	33df      	adds	r3, #223	; 0xdf
+     4ca:	7123      	strb	r3, [r4, #4]
+     4cc:	331c      	adds	r3, #28
+     4ce:	7163      	strb	r3, [r4, #5]
+     4d0:	3b08      	subs	r3, #8
+     4d2:	71a3      	strb	r3, [r4, #6]
+     4d4:	0a13      	lsrs	r3, r2, #8
+     4d6:	7223      	strb	r3, [r4, #8]
+     4d8:	2300      	movs	r3, #0
+     4da:	7260      	strb	r0, [r4, #9]
+     4dc:	480c      	ldr	r0, [pc, #48]	; (510 <operate_flash_cmd_response.constprop.0+0x60>)
+     4de:	72a1      	strb	r1, [r4, #10]
+     4e0:	71e2      	strb	r2, [r4, #7]
+     4e2:	1e91      	subs	r1, r2, #2
+     4e4:	428b      	cmp	r3, r1
+     4e6:	db08      	blt.n	4fa <operate_flash_cmd_response.constprop.0+0x4a>
+     4e8:	3209      	adds	r2, #9
+     4ea:	0411      	lsls	r1, r2, #16
+     4ec:	4668      	mov	r0, sp
+     4ee:	0c09      	lsrs	r1, r1, #16
+     4f0:	f7ff ff94 	bl	41c <uart_send>
+     4f4:	4b07      	ldr	r3, [pc, #28]	; (514 <operate_flash_cmd_response.constprop.0+0x64>)
+     4f6:	449d      	add	sp, r3
+     4f8:	bd30      	pop	{r4, r5, pc}
+     4fa:	001c      	movs	r4, r3
+     4fc:	5cc5      	ldrb	r5, [r0, r3]
+     4fe:	3301      	adds	r3, #1
+     500:	446c      	add	r4, sp
+     502:	041b      	lsls	r3, r3, #16
+     504:	72e5      	strb	r5, [r4, #11]
+     506:	0c1b      	lsrs	r3, r3, #16
+     508:	e7ec      	b.n	4e4 <operate_flash_cmd_response.constprop.0+0x34>
+     50a:	46c0      	nop			; (mov r8, r8)
+     50c:	ffffef94 	.word	0xffffef94
+     510:	0040003d 	.word	0x0040003d
+     514:	0000106c 	.word	0x0000106c
+
+00000518 <bim_flash_readword.constprop.0>:
+     518:	21a5      	movs	r1, #165	; 0xa5
+     51a:	4b10      	ldr	r3, [pc, #64]	; (55c <bim_flash_readword.constprop.0+0x44>)
+     51c:	b510      	push	{r4, lr}
+     51e:	6018      	str	r0, [r3, #0]
+     520:	207c      	movs	r0, #124	; 0x7c
+     522:	4a0f      	ldr	r2, [pc, #60]	; (560 <bim_flash_readword.constprop.0+0x48>)
+     524:	4b0f      	ldr	r3, [pc, #60]	; (564 <bim_flash_readword.constprop.0+0x4c>)
+     526:	6013      	str	r3, [r2, #0]
+     528:	4b0f      	ldr	r3, [pc, #60]	; (568 <bim_flash_readword.constprop.0+0x50>)
+     52a:	6013      	str	r3, [r2, #0]
+     52c:	4b0f      	ldr	r3, [pc, #60]	; (56c <bim_flash_readword.constprop.0+0x54>)
+     52e:	6019      	str	r1, [r3, #0]
+     530:	4b0f      	ldr	r3, [pc, #60]	; (570 <bim_flash_readword.constprop.0+0x58>)
+     532:	311e      	adds	r1, #30
+     534:	6019      	str	r1, [r3, #0]
+     536:	4b0f      	ldr	r3, [pc, #60]	; (574 <bim_flash_readword.constprop.0+0x5c>)
+     538:	6819      	ldr	r1, [r3, #0]
+     53a:	4381      	bics	r1, r0
+     53c:	6019      	str	r1, [r3, #0]
+     53e:	2101      	movs	r1, #1
+     540:	6818      	ldr	r0, [r3, #0]
+     542:	4308      	orrs	r0, r1
+     544:	6018      	str	r0, [r3, #0]
+     546:	6818      	ldr	r0, [r3, #0]
+     548:	0004      	movs	r4, r0
+     54a:	400c      	ands	r4, r1
+     54c:	4208      	tst	r0, r1
+     54e:	d1fa      	bne.n	546 <bim_flash_readword.constprop.0+0x2e>
+     550:	4b09      	ldr	r3, [pc, #36]	; (578 <bim_flash_readword.constprop.0+0x60>)
+     552:	6818      	ldr	r0, [r3, #0]
+     554:	6014      	str	r4, [r2, #0]
+     556:	6014      	str	r4, [r2, #0]
+     558:	bd10      	pop	{r4, pc}
+     55a:	46c0      	nop			; (mov r8, r8)
+     55c:	00803008 	.word	0x00803008
+     560:	00803000 	.word	0x00803000
+     564:	000058a9 	.word	0x000058a9
+     568:	0000a958 	.word	0x0000a958
+     56c:	00803010 	.word	0x00803010
+     570:	00803014 	.word	0x00803014
+     574:	00803004 	.word	0x00803004
+     578:	0080300c 	.word	0x0080300c
+
+0000057c <bim_flash_writeword.constprop.0>:
+     57c:	4b11      	ldr	r3, [pc, #68]	; (5c4 <bim_flash_writeword.constprop.0+0x48>)
+     57e:	b510      	push	{r4, lr}
+     580:	6018      	str	r0, [r3, #0]
+     582:	4b11      	ldr	r3, [pc, #68]	; (5c8 <bim_flash_writeword.constprop.0+0x4c>)
+     584:	207c      	movs	r0, #124	; 0x7c
+     586:	6019      	str	r1, [r3, #0]
+     588:	21a5      	movs	r1, #165	; 0xa5
+     58a:	4a10      	ldr	r2, [pc, #64]	; (5cc <bim_flash_writeword.constprop.0+0x50>)
+     58c:	4b10      	ldr	r3, [pc, #64]	; (5d0 <bim_flash_writeword.constprop.0+0x54>)
+     58e:	6013      	str	r3, [r2, #0]
+     590:	4b10      	ldr	r3, [pc, #64]	; (5d4 <bim_flash_writeword.constprop.0+0x58>)
+     592:	6013      	str	r3, [r2, #0]
+     594:	4b10      	ldr	r3, [pc, #64]	; (5d8 <bim_flash_writeword.constprop.0+0x5c>)
+     596:	6019      	str	r1, [r3, #0]
+     598:	4b10      	ldr	r3, [pc, #64]	; (5dc <bim_flash_writeword.constprop.0+0x60>)
+     59a:	311e      	adds	r1, #30
+     59c:	6019      	str	r1, [r3, #0]
+     59e:	4b10      	ldr	r3, [pc, #64]	; (5e0 <bim_flash_writeword.constprop.0+0x64>)
+     5a0:	6819      	ldr	r1, [r3, #0]
+     5a2:	4381      	bics	r1, r0
+     5a4:	0008      	movs	r0, r1
+     5a6:	2104      	movs	r1, #4
+     5a8:	4301      	orrs	r1, r0
+     5aa:	6019      	str	r1, [r3, #0]
+     5ac:	2101      	movs	r1, #1
+     5ae:	6818      	ldr	r0, [r3, #0]
+     5b0:	4308      	orrs	r0, r1
+     5b2:	6018      	str	r0, [r3, #0]
+     5b4:	681c      	ldr	r4, [r3, #0]
+     5b6:	0020      	movs	r0, r4
+     5b8:	4008      	ands	r0, r1
+     5ba:	420c      	tst	r4, r1
+     5bc:	d1fa      	bne.n	5b4 <bim_flash_writeword.constprop.0+0x38>
+     5be:	6010      	str	r0, [r2, #0]
+     5c0:	6010      	str	r0, [r2, #0]
+     5c2:	bd10      	pop	{r4, pc}
+     5c4:	00803008 	.word	0x00803008
+     5c8:	0080300c 	.word	0x0080300c
+     5cc:	00803000 	.word	0x00803000
+     5d0:	000058a9 	.word	0x000058a9
+     5d4:	0000a958 	.word	0x0000a958
+     5d8:	00803010 	.word	0x00803010
+     5dc:	00803014 	.word	0x00803014
+     5e0:	00803004 	.word	0x00803004
+
+000005e4 <bim_flash_write.constprop.0>:
+     5e4:	b5f7      	push	{r0, r1, r2, r4, r5, r6, r7, lr}
+     5e6:	4b1d      	ldr	r3, [pc, #116]	; (65c <bim_flash_write.constprop.0+0x78>)
+     5e8:	0005      	movs	r5, r0
+     5ea:	681b      	ldr	r3, [r3, #0]
+     5ec:	000c      	movs	r4, r1
+     5ee:	000e      	movs	r6, r1
+     5f0:	0007      	movs	r7, r0
+     5f2:	9201      	str	r2, [sp, #4]
+     5f4:	428b      	cmp	r3, r1
+     5f6:	d20f      	bcs.n	618 <bim_flash_write.constprop.0+0x34>
+     5f8:	bdf7      	pop	{r0, r1, r2, r4, r5, r6, r7, pc}
+     5fa:	785a      	ldrb	r2, [r3, #1]
+     5fc:	7819      	ldrb	r1, [r3, #0]
+     5fe:	7898      	ldrb	r0, [r3, #2]
+     600:	0212      	lsls	r2, r2, #8
+     602:	430a      	orrs	r2, r1
+     604:	78d9      	ldrb	r1, [r3, #3]
+     606:	0400      	lsls	r0, r0, #16
+     608:	4302      	orrs	r2, r0
+     60a:	0609      	lsls	r1, r1, #24
+     60c:	0038      	movs	r0, r7
+     60e:	4311      	orrs	r1, r2
+     610:	f7ff ffb4 	bl	57c <bim_flash_writeword.constprop.0>
+     614:	3701      	adds	r7, #1
+     616:	3e04      	subs	r6, #4
+     618:	9b01      	ldr	r3, [sp, #4]
+     61a:	191b      	adds	r3, r3, r4
+     61c:	1b9b      	subs	r3, r3, r6
+     61e:	2e03      	cmp	r6, #3
+     620:	d8eb      	bhi.n	5fa <bim_flash_write.constprop.0+0x16>
+     622:	08a0      	lsrs	r0, r4, #2
+     624:	0082      	lsls	r2, r0, #2
+     626:	1828      	adds	r0, r5, r0
+     628:	1aa5      	subs	r5, r4, r2
+     62a:	4294      	cmp	r4, r2
+     62c:	d0e4      	beq.n	5f8 <bim_flash_write.constprop.0+0x14>
+     62e:	2101      	movs	r1, #1
+     630:	9c01      	ldr	r4, [sp, #4]
+     632:	2300      	movs	r3, #0
+     634:	26ff      	movs	r6, #255	; 0xff
+     636:	4249      	negs	r1, r1
+     638:	18a2      	adds	r2, r4, r2
+     63a:	e009      	b.n	650 <bim_flash_write.constprop.0+0x6c>
+     63c:	0034      	movs	r4, r6
+     63e:	00df      	lsls	r7, r3, #3
+     640:	40bc      	lsls	r4, r7
+     642:	43a1      	bics	r1, r4
+     644:	5cd4      	ldrb	r4, [r2, r3]
+     646:	3301      	adds	r3, #1
+     648:	40bc      	lsls	r4, r7
+     64a:	061b      	lsls	r3, r3, #24
+     64c:	4321      	orrs	r1, r4
+     64e:	0e1b      	lsrs	r3, r3, #24
+     650:	429d      	cmp	r5, r3
+     652:	d8f3      	bhi.n	63c <bim_flash_write.constprop.0+0x58>
+     654:	f7ff ff92 	bl	57c <bim_flash_writeword.constprop.0>
+     658:	e7ce      	b.n	5f8 <bim_flash_write.constprop.0+0x14>
+     65a:	46c0      	nop			; (mov r8, r8)
+     65c:	00400020 	.word	0x00400020
+
+00000660 <bim_flash_erase_sector.constprop.0>:
+     660:	21a5      	movs	r1, #165	; 0xa5
+     662:	4b10      	ldr	r3, [pc, #64]	; (6a4 <bim_flash_erase_sector.constprop.0+0x44>)
+     664:	b510      	push	{r4, lr}
+     666:	6018      	str	r0, [r3, #0]
+     668:	207c      	movs	r0, #124	; 0x7c
+     66a:	4a0f      	ldr	r2, [pc, #60]	; (6a8 <bim_flash_erase_sector.constprop.0+0x48>)
+     66c:	4b0f      	ldr	r3, [pc, #60]	; (6ac <bim_flash_erase_sector.constprop.0+0x4c>)
+     66e:	6013      	str	r3, [r2, #0]
+     670:	4b0f      	ldr	r3, [pc, #60]	; (6b0 <bim_flash_erase_sector.constprop.0+0x50>)
+     672:	6013      	str	r3, [r2, #0]
+     674:	4b0f      	ldr	r3, [pc, #60]	; (6b4 <bim_flash_erase_sector.constprop.0+0x54>)
+     676:	6019      	str	r1, [r3, #0]
+     678:	4b0f      	ldr	r3, [pc, #60]	; (6b8 <bim_flash_erase_sector.constprop.0+0x58>)
+     67a:	311e      	adds	r1, #30
+     67c:	6019      	str	r1, [r3, #0]
+     67e:	4b0f      	ldr	r3, [pc, #60]	; (6bc <bim_flash_erase_sector.constprop.0+0x5c>)
+     680:	6819      	ldr	r1, [r3, #0]
+     682:	4381      	bics	r1, r0
+     684:	0008      	movs	r0, r1
+     686:	2108      	movs	r1, #8
+     688:	4301      	orrs	r1, r0
+     68a:	6019      	str	r1, [r3, #0]
+     68c:	2101      	movs	r1, #1
+     68e:	6818      	ldr	r0, [r3, #0]
+     690:	4308      	orrs	r0, r1
+     692:	6018      	str	r0, [r3, #0]
+     694:	681c      	ldr	r4, [r3, #0]
+     696:	0020      	movs	r0, r4
+     698:	4008      	ands	r0, r1
+     69a:	420c      	tst	r4, r1
+     69c:	d1fa      	bne.n	694 <bim_flash_erase_sector.constprop.0+0x34>
+     69e:	6010      	str	r0, [r2, #0]
+     6a0:	6010      	str	r0, [r2, #0]
+     6a2:	bd10      	pop	{r4, pc}
+     6a4:	00803008 	.word	0x00803008
+     6a8:	00803000 	.word	0x00803000
+     6ac:	000058a9 	.word	0x000058a9
+     6b0:	0000a958 	.word	0x0000a958
+     6b4:	00803010 	.word	0x00803010
+     6b8:	00803014 	.word	0x00803014
+     6bc:	00803004 	.word	0x00803004
+
+000006c0 <bim_erase_backup_sec>:
+     6c0:	b510      	push	{r4, lr}
+     6c2:	24fc      	movs	r4, #252	; 0xfc
+     6c4:	0264      	lsls	r4, r4, #9
+     6c6:	08a0      	lsrs	r0, r4, #2
+     6c8:	f7ff ffca 	bl	660 <bim_flash_erase_sector.constprop.0>
+     6cc:	2380      	movs	r3, #128	; 0x80
+     6ce:	009b      	lsls	r3, r3, #2
+     6d0:	18e4      	adds	r4, r4, r3
+     6d2:	4b02      	ldr	r3, [pc, #8]	; (6dc <bim_erase_backup_sec+0x1c>)
+     6d4:	429c      	cmp	r4, r3
+     6d6:	d1f6      	bne.n	6c6 <bim_erase_backup_sec+0x6>
+     6d8:	bd10      	pop	{r4, pc}
+     6da:	46c0      	nop			; (mov r8, r8)
+     6dc:	00027e00 	.word	0x00027e00
+
+000006e0 <bim_icu_init.constprop.0>:
+     6e0:	4b0f      	ldr	r3, [pc, #60]	; (720 <bim_icu_init.constprop.0+0x40>)
+     6e2:	4910      	ldr	r1, [pc, #64]	; (724 <bim_icu_init.constprop.0+0x44>)
+     6e4:	681a      	ldr	r2, [r3, #0]
+     6e6:	400a      	ands	r2, r1
+     6e8:	601a      	str	r2, [r3, #0]
+     6ea:	22a8      	movs	r2, #168	; 0xa8
+     6ec:	6819      	ldr	r1, [r3, #0]
+     6ee:	0352      	lsls	r2, r2, #13
+     6f0:	430a      	orrs	r2, r1
+     6f2:	2102      	movs	r1, #2
+     6f4:	601a      	str	r2, [r3, #0]
+     6f6:	4b0c      	ldr	r3, [pc, #48]	; (728 <bim_icu_init.constprop.0+0x48>)
+     6f8:	4a0c      	ldr	r2, [pc, #48]	; (72c <bim_icu_init.constprop.0+0x4c>)
+     6fa:	601a      	str	r2, [r3, #0]
+     6fc:	4a0c      	ldr	r2, [pc, #48]	; (730 <bim_icu_init.constprop.0+0x50>)
+     6fe:	6813      	ldr	r3, [r2, #0]
+     700:	438b      	bics	r3, r1
+     702:	6013      	str	r3, [r2, #0]
+     704:	2200      	movs	r2, #0
+     706:	4b0b      	ldr	r3, [pc, #44]	; (734 <bim_icu_init.constprop.0+0x54>)
+     708:	313e      	adds	r1, #62	; 0x3e
+     70a:	601a      	str	r2, [r3, #0]
+     70c:	22fa      	movs	r2, #250	; 0xfa
+     70e:	3b04      	subs	r3, #4
+     710:	32ff      	adds	r2, #255	; 0xff
+     712:	601a      	str	r2, [r3, #0]
+     714:	4a08      	ldr	r2, [pc, #32]	; (738 <bim_icu_init.constprop.0+0x58>)
+     716:	6813      	ldr	r3, [r2, #0]
+     718:	438b      	bics	r3, r1
+     71a:	6013      	str	r3, [r2, #0]
+     71c:	4770      	bx	lr
+     71e:	46c0      	nop			; (mov r8, r8)
+     720:	0080004c 	.word	0x0080004c
+     724:	ff00ffff 	.word	0xff00ffff
+     728:	00800038 	.word	0x00800038
+     72c:	00000771 	.word	0x00000771
+     730:	0080005c 	.word	0x0080005c
+     734:	00800004 	.word	0x00800004
+     738:	00800034 	.word	0x00800034
+
+0000073c <make_crc32_table.isra.0>:
+     73c:	2080      	movs	r0, #128	; 0x80
+     73e:	b570      	push	{r4, r5, r6, lr}
+     740:	2200      	movs	r2, #0
+     742:	2501      	movs	r5, #1
+     744:	4e09      	ldr	r6, [pc, #36]	; (76c <make_crc32_table.isra.0+0x30>)
+     746:	0040      	lsls	r0, r0, #1
+     748:	0013      	movs	r3, r2
+     74a:	2108      	movs	r1, #8
+     74c:	001c      	movs	r4, r3
+     74e:	085b      	lsrs	r3, r3, #1
+     750:	402c      	ands	r4, r5
+     752:	d000      	beq.n	756 <make_crc32_table.isra.0+0x1a>
+     754:	4073      	eors	r3, r6
+     756:	3901      	subs	r1, #1
+     758:	2900      	cmp	r1, #0
+     75a:	d1f7      	bne.n	74c <make_crc32_table.isra.0+0x10>
+     75c:	4c04      	ldr	r4, [pc, #16]	; (770 <make_crc32_table.isra.0+0x34>)
+     75e:	0091      	lsls	r1, r2, #2
+     760:	3201      	adds	r2, #1
+     762:	5063      	str	r3, [r4, r1]
+     764:	4282      	cmp	r2, r0
+     766:	d1ef      	bne.n	748 <make_crc32_table.isra.0+0xc>
+     768:	bd70      	pop	{r4, r5, r6, pc}
+     76a:	46c0      	nop			; (mov r8, r8)
+     76c:	edb88320 	.word	0xedb88320
+     770:	00403054 	.word	0x00403054
+
+00000774 <bim_flash_read.constprop.0>:
+     774:	2301      	movs	r3, #1
+     776:	b5f0      	push	{r4, r5, r6, r7, lr}
+     778:	425b      	negs	r3, r3
+     77a:	b085      	sub	sp, #20
+     77c:	9303      	str	r3, [sp, #12]
+     77e:	4b1b      	ldr	r3, [pc, #108]	; (7ec <bim_flash_read.constprop.0+0x78>)
+     780:	000c      	movs	r4, r1
+     782:	681b      	ldr	r3, [r3, #0]
+     784:	0015      	movs	r5, r2
+     786:	9001      	str	r0, [sp, #4]
+     788:	428b      	cmp	r3, r1
+     78a:	d32c      	bcc.n	7e6 <bim_flash_read.constprop.0+0x72>
+     78c:	0016      	movs	r6, r2
+     78e:	0007      	movs	r7, r0
+     790:	0038      	movs	r0, r7
+     792:	f7ff fec1 	bl	518 <bim_flash_readword.constprop.0>
+     796:	2204      	movs	r2, #4
+     798:	9003      	str	r0, [sp, #12]
+     79a:	a903      	add	r1, sp, #12
+     79c:	0030      	movs	r0, r6
+     79e:	f000 fc89 	bl	10b4 <memcpy>
+     7a2:	3604      	adds	r6, #4
+     7a4:	192b      	adds	r3, r5, r4
+     7a6:	3701      	adds	r7, #1
+     7a8:	1b9b      	subs	r3, r3, r6
+     7aa:	2b03      	cmp	r3, #3
+     7ac:	d8f0      	bhi.n	790 <bim_flash_read.constprop.0+0x1c>
+     7ae:	2303      	movs	r3, #3
+     7b0:	0026      	movs	r6, r4
+     7b2:	9801      	ldr	r0, [sp, #4]
+     7b4:	1f22      	subs	r2, r4, #4
+     7b6:	0892      	lsrs	r2, r2, #2
+     7b8:	3001      	adds	r0, #1
+     7ba:	1810      	adds	r0, r2, r0
+     7bc:	3201      	adds	r2, #1
+     7be:	0092      	lsls	r2, r2, #2
+     7c0:	18ad      	adds	r5, r5, r2
+     7c2:	401e      	ands	r6, r3
+     7c4:	421c      	tst	r4, r3
+     7c6:	d00e      	beq.n	7e6 <bim_flash_read.constprop.0+0x72>
+     7c8:	f7ff fea6 	bl	518 <bim_flash_readword.constprop.0>
+     7cc:	2300      	movs	r3, #0
+     7ce:	21ff      	movs	r1, #255	; 0xff
+     7d0:	001a      	movs	r2, r3
+     7d2:	0004      	movs	r4, r0
+     7d4:	400a      	ands	r2, r1
+     7d6:	00d2      	lsls	r2, r2, #3
+     7d8:	40d4      	lsrs	r4, r2
+     7da:	54ec      	strb	r4, [r5, r3]
+     7dc:	3301      	adds	r3, #1
+     7de:	061a      	lsls	r2, r3, #24
+     7e0:	0e12      	lsrs	r2, r2, #24
+     7e2:	4296      	cmp	r6, r2
+     7e4:	d8f4      	bhi.n	7d0 <bim_flash_read.constprop.0+0x5c>
+     7e6:	b005      	add	sp, #20
+     7e8:	bdf0      	pop	{r4, r5, r6, r7, pc}
+     7ea:	46c0      	nop			; (mov r8, r8)
+     7ec:	00400020 	.word	0x00400020
+
+000007f0 <uart_cmd_dispath.constprop.0>:
+     7f0:	b5f0      	push	{r4, r5, r6, r7, lr}
+     7f2:	4c55      	ldr	r4, [pc, #340]	; (948 <uart_cmd_dispath.constprop.0+0x158>)
+     7f4:	b0c9      	sub	sp, #292	; 0x124
+     7f6:	7820      	ldrb	r0, [r4, #0]
+     7f8:	280f      	cmp	r0, #15
+     7fa:	d05f      	beq.n	8bc <uart_cmd_dispath.constprop.0+0xcc>
+     7fc:	d806      	bhi.n	80c <uart_cmd_dispath.constprop.0+0x1c>
+     7fe:	2800      	cmp	r0, #0
+     800:	d010      	beq.n	824 <uart_cmd_dispath.constprop.0+0x34>
+     802:	280e      	cmp	r0, #14
+     804:	d100      	bne.n	808 <uart_cmd_dispath.constprop.0+0x18>
+     806:	e090      	b.n	92a <uart_cmd_dispath.constprop.0+0x13a>
+     808:	b049      	add	sp, #292	; 0x124
+     80a:	bdf0      	pop	{r4, r5, r6, r7, pc}
+     80c:	2810      	cmp	r0, #16
+     80e:	d015      	beq.n	83c <uart_cmd_dispath.constprop.0+0x4c>
+     810:	28aa      	cmp	r0, #170	; 0xaa
+     812:	d1f9      	bne.n	808 <uart_cmd_dispath.constprop.0+0x18>
+     814:	2201      	movs	r2, #1
+     816:	4b4d      	ldr	r3, [pc, #308]	; (94c <uart_cmd_dispath.constprop.0+0x15c>)
+     818:	2105      	movs	r1, #5
+     81a:	701a      	strb	r2, [r3, #0]
+     81c:	7863      	ldrb	r3, [r4, #1]
+     81e:	aa04      	add	r2, sp, #16
+     820:	7013      	strb	r3, [r2, #0]
+     822:	e037      	b.n	894 <uart_cmd_dispath.constprop.0+0xa4>
+     824:	2401      	movs	r4, #1
+     826:	4b49      	ldr	r3, [pc, #292]	; (94c <uart_cmd_dispath.constprop.0+0x15c>)
+     828:	aa04      	add	r2, sp, #16
+     82a:	7010      	strb	r0, [r2, #0]
+     82c:	2105      	movs	r1, #5
+     82e:	0020      	movs	r0, r4
+     830:	701c      	strb	r4, [r3, #0]
+     832:	f7ff fe19 	bl	468 <cmd_response.part.0>
+     836:	4b46      	ldr	r3, [pc, #280]	; (950 <uart_cmd_dispath.constprop.0+0x160>)
+     838:	701c      	strb	r4, [r3, #0]
+     83a:	e7e5      	b.n	808 <uart_cmd_dispath.constprop.0+0x18>
+     83c:	78a3      	ldrb	r3, [r4, #2]
+     83e:	7862      	ldrb	r2, [r4, #1]
+     840:	78e5      	ldrb	r5, [r4, #3]
+     842:	021b      	lsls	r3, r3, #8
+     844:	431a      	orrs	r2, r3
+     846:	7923      	ldrb	r3, [r4, #4]
+     848:	042d      	lsls	r5, r5, #16
+     84a:	4315      	orrs	r5, r2
+     84c:	061b      	lsls	r3, r3, #24
+     84e:	431d      	orrs	r5, r3
+     850:	79a3      	ldrb	r3, [r4, #6]
+     852:	7961      	ldrb	r1, [r4, #5]
+     854:	79e2      	ldrb	r2, [r4, #7]
+     856:	021b      	lsls	r3, r3, #8
+     858:	7a24      	ldrb	r4, [r4, #8]
+     85a:	4319      	orrs	r1, r3
+     85c:	0412      	lsls	r2, r2, #16
+     85e:	430a      	orrs	r2, r1
+     860:	0624      	lsls	r4, r4, #24
+     862:	4314      	orrs	r4, r2
+     864:	3401      	adds	r4, #1
+     866:	1b64      	subs	r4, r4, r5
+     868:	f7ff ff68 	bl	73c <make_crc32_table.isra.0>
+     86c:	2780      	movs	r7, #128	; 0x80
+     86e:	0a23      	lsrs	r3, r4, #8
+     870:	2401      	movs	r4, #1
+     872:	2600      	movs	r6, #0
+     874:	9301      	str	r3, [sp, #4]
+     876:	4264      	negs	r4, r4
+     878:	007f      	lsls	r7, r7, #1
+     87a:	9b01      	ldr	r3, [sp, #4]
+     87c:	429e      	cmp	r6, r3
+     87e:	d30c      	bcc.n	89a <uart_cmd_dispath.constprop.0+0xaa>
+     880:	2108      	movs	r1, #8
+     882:	2010      	movs	r0, #16
+     884:	aa04      	add	r2, sp, #16
+     886:	0a23      	lsrs	r3, r4, #8
+     888:	7014      	strb	r4, [r2, #0]
+     88a:	7053      	strb	r3, [r2, #1]
+     88c:	0c23      	lsrs	r3, r4, #16
+     88e:	0e24      	lsrs	r4, r4, #24
+     890:	7093      	strb	r3, [r2, #2]
+     892:	70d4      	strb	r4, [r2, #3]
+     894:	f7ff fde8 	bl	468 <cmd_response.part.0>
+     898:	e7b6      	b.n	808 <uart_cmd_dispath.constprop.0+0x18>
+     89a:	08a8      	lsrs	r0, r5, #2
+     89c:	0039      	movs	r1, r7
+     89e:	aa08      	add	r2, sp, #32
+     8a0:	f7ff ff68 	bl	774 <bim_flash_read.constprop.0>
+     8a4:	0020      	movs	r0, r4
+     8a6:	003a      	movs	r2, r7
+     8a8:	a908      	add	r1, sp, #32
+     8aa:	f7ff fdcb 	bl	444 <make_crc32>
+     8ae:	3601      	adds	r6, #1
+     8b0:	3501      	adds	r5, #1
+     8b2:	0436      	lsls	r6, r6, #16
+     8b4:	0004      	movs	r4, r0
+     8b6:	35ff      	adds	r5, #255	; 0xff
+     8b8:	0c36      	lsrs	r6, r6, #16
+     8ba:	e7de      	b.n	87a <uart_cmd_dispath.constprop.0+0x8a>
+     8bc:	78a3      	ldrb	r3, [r4, #2]
+     8be:	7861      	ldrb	r1, [r4, #1]
+     8c0:	78e2      	ldrb	r2, [r4, #3]
+     8c2:	021b      	lsls	r3, r3, #8
+     8c4:	430b      	orrs	r3, r1
+     8c6:	7921      	ldrb	r1, [r4, #4]
+     8c8:	0412      	lsls	r2, r2, #16
+     8ca:	4313      	orrs	r3, r2
+     8cc:	0609      	lsls	r1, r1, #24
+     8ce:	4319      	orrs	r1, r3
+     8d0:	4820      	ldr	r0, [pc, #128]	; (954 <uart_cmd_dispath.constprop.0+0x164>)
+     8d2:	f000 fc53 	bl	117c <____aeabi_uidiv_from_thumb>
+     8d6:	4b20      	ldr	r3, [pc, #128]	; (958 <uart_cmd_dispath.constprop.0+0x168>)
+     8d8:	0200      	lsls	r0, r0, #8
+     8da:	38e5      	subs	r0, #229	; 0xe5
+     8dc:	6018      	str	r0, [r3, #0]
+     8de:	2000      	movs	r0, #0
+     8e0:	7961      	ldrb	r1, [r4, #5]
+     8e2:	004b      	lsls	r3, r1, #1
+     8e4:	3b01      	subs	r3, #1
+     8e6:	d210      	bcs.n	90a <uart_cmd_dispath.constprop.0+0x11a>
+     8e8:	7863      	ldrb	r3, [r4, #1]
+     8ea:	aa04      	add	r2, sp, #16
+     8ec:	7013      	strb	r3, [r2, #0]
+     8ee:	78a3      	ldrb	r3, [r4, #2]
+     8f0:	7111      	strb	r1, [r2, #4]
+     8f2:	7053      	strb	r3, [r2, #1]
+     8f4:	78e3      	ldrb	r3, [r4, #3]
+     8f6:	2109      	movs	r1, #9
+     8f8:	7093      	strb	r3, [r2, #2]
+     8fa:	7923      	ldrb	r3, [r4, #4]
+     8fc:	200f      	movs	r0, #15
+     8fe:	70d3      	strb	r3, [r2, #3]
+     900:	f7ff fdb2 	bl	468 <cmd_response.part.0>
+     904:	f7ff feec 	bl	6e0 <bim_icu_init.constprop.0>
+     908:	e77e      	b.n	808 <uart_cmd_dispath.constprop.0+0x18>
+     90a:	9008      	str	r0, [sp, #32]
+     90c:	9a08      	ldr	r2, [sp, #32]
+     90e:	2a63      	cmp	r2, #99	; 0x63
+     910:	d8e8      	bhi.n	8e4 <uart_cmd_dispath.constprop.0+0xf4>
+     912:	9003      	str	r0, [sp, #12]
+     914:	9a03      	ldr	r2, [sp, #12]
+     916:	2a0b      	cmp	r2, #11
+     918:	d903      	bls.n	922 <uart_cmd_dispath.constprop.0+0x132>
+     91a:	9a08      	ldr	r2, [sp, #32]
+     91c:	3201      	adds	r2, #1
+     91e:	9208      	str	r2, [sp, #32]
+     920:	e7f4      	b.n	90c <uart_cmd_dispath.constprop.0+0x11c>
+     922:	9a03      	ldr	r2, [sp, #12]
+     924:	3201      	adds	r2, #1
+     926:	9203      	str	r2, [sp, #12]
+     928:	e7f4      	b.n	914 <uart_cmd_dispath.constprop.0+0x124>
+     92a:	7863      	ldrb	r3, [r4, #1]
+     92c:	2ba5      	cmp	r3, #165	; 0xa5
+     92e:	d000      	beq.n	932 <uart_cmd_dispath.constprop.0+0x142>
+     930:	e76a      	b.n	808 <uart_cmd_dispath.constprop.0+0x18>
+     932:	2200      	movs	r2, #0
+     934:	4b09      	ldr	r3, [pc, #36]	; (95c <uart_cmd_dispath.constprop.0+0x16c>)
+     936:	601a      	str	r2, [r3, #0]
+     938:	4b09      	ldr	r3, [pc, #36]	; (960 <uart_cmd_dispath.constprop.0+0x170>)
+     93a:	3210      	adds	r2, #16
+     93c:	601a      	str	r2, [r3, #0]
+     93e:	4a09      	ldr	r2, [pc, #36]	; (964 <uart_cmd_dispath.constprop.0+0x174>)
+     940:	601a      	str	r2, [r3, #0]
+     942:	4a09      	ldr	r2, [pc, #36]	; (968 <uart_cmd_dispath.constprop.0+0x178>)
+     944:	601a      	str	r2, [r3, #0]
+     946:	e7fe      	b.n	946 <uart_cmd_dispath.constprop.0+0x156>
+     948:	0040002c 	.word	0x0040002c
+     94c:	00403596 	.word	0x00403596
+     950:	00403454 	.word	0x00403454
+     954:	00f42400 	.word	0x00f42400
+     958:	00806300 	.word	0x00806300
+     95c:	0080001c 	.word	0x0080001c
+     960:	00806000 	.word	0x00806000
+     964:	005a0010 	.word	0x005a0010
+     968:	00a50010 	.word	0x00a50010
+
+0000096c <bim_uart_data_callback>:
+     96c:	b5f0      	push	{r4, r5, r6, r7, lr}
+     96e:	b085      	sub	sp, #20
+     970:	9002      	str	r0, [sp, #8]
+     972:	9101      	str	r1, [sp, #4]
+     974:	9b01      	ldr	r3, [sp, #4]
+     976:	2b00      	cmp	r3, #0
+     978:	d101      	bne.n	97e <bim_uart_data_callback+0x12>
+     97a:	b005      	add	sp, #20
+     97c:	bdf0      	pop	{r4, r5, r6, r7, pc}
+     97e:	4f9a      	ldr	r7, [pc, #616]	; (be8 <bim_uart_data_callback+0x27c>)
+     980:	7838      	ldrb	r0, [r7, #0]
+     982:	2808      	cmp	r0, #8
+     984:	d80b      	bhi.n	99e <bim_uart_data_callback+0x32>
+     986:	9b02      	ldr	r3, [sp, #8]
+     988:	781b      	ldrb	r3, [r3, #0]
+     98a:	f7ff fcad 	bl	2e8 <__gnu_thumb1_case_uqi>
+     98e:	1105      	.short	0x1105
+     990:	3a2a1915 	.word	0x3a2a1915
+     994:	433e      	.short	0x433e
+     996:	53          	.byte	0x53
+     997:	00          	.byte	0x00
+     998:	2b01      	cmp	r3, #1
+     99a:	d100      	bne.n	99e <bim_uart_data_callback+0x32>
+     99c:	703b      	strb	r3, [r7, #0]
+     99e:	9901      	ldr	r1, [sp, #4]
+     9a0:	3901      	subs	r1, #1
+     9a2:	040b      	lsls	r3, r1, #16
+     9a4:	0c1b      	lsrs	r3, r3, #16
+     9a6:	9301      	str	r3, [sp, #4]
+     9a8:	9b02      	ldr	r3, [sp, #8]
+     9aa:	3301      	adds	r3, #1
+     9ac:	9302      	str	r3, [sp, #8]
+     9ae:	e7e1      	b.n	974 <bim_uart_data_callback+0x8>
+     9b0:	2be0      	cmp	r3, #224	; 0xe0
+     9b2:	d124      	bne.n	9fe <bim_uart_data_callback+0x92>
+     9b4:	3bde      	subs	r3, #222	; 0xde
+     9b6:	e7f1      	b.n	99c <bim_uart_data_callback+0x30>
+     9b8:	2bfc      	cmp	r3, #252	; 0xfc
+     9ba:	d120      	bne.n	9fe <bim_uart_data_callback+0x92>
+     9bc:	3bf9      	subs	r3, #249	; 0xf9
+     9be:	e7ed      	b.n	99c <bim_uart_data_callback+0x30>
+     9c0:	4a8a      	ldr	r2, [pc, #552]	; (bec <bim_uart_data_callback+0x280>)
+     9c2:	8013      	strh	r3, [r2, #0]
+     9c4:	2bff      	cmp	r3, #255	; 0xff
+     9c6:	d101      	bne.n	9cc <bim_uart_data_callback+0x60>
+     9c8:	3bfa      	subs	r3, #250	; 0xfa
+     9ca:	e7e7      	b.n	99c <bim_uart_data_callback+0x30>
+     9cc:	3b01      	subs	r3, #1
+     9ce:	061b      	lsls	r3, r3, #24
+     9d0:	0e1b      	lsrs	r3, r3, #24
+     9d2:	2bfd      	cmp	r3, #253	; 0xfd
+     9d4:	d813      	bhi.n	9fe <bim_uart_data_callback+0x92>
+     9d6:	2304      	movs	r3, #4
+     9d8:	2200      	movs	r2, #0
+     9da:	703b      	strb	r3, [r7, #0]
+     9dc:	4b84      	ldr	r3, [pc, #528]	; (bf0 <bim_uart_data_callback+0x284>)
+     9de:	801a      	strh	r2, [r3, #0]
+     9e0:	e7dd      	b.n	99e <bim_uart_data_callback+0x32>
+     9e2:	4883      	ldr	r0, [pc, #524]	; (bf0 <bim_uart_data_callback+0x284>)
+     9e4:	8801      	ldrh	r1, [r0, #0]
+     9e6:	1c4a      	adds	r2, r1, #1
+     9e8:	0412      	lsls	r2, r2, #16
+     9ea:	0c12      	lsrs	r2, r2, #16
+     9ec:	8002      	strh	r2, [r0, #0]
+     9ee:	4881      	ldr	r0, [pc, #516]	; (bf4 <bim_uart_data_callback+0x288>)
+     9f0:	5443      	strb	r3, [r0, r1]
+     9f2:	4b7e      	ldr	r3, [pc, #504]	; (bec <bim_uart_data_callback+0x280>)
+     9f4:	881b      	ldrh	r3, [r3, #0]
+     9f6:	4293      	cmp	r3, r2
+     9f8:	d1d1      	bne.n	99e <bim_uart_data_callback+0x32>
+     9fa:	f7ff fef9 	bl	7f0 <uart_cmd_dispath.constprop.0>
+     9fe:	2300      	movs	r3, #0
+     a00:	e7cc      	b.n	99c <bim_uart_data_callback+0x30>
+     a02:	2bf4      	cmp	r3, #244	; 0xf4
+     a04:	d1fb      	bne.n	9fe <bim_uart_data_callback+0x92>
+     a06:	3bee      	subs	r3, #238	; 0xee
+     a08:	e7c8      	b.n	99c <bim_uart_data_callback+0x30>
+     a0a:	2207      	movs	r2, #7
+     a0c:	703a      	strb	r2, [r7, #0]
+     a0e:	4a7a      	ldr	r2, [pc, #488]	; (bf8 <bim_uart_data_callback+0x28c>)
+     a10:	8013      	strh	r3, [r2, #0]
+     a12:	e7c4      	b.n	99e <bim_uart_data_callback+0x32>
+     a14:	4a78      	ldr	r2, [pc, #480]	; (bf8 <bim_uart_data_callback+0x28c>)
+     a16:	021b      	lsls	r3, r3, #8
+     a18:	8811      	ldrh	r1, [r2, #0]
+     a1a:	185b      	adds	r3, r3, r1
+     a1c:	041b      	lsls	r3, r3, #16
+     a1e:	0c1b      	lsrs	r3, r3, #16
+     a20:	8013      	strh	r3, [r2, #0]
+     a22:	1e5a      	subs	r2, r3, #1
+     a24:	4193      	sbcs	r3, r2
+     a26:	00db      	lsls	r3, r3, #3
+     a28:	703b      	strb	r3, [r7, #0]
+     a2a:	2300      	movs	r3, #0
+     a2c:	4a70      	ldr	r2, [pc, #448]	; (bf0 <bim_uart_data_callback+0x284>)
+     a2e:	8013      	strh	r3, [r2, #0]
+     a30:	4a72      	ldr	r2, [pc, #456]	; (bfc <bim_uart_data_callback+0x290>)
+     a32:	e7ed      	b.n	a10 <bim_uart_data_callback+0xa4>
+     a34:	486e      	ldr	r0, [pc, #440]	; (bf0 <bim_uart_data_callback+0x284>)
+     a36:	4c72      	ldr	r4, [pc, #456]	; (c00 <bim_uart_data_callback+0x294>)
+     a38:	8802      	ldrh	r2, [r0, #0]
+     a3a:	1c55      	adds	r5, r2, #1
+     a3c:	54a3      	strb	r3, [r4, r2]
+     a3e:	042d      	lsls	r5, r5, #16
+     a40:	7826      	ldrb	r6, [r4, #0]
+     a42:	0c2d      	lsrs	r5, r5, #16
+     a44:	8005      	strh	r5, [r0, #0]
+     a46:	2e09      	cmp	r6, #9
+     a48:	d11f      	bne.n	a8a <bim_uart_data_callback+0x11e>
+     a4a:	4b6b      	ldr	r3, [pc, #428]	; (bf8 <bim_uart_data_callback+0x28c>)
+     a4c:	881b      	ldrh	r3, [r3, #0]
+     a4e:	429d      	cmp	r5, r3
+     a50:	d1a5      	bne.n	99e <bim_uart_data_callback+0x32>
+     a52:	78a2      	ldrb	r2, [r4, #2]
+     a54:	7860      	ldrb	r0, [r4, #1]
+     a56:	78e3      	ldrb	r3, [r4, #3]
+     a58:	0212      	lsls	r2, r2, #8
+     a5a:	4302      	orrs	r2, r0
+     a5c:	041b      	lsls	r3, r3, #16
+     a5e:	7920      	ldrb	r0, [r4, #4]
+     a60:	431a      	orrs	r2, r3
+     a62:	4b68      	ldr	r3, [pc, #416]	; (c04 <bim_uart_data_callback+0x298>)
+     a64:	0600      	lsls	r0, r0, #24
+     a66:	4310      	orrs	r0, r2
+     a68:	3d05      	subs	r5, #5
+     a6a:	4298      	cmp	r0, r3
+     a6c:	d968      	bls.n	b40 <bim_uart_data_callback+0x1d4>
+     a6e:	4c66      	ldr	r4, [pc, #408]	; (c08 <bim_uart_data_callback+0x29c>)
+     a70:	2110      	movs	r1, #16
+     a72:	0022      	movs	r2, r4
+     a74:	0880      	lsrs	r0, r0, #2
+     a76:	f7ff fe7d 	bl	774 <bim_flash_read.constprop.0>
+     a7a:	2210      	movs	r2, #16
+     a7c:	0021      	movs	r1, r4
+     a7e:	4863      	ldr	r0, [pc, #396]	; (c0c <bim_uart_data_callback+0x2a0>)
+     a80:	f000 fb18 	bl	10b4 <memcpy>
+     a84:	4a62      	ldr	r2, [pc, #392]	; (c10 <bim_uart_data_callback+0x2a4>)
+     a86:	2100      	movs	r1, #0
+     a88:	e016      	b.n	ab8 <bim_uart_data_callback+0x14c>
+     a8a:	2e0f      	cmp	r6, #15
+     a8c:	d141      	bne.n	b12 <bim_uart_data_callback+0x1a6>
+     a8e:	4b5a      	ldr	r3, [pc, #360]	; (bf8 <bim_uart_data_callback+0x28c>)
+     a90:	881b      	ldrh	r3, [r3, #0]
+     a92:	42ab      	cmp	r3, r5
+     a94:	d000      	beq.n	a98 <bim_uart_data_callback+0x12c>
+     a96:	e782      	b.n	99e <bim_uart_data_callback+0x32>
+     a98:	78e1      	ldrb	r1, [r4, #3]
+     a9a:	78a3      	ldrb	r3, [r4, #2]
+     a9c:	7922      	ldrb	r2, [r4, #4]
+     a9e:	0209      	lsls	r1, r1, #8
+     aa0:	4319      	orrs	r1, r3
+     aa2:	0412      	lsls	r2, r2, #16
+     aa4:	4311      	orrs	r1, r2
+     aa6:	2280      	movs	r2, #128	; 0x80
+     aa8:	7963      	ldrb	r3, [r4, #5]
+     aaa:	0152      	lsls	r2, r2, #5
+     aac:	061b      	lsls	r3, r3, #24
+     aae:	430b      	orrs	r3, r1
+     ab0:	4293      	cmp	r3, r2
+     ab2:	da03      	bge.n	abc <bim_uart_data_callback+0x150>
+     ab4:	2207      	movs	r2, #7
+     ab6:	2106      	movs	r1, #6
+     ab8:	0030      	movs	r0, r6
+     aba:	e013      	b.n	ae4 <bim_uart_data_callback+0x178>
+     abc:	4a55      	ldr	r2, [pc, #340]	; (c14 <bim_uart_data_callback+0x2a8>)
+     abe:	7811      	ldrb	r1, [r2, #0]
+     ac0:	2901      	cmp	r1, #1
+     ac2:	d101      	bne.n	ac8 <bim_uart_data_callback+0x15c>
+     ac4:	2100      	movs	r1, #0
+     ac6:	7011      	strb	r1, [r2, #0]
+     ac8:	7862      	ldrb	r2, [r4, #1]
+     aca:	2a20      	cmp	r2, #32
+     acc:	d112      	bne.n	af4 <bim_uart_data_callback+0x188>
+     ace:	2280      	movs	r2, #128	; 0x80
+     ad0:	109b      	asrs	r3, r3, #2
+     ad2:	00d2      	lsls	r2, r2, #3
+     ad4:	189d      	adds	r5, r3, r2
+     ad6:	0a5b      	lsrs	r3, r3, #9
+     ad8:	025c      	lsls	r4, r3, #9
+     ada:	42a5      	cmp	r5, r4
+     adc:	d805      	bhi.n	aea <bim_uart_data_callback+0x17e>
+     ade:	2207      	movs	r2, #7
+     ae0:	2100      	movs	r1, #0
+     ae2:	200f      	movs	r0, #15
+     ae4:	f7ff fce4 	bl	4b0 <operate_flash_cmd_response.constprop.0>
+     ae8:	e789      	b.n	9fe <bim_uart_data_callback+0x92>
+     aea:	0020      	movs	r0, r4
+     aec:	f7ff fdb8 	bl	660 <bim_flash_erase_sector.constprop.0>
+     af0:	3480      	adds	r4, #128	; 0x80
+     af2:	e7f2      	b.n	ada <bim_uart_data_callback+0x16e>
+     af4:	2ad8      	cmp	r2, #216	; 0xd8
+     af6:	d1f2      	bne.n	ade <bim_uart_data_callback+0x172>
+     af8:	2280      	movs	r2, #128	; 0x80
+     afa:	109b      	asrs	r3, r3, #2
+     afc:	0192      	lsls	r2, r2, #6
+     afe:	189d      	adds	r5, r3, r2
+     b00:	0a5b      	lsrs	r3, r3, #9
+     b02:	025c      	lsls	r4, r3, #9
+     b04:	42a5      	cmp	r5, r4
+     b06:	d9ea      	bls.n	ade <bim_uart_data_callback+0x172>
+     b08:	0020      	movs	r0, r4
+     b0a:	f7ff fda9 	bl	660 <bim_flash_erase_sector.constprop.0>
+     b0e:	3480      	adds	r4, #128	; 0x80
+     b10:	e7f8      	b.n	b04 <bim_uart_data_callback+0x198>
+     b12:	2e06      	cmp	r6, #6
+     b14:	d11d      	bne.n	b52 <bim_uart_data_callback+0x1e6>
+     b16:	4b38      	ldr	r3, [pc, #224]	; (bf8 <bim_uart_data_callback+0x28c>)
+     b18:	881b      	ldrh	r3, [r3, #0]
+     b1a:	429d      	cmp	r5, r3
+     b1c:	d000      	beq.n	b20 <bim_uart_data_callback+0x1b4>
+     b1e:	e73e      	b.n	99e <bim_uart_data_callback+0x32>
+     b20:	78a2      	ldrb	r2, [r4, #2]
+     b22:	7860      	ldrb	r0, [r4, #1]
+     b24:	78e3      	ldrb	r3, [r4, #3]
+     b26:	0212      	lsls	r2, r2, #8
+     b28:	4302      	orrs	r2, r0
+     b2a:	041b      	lsls	r3, r3, #16
+     b2c:	7920      	ldrb	r0, [r4, #4]
+     b2e:	431a      	orrs	r2, r3
+     b30:	1f69      	subs	r1, r5, #5
+     b32:	4b34      	ldr	r3, [pc, #208]	; (c04 <bim_uart_data_callback+0x298>)
+     b34:	0600      	lsls	r0, r0, #24
+     b36:	060d      	lsls	r5, r1, #24
+     b38:	4310      	orrs	r0, r2
+     b3a:	0e2d      	lsrs	r5, r5, #24
+     b3c:	4298      	cmp	r0, r3
+     b3e:	d801      	bhi.n	b44 <bim_uart_data_callback+0x1d8>
+     b40:	7165      	strb	r5, [r4, #5]
+     b42:	e7b7      	b.n	ab4 <bim_uart_data_callback+0x148>
+     b44:	4a31      	ldr	r2, [pc, #196]	; (c0c <bim_uart_data_callback+0x2a0>)
+     b46:	0880      	lsrs	r0, r0, #2
+     b48:	f7ff fd4c 	bl	5e4 <bim_flash_write.constprop.0>
+     b4c:	2207      	movs	r2, #7
+     b4e:	7165      	strb	r5, [r4, #5]
+     b50:	e799      	b.n	a86 <bim_uart_data_callback+0x11a>
+     b52:	2e07      	cmp	r6, #7
+     b54:	d141      	bne.n	bda <bim_uart_data_callback+0x26e>
+     b56:	4b29      	ldr	r3, [pc, #164]	; (bfc <bim_uart_data_callback+0x290>)
+     b58:	881f      	ldrh	r7, [r3, #0]
+     b5a:	3701      	adds	r7, #1
+     b5c:	0238      	lsls	r0, r7, #8
+     b5e:	1d03      	adds	r3, r0, #4
+     b60:	42ab      	cmp	r3, r5
+     b62:	db00      	blt.n	b66 <bim_uart_data_callback+0x1fa>
+     b64:	e71b      	b.n	99e <bim_uart_data_callback+0x32>
+     b66:	78a2      	ldrb	r2, [r4, #2]
+     b68:	7861      	ldrb	r1, [r4, #1]
+     b6a:	0212      	lsls	r2, r2, #8
+     b6c:	78e3      	ldrb	r3, [r4, #3]
+     b6e:	4311      	orrs	r1, r2
+     b70:	7922      	ldrb	r2, [r4, #4]
+     b72:	041b      	lsls	r3, r3, #16
+     b74:	0612      	lsls	r2, r2, #24
+     b76:	430b      	orrs	r3, r1
+     b78:	4313      	orrs	r3, r2
+     b7a:	4a1f      	ldr	r2, [pc, #124]	; (bf8 <bim_uart_data_callback+0x28c>)
+     b7c:	043f      	lsls	r7, r7, #16
+     b7e:	8812      	ldrh	r2, [r2, #0]
+     b80:	0c3f      	lsrs	r7, r7, #16
+     b82:	9203      	str	r2, [sp, #12]
+     b84:	2280      	movs	r2, #128	; 0x80
+     b86:	0152      	lsls	r2, r2, #5
+     b88:	4293      	cmp	r3, r2
+     b8a:	d212      	bcs.n	bb2 <bim_uart_data_callback+0x246>
+     b8c:	4b1b      	ldr	r3, [pc, #108]	; (bfc <bim_uart_data_callback+0x290>)
+     b8e:	801f      	strh	r7, [r3, #0]
+     b90:	9b03      	ldr	r3, [sp, #12]
+     b92:	429d      	cmp	r5, r3
+     b94:	d000      	beq.n	b98 <bim_uart_data_callback+0x22c>
+     b96:	e702      	b.n	99e <bim_uart_data_callback+0x32>
+     b98:	2206      	movs	r2, #6
+     b9a:	23f0      	movs	r3, #240	; 0xf0
+     b9c:	0011      	movs	r1, r2
+     b9e:	7063      	strb	r3, [r4, #1]
+     ba0:	3bd1      	subs	r3, #209	; 0xd1
+     ba2:	70a3      	strb	r3, [r4, #2]
+     ba4:	0030      	movs	r0, r6
+     ba6:	f7ff fc83 	bl	4b0 <operate_flash_cmd_response.constprop.0>
+     baa:	2300      	movs	r3, #0
+     bac:	4a0e      	ldr	r2, [pc, #56]	; (be8 <bim_uart_data_callback+0x27c>)
+     bae:	7013      	strb	r3, [r2, #0]
+     bb0:	e73e      	b.n	a30 <bim_uart_data_callback+0xc4>
+     bb2:	0002      	movs	r2, r0
+     bb4:	2180      	movs	r1, #128	; 0x80
+     bb6:	3801      	subs	r0, #1
+     bb8:	38ff      	subs	r0, #255	; 0xff
+     bba:	18c0      	adds	r0, r0, r3
+     bbc:	3afb      	subs	r2, #251	; 0xfb
+     bbe:	1912      	adds	r2, r2, r4
+     bc0:	0880      	lsrs	r0, r0, #2
+     bc2:	0049      	lsls	r1, r1, #1
+     bc4:	f7ff fd0e 	bl	5e4 <bim_flash_write.constprop.0>
+     bc8:	4b0c      	ldr	r3, [pc, #48]	; (bfc <bim_uart_data_callback+0x290>)
+     bca:	801f      	strh	r7, [r3, #0]
+     bcc:	9b03      	ldr	r3, [sp, #12]
+     bce:	429d      	cmp	r5, r3
+     bd0:	d000      	beq.n	bd4 <bim_uart_data_callback+0x268>
+     bd2:	e6e4      	b.n	99e <bim_uart_data_callback+0x32>
+     bd4:	2206      	movs	r2, #6
+     bd6:	2100      	movs	r1, #0
+     bd8:	e7e4      	b.n	ba4 <bim_uart_data_callback+0x238>
+     bda:	4b07      	ldr	r3, [pc, #28]	; (bf8 <bim_uart_data_callback+0x28c>)
+     bdc:	881b      	ldrh	r3, [r3, #0]
+     bde:	42ab      	cmp	r3, r5
+     be0:	d100      	bne.n	be4 <bim_uart_data_callback+0x278>
+     be2:	e70c      	b.n	9fe <bim_uart_data_callback+0x92>
+     be4:	e6db      	b.n	99e <bim_uart_data_callback+0x32>
+     be6:	46c0      	nop			; (mov r8, r8)
+     be8:	00403050 	.word	0x00403050
+     bec:	0040347c 	.word	0x0040347c
+     bf0:	00403478 	.word	0x00403478
+     bf4:	0040002c 	.word	0x0040002c
+     bf8:	00403590 	.word	0x00403590
+     bfc:	0040347a 	.word	0x0040347a
+     c00:	0040003c 	.word	0x0040003c
+     c04:	00027fef 	.word	0x00027fef
+     c08:	0040348e 	.word	0x0040348e
+     c0c:	00400041 	.word	0x00400041
+     c10:	00001006 	.word	0x00001006
+     c14:	00403454 	.word	0x00403454
+
+00000c18 <bim_main>:
+     c18:	2380      	movs	r3, #128	; 0x80
+     c1a:	b5f0      	push	{r4, r5, r6, r7, lr}
+     c1c:	2401      	movs	r4, #1
+     c1e:	4ec5      	ldr	r6, [pc, #788]	; (f34 <bim_main+0x31c>)
+     c20:	03db      	lsls	r3, r3, #15
+     c22:	601c      	str	r4, [r3, #0]
+     c24:	b08b      	sub	sp, #44	; 0x2c
+     c26:	6034      	str	r4, [r6, #0]
+     c28:	6074      	str	r4, [r6, #4]
+     c2a:	60b4      	str	r4, [r6, #8]
+     c2c:	f7ff fd58 	bl	6e0 <bim_icu_init.constprop.0>
+     c30:	22a0      	movs	r2, #160	; 0xa0
+     c32:	4bc1      	ldr	r3, [pc, #772]	; (f38 <bim_main+0x320>)
+     c34:	0292      	lsls	r2, r2, #10
+     c36:	601a      	str	r2, [r3, #0]
+     c38:	2280      	movs	r2, #128	; 0x80
+     c3a:	0092      	lsls	r2, r2, #2
+     c3c:	605a      	str	r2, [r3, #4]
+     c3e:	3a01      	subs	r2, #1
+     c40:	4fbe      	ldr	r7, [pc, #760]	; (f3c <bim_main+0x324>)
+     c42:	3aff      	subs	r2, #255	; 0xff
+     c44:	811a      	strh	r2, [r3, #8]
+     c46:	683b      	ldr	r3, [r7, #0]
+     c48:	4abd      	ldr	r2, [pc, #756]	; (f40 <bim_main+0x328>)
+     c4a:	43a3      	bics	r3, r4
+     c4c:	603b      	str	r3, [r7, #0]
+     c4e:	4bbd      	ldr	r3, [pc, #756]	; (f44 <bim_main+0x32c>)
+     c50:	4cbd      	ldr	r4, [pc, #756]	; (f48 <bim_main+0x330>)
+     c52:	601a      	str	r2, [r3, #0]
+     c54:	4bbd      	ldr	r3, [pc, #756]	; (f4c <bim_main+0x334>)
+     c56:	4abe      	ldr	r2, [pc, #760]	; (f50 <bim_main+0x338>)
+     c58:	49be      	ldr	r1, [pc, #760]	; (f54 <bim_main+0x33c>)
+     c5a:	601a      	str	r2, [r3, #0]
+     c5c:	22c2      	movs	r2, #194	; 0xc2
+     c5e:	4bbe      	ldr	r3, [pc, #760]	; (f58 <bim_main+0x340>)
+     c60:	4dbe      	ldr	r5, [pc, #760]	; (f5c <bim_main+0x344>)
+     c62:	601a      	str	r2, [r3, #0]
+     c64:	2200      	movs	r2, #0
+     c66:	4bbe      	ldr	r3, [pc, #760]	; (f60 <bim_main+0x348>)
+     c68:	48be      	ldr	r0, [pc, #760]	; (f64 <bim_main+0x34c>)
+     c6a:	601a      	str	r2, [r3, #0]
+     c6c:	4bbe      	ldr	r3, [pc, #760]	; (f68 <bim_main+0x350>)
+     c6e:	4abf      	ldr	r2, [pc, #764]	; (f6c <bim_main+0x354>)
+     c70:	601a      	str	r2, [r3, #0]
+     c72:	6823      	ldr	r3, [r4, #0]
+     c74:	4abe      	ldr	r2, [pc, #760]	; (f70 <bim_main+0x358>)
+     c76:	4013      	ands	r3, r2
+     c78:	6023      	str	r3, [r4, #0]
+     c7a:	23c0      	movs	r3, #192	; 0xc0
+     c7c:	6822      	ldr	r2, [r4, #0]
+     c7e:	029b      	lsls	r3, r3, #10
+     c80:	4313      	orrs	r3, r2
+     c82:	6023      	str	r3, [r4, #0]
+     c84:	23c0      	movs	r3, #192	; 0xc0
+     c86:	6822      	ldr	r2, [r4, #0]
+     c88:	009b      	lsls	r3, r3, #2
+     c8a:	4313      	orrs	r3, r2
+     c8c:	4ab9      	ldr	r2, [pc, #740]	; (f74 <bim_main+0x35c>)
+     c8e:	6023      	str	r3, [r4, #0]
+     c90:	6813      	ldr	r3, [r2, #0]
+     c92:	400b      	ands	r3, r1
+     c94:	6013      	str	r3, [r2, #0]
+     c96:	2110      	movs	r1, #16
+     c98:	002a      	movs	r2, r5
+     c9a:	f7ff fd6b 	bl	774 <bim_flash_read.constprop.0>
+     c9e:	7beb      	ldrb	r3, [r5, #15]
+     ca0:	7baa      	ldrb	r2, [r5, #14]
+     ca2:	021b      	lsls	r3, r3, #8
+     ca4:	4313      	orrs	r3, r2
+     ca6:	4ab4      	ldr	r2, [pc, #720]	; (f78 <bim_main+0x360>)
+     ca8:	8013      	strh	r3, [r2, #0]
+     caa:	2320      	movs	r3, #32
+     cac:	4ab3      	ldr	r2, [pc, #716]	; (f7c <bim_main+0x364>)
+     cae:	6013      	str	r3, [r2, #0]
+     cb0:	4ab3      	ldr	r2, [pc, #716]	; (f80 <bim_main+0x368>)
+     cb2:	3b1d      	subs	r3, #29
+     cb4:	6013      	str	r3, [r2, #0]
+     cb6:	f000 fa53 	bl	1160 <____enable_irq_from_thumb>
+     cba:	4bb2      	ldr	r3, [pc, #712]	; (f84 <bim_main+0x36c>)
+     cbc:	881d      	ldrh	r5, [r3, #0]
+     cbe:	4bb2      	ldr	r3, [pc, #712]	; (f88 <bim_main+0x370>)
+     cc0:	801d      	strh	r5, [r3, #0]
+     cc2:	4bb2      	ldr	r3, [pc, #712]	; (f8c <bim_main+0x374>)
+     cc4:	8818      	ldrh	r0, [r3, #0]
+     cc6:	4285      	cmp	r5, r0
+     cc8:	d909      	bls.n	cde <bim_main+0xc6>
+     cca:	1a29      	subs	r1, r5, r0
+     ccc:	4bb0      	ldr	r3, [pc, #704]	; (f90 <bim_main+0x378>)
+     cce:	0409      	lsls	r1, r1, #16
+     cd0:	0c09      	lsrs	r1, r1, #16
+     cd2:	18c0      	adds	r0, r0, r3
+     cd4:	f7ff fe4a 	bl	96c <bim_uart_data_callback>
+     cd8:	4bac      	ldr	r3, [pc, #688]	; (f8c <bim_main+0x374>)
+     cda:	801d      	strh	r5, [r3, #0]
+     cdc:	e7ed      	b.n	cba <bim_main+0xa2>
+     cde:	4285      	cmp	r5, r0
+     ce0:	d20a      	bcs.n	cf8 <bim_main+0xe0>
+     ce2:	49ac      	ldr	r1, [pc, #688]	; (f94 <bim_main+0x37c>)
+     ce4:	4baa      	ldr	r3, [pc, #680]	; (f90 <bim_main+0x378>)
+     ce6:	1a09      	subs	r1, r1, r0
+     ce8:	0409      	lsls	r1, r1, #16
+     cea:	0c09      	lsrs	r1, r1, #16
+     cec:	18c0      	adds	r0, r0, r3
+     cee:	f7ff fe3d 	bl	96c <bim_uart_data_callback>
+     cf2:	0029      	movs	r1, r5
+     cf4:	48a6      	ldr	r0, [pc, #664]	; (f90 <bim_main+0x378>)
+     cf6:	e7ed      	b.n	cd4 <bim_main+0xbc>
+     cf8:	4ba7      	ldr	r3, [pc, #668]	; (f98 <bim_main+0x380>)
+     cfa:	781d      	ldrb	r5, [r3, #0]
+     cfc:	2d00      	cmp	r5, #0
+     cfe:	d1dc      	bne.n	cba <bim_main+0xa2>
+     d00:	4b9d      	ldr	r3, [pc, #628]	; (f78 <bim_main+0x360>)
+     d02:	4aa6      	ldr	r2, [pc, #664]	; (f9c <bim_main+0x384>)
+     d04:	881b      	ldrh	r3, [r3, #0]
+     d06:	4293      	cmp	r3, r2
+     d08:	d0d7      	beq.n	cba <bim_main+0xa2>
+     d0a:	4ba5      	ldr	r3, [pc, #660]	; (fa0 <bim_main+0x388>)
+     d0c:	681a      	ldr	r2, [r3, #0]
+     d0e:	1c51      	adds	r1, r2, #1
+     d10:	6019      	str	r1, [r3, #0]
+     d12:	49a4      	ldr	r1, [pc, #656]	; (fa4 <bim_main+0x38c>)
+     d14:	428a      	cmp	r2, r1
+     d16:	ddd0      	ble.n	cba <bim_main+0xa2>
+     d18:	601d      	str	r5, [r3, #0]
+     d1a:	f000 fa2b 	bl	1174 <____disable_irq_from_thumb>
+     d1e:	4b97      	ldr	r3, [pc, #604]	; (f7c <bim_main+0x364>)
+     d20:	4a93      	ldr	r2, [pc, #588]	; (f70 <bim_main+0x358>)
+     d22:	601d      	str	r5, [r3, #0]
+     d24:	4b96      	ldr	r3, [pc, #600]	; (f80 <bim_main+0x368>)
+     d26:	20fc      	movs	r0, #252	; 0xfc
+     d28:	601d      	str	r5, [r3, #0]
+     d2a:	2380      	movs	r3, #128	; 0x80
+     d2c:	03db      	lsls	r3, r3, #15
+     d2e:	601d      	str	r5, [r3, #0]
+     d30:	2301      	movs	r3, #1
+     d32:	6035      	str	r5, [r6, #0]
+     d34:	6075      	str	r5, [r6, #4]
+     d36:	60b5      	str	r5, [r6, #8]
+     d38:	603b      	str	r3, [r7, #0]
+     d3a:	6823      	ldr	r3, [r4, #0]
+     d3c:	2110      	movs	r1, #16
+     d3e:	4013      	ands	r3, r2
+     d40:	6023      	str	r3, [r4, #0]
+     d42:	2303      	movs	r3, #3
+     d44:	6822      	ldr	r2, [r4, #0]
+     d46:	01c0      	lsls	r0, r0, #7
+     d48:	4313      	orrs	r3, r2
+     d4a:	6023      	str	r3, [r4, #0]
+     d4c:	4c96      	ldr	r4, [pc, #600]	; (fa8 <bim_main+0x390>)
+     d4e:	0022      	movs	r2, r4
+     d50:	f7ff fd10 	bl	774 <bim_flash_read.constprop.0>
+     d54:	89e3      	ldrh	r3, [r4, #14]
+     d56:	4a91      	ldr	r2, [pc, #580]	; (f9c <bim_main+0x384>)
+     d58:	4293      	cmp	r3, r2
+     d5a:	d100      	bne.n	d5e <bim_main+0x146>
+     d5c:	e087      	b.n	e6e <bim_main+0x256>
+     d5e:	88a3      	ldrh	r3, [r4, #4]
+     d60:	4293      	cmp	r3, r2
+     d62:	d100      	bne.n	d66 <bim_main+0x14e>
+     d64:	e083      	b.n	e6e <bim_main+0x256>
+     d66:	68a3      	ldr	r3, [r4, #8]
+     d68:	4a90      	ldr	r2, [pc, #576]	; (fac <bim_main+0x394>)
+     d6a:	4293      	cmp	r3, r2
+     d6c:	d000      	beq.n	d70 <bim_main+0x158>
+     d6e:	e07e      	b.n	e6e <bim_main+0x256>
+     d70:	7b23      	ldrb	r3, [r4, #12]
+     d72:	2bff      	cmp	r3, #255	; 0xff
+     d74:	d000      	beq.n	d78 <bim_main+0x160>
+     d76:	e07e      	b.n	e76 <bim_main+0x25e>
+     d78:	4b8d      	ldr	r3, [pc, #564]	; (fb0 <bim_main+0x398>)
+     d7a:	88e2      	ldrh	r2, [r4, #6]
+     d7c:	429a      	cmp	r2, r3
+     d7e:	d871      	bhi.n	e64 <bim_main+0x24c>
+     d80:	2601      	movs	r6, #1
+     d82:	2700      	movs	r7, #0
+     d84:	6823      	ldr	r3, [r4, #0]
+     d86:	4276      	negs	r6, r6
+     d88:	9300      	str	r3, [sp, #0]
+     d8a:	f7ff fcd7 	bl	73c <make_crc32_table.isra.0>
+     d8e:	88e4      	ldrh	r4, [r4, #6]
+     d90:	08a4      	lsrs	r4, r4, #2
+     d92:	3c01      	subs	r4, #1
+     d94:	0424      	lsls	r4, r4, #16
+     d96:	0c24      	lsrs	r4, r4, #16
+     d98:	4b86      	ldr	r3, [pc, #536]	; (fb4 <bim_main+0x39c>)
+     d9a:	013d      	lsls	r5, r7, #4
+     d9c:	18ed      	adds	r5, r5, r3
+     d9e:	42a7      	cmp	r7, r4
+     da0:	d34d      	bcc.n	e3e <bim_main+0x226>
+     da2:	9b00      	ldr	r3, [sp, #0]
+     da4:	42b3      	cmp	r3, r6
+     da6:	d15d      	bne.n	e64 <bim_main+0x24c>
+     da8:	4b7f      	ldr	r3, [pc, #508]	; (fa8 <bim_main+0x390>)
+     daa:	4a83      	ldr	r2, [pc, #524]	; (fb8 <bim_main+0x3a0>)
+     dac:	819a      	strh	r2, [r3, #12]
+     dae:	4d7e      	ldr	r5, [pc, #504]	; (fa8 <bim_main+0x390>)
+     db0:	4a7e      	ldr	r2, [pc, #504]	; (fac <bim_main+0x394>)
+     db2:	68ab      	ldr	r3, [r5, #8]
+     db4:	4293      	cmp	r3, r2
+     db6:	d066      	beq.n	e86 <bim_main+0x26e>
+     db8:	23fc      	movs	r3, #252	; 0xfc
+     dba:	025b      	lsls	r3, r3, #9
+     dbc:	001c      	movs	r4, r3
+     dbe:	88ed      	ldrh	r5, [r5, #6]
+     dc0:	00ad      	lsls	r5, r5, #2
+     dc2:	18ed      	adds	r5, r5, r3
+     dc4:	4b7d      	ldr	r3, [pc, #500]	; (fbc <bim_main+0x3a4>)
+     dc6:	18e6      	adds	r6, r4, r3
+     dc8:	42a5      	cmp	r5, r4
+     dca:	d869      	bhi.n	ea0 <bim_main+0x288>
+     dcc:	4c7c      	ldr	r4, [pc, #496]	; (fc0 <bim_main+0x3a8>)
+     dce:	2110      	movs	r1, #16
+     dd0:	0022      	movs	r2, r4
+     dd2:	487c      	ldr	r0, [pc, #496]	; (fc4 <bim_main+0x3ac>)
+     dd4:	f7ff fcce 	bl	774 <bim_flash_read.constprop.0>
+     dd8:	68a3      	ldr	r3, [r4, #8]
+     dda:	4a74      	ldr	r2, [pc, #464]	; (fac <bim_main+0x394>)
+     ddc:	4293      	cmp	r3, r2
+     dde:	d000      	beq.n	de2 <bim_main+0x1ca>
+     de0:	e08e      	b.n	f00 <bim_main+0x2e8>
+     de2:	7b23      	ldrb	r3, [r4, #12]
+     de4:	2bff      	cmp	r3, #255	; 0xff
+     de6:	d000      	beq.n	dea <bim_main+0x1d2>
+     de8:	e096      	b.n	f18 <bim_main+0x300>
+     dea:	4b71      	ldr	r3, [pc, #452]	; (fb0 <bim_main+0x398>)
+     dec:	88e2      	ldrh	r2, [r4, #6]
+     dee:	429a      	cmp	r2, r3
+     df0:	d875      	bhi.n	ede <bim_main+0x2c6>
+     df2:	2601      	movs	r6, #1
+     df4:	2700      	movs	r7, #0
+     df6:	6823      	ldr	r3, [r4, #0]
+     df8:	4276      	negs	r6, r6
+     dfa:	9300      	str	r3, [sp, #0]
+     dfc:	f7ff fc9e 	bl	73c <make_crc32_table.isra.0>
+     e00:	88e3      	ldrh	r3, [r4, #6]
+     e02:	089b      	lsrs	r3, r3, #2
+     e04:	3b01      	subs	r3, #1
+     e06:	9301      	str	r3, [sp, #4]
+     e08:	4b6f      	ldr	r3, [pc, #444]	; (fc8 <bim_main+0x3b0>)
+     e0a:	013d      	lsls	r5, r7, #4
+     e0c:	18ed      	adds	r5, r5, r3
+     e0e:	9b01      	ldr	r3, [sp, #4]
+     e10:	42bb      	cmp	r3, r7
+     e12:	d851      	bhi.n	eb8 <bim_main+0x2a0>
+     e14:	9b00      	ldr	r3, [sp, #0]
+     e16:	42b3      	cmp	r3, r6
+     e18:	d165      	bne.n	ee6 <bim_main+0x2ce>
+     e1a:	4b67      	ldr	r3, [pc, #412]	; (fb8 <bim_main+0x3a0>)
+     e1c:	0022      	movs	r2, r4
+     e1e:	2110      	movs	r1, #16
+     e20:	4868      	ldr	r0, [pc, #416]	; (fc4 <bim_main+0x3ac>)
+     e22:	81a3      	strh	r3, [r4, #12]
+     e24:	f7ff fbde 	bl	5e4 <bim_flash_write.constprop.0>
+     e28:	0022      	movs	r2, r4
+     e2a:	2110      	movs	r1, #16
+     e2c:	4865      	ldr	r0, [pc, #404]	; (fc4 <bim_main+0x3ac>)
+     e2e:	f7ff fca1 	bl	774 <bim_flash_read.constprop.0>
+     e32:	0022      	movs	r2, r4
+     e34:	2110      	movs	r1, #16
+     e36:	4863      	ldr	r0, [pc, #396]	; (fc4 <bim_main+0x3ac>)
+     e38:	f7ff fc9c 	bl	774 <bim_flash_read.constprop.0>
+     e3c:	e015      	b.n	e6a <bim_main+0x252>
+     e3e:	08ad      	lsrs	r5, r5, #2
+     e40:	2110      	movs	r1, #16
+     e42:	0028      	movs	r0, r5
+     e44:	aa02      	add	r2, sp, #8
+     e46:	f7ff fc95 	bl	774 <bim_flash_read.constprop.0>
+     e4a:	2110      	movs	r1, #16
+     e4c:	0028      	movs	r0, r5
+     e4e:	aa06      	add	r2, sp, #24
+     e50:	f7ff fc90 	bl	774 <bim_flash_read.constprop.0>
+     e54:	0030      	movs	r0, r6
+     e56:	2210      	movs	r2, #16
+     e58:	a902      	add	r1, sp, #8
+     e5a:	f7ff faf3 	bl	444 <make_crc32>
+     e5e:	3701      	adds	r7, #1
+     e60:	0006      	movs	r6, r0
+     e62:	e799      	b.n	d98 <bim_main+0x180>
+     e64:	4b50      	ldr	r3, [pc, #320]	; (fa8 <bim_main+0x390>)
+     e66:	4a59      	ldr	r2, [pc, #356]	; (fcc <bim_main+0x3b4>)
+     e68:	819a      	strh	r2, [r3, #12]
+     e6a:	f7ff fc29 	bl	6c0 <bim_erase_backup_sec>
+     e6e:	2381      	movs	r3, #129	; 0x81
+     e70:	015b      	lsls	r3, r3, #5
+     e72:	4798      	blx	r3
+     e74:	e04e      	b.n	f14 <bim_main+0x2fc>
+     e76:	2b55      	cmp	r3, #85	; 0x55
+     e78:	d101      	bne.n	e7e <bim_main+0x266>
+     e7a:	7363      	strb	r3, [r4, #13]
+     e7c:	e7f5      	b.n	e6a <bim_main+0x252>
+     e7e:	2baa      	cmp	r3, #170	; 0xaa
+     e80:	d1f0      	bne.n	e64 <bim_main+0x24c>
+     e82:	7363      	strb	r3, [r4, #13]
+     e84:	e793      	b.n	dae <bim_main+0x196>
+     e86:	24b8      	movs	r4, #184	; 0xb8
+     e88:	26fc      	movs	r6, #252	; 0xfc
+     e8a:	0264      	lsls	r4, r4, #9
+     e8c:	0276      	lsls	r6, r6, #9
+     e8e:	08a0      	lsrs	r0, r4, #2
+     e90:	f7ff fbe6 	bl	660 <bim_flash_erase_sector.constprop.0>
+     e94:	2380      	movs	r3, #128	; 0x80
+     e96:	009b      	lsls	r3, r3, #2
+     e98:	18e4      	adds	r4, r4, r3
+     e9a:	42b4      	cmp	r4, r6
+     e9c:	d1f7      	bne.n	e8e <bim_main+0x276>
+     e9e:	e78b      	b.n	db8 <bim_main+0x1a0>
+     ea0:	08a0      	lsrs	r0, r4, #2
+     ea2:	2110      	movs	r1, #16
+     ea4:	aa06      	add	r2, sp, #24
+     ea6:	f7ff fc65 	bl	774 <bim_flash_read.constprop.0>
+     eaa:	2110      	movs	r1, #16
+     eac:	08b0      	lsrs	r0, r6, #2
+     eae:	aa06      	add	r2, sp, #24
+     eb0:	f7ff fb98 	bl	5e4 <bim_flash_write.constprop.0>
+     eb4:	3410      	adds	r4, #16
+     eb6:	e785      	b.n	dc4 <bim_main+0x1ac>
+     eb8:	08ad      	lsrs	r5, r5, #2
+     eba:	2110      	movs	r1, #16
+     ebc:	0028      	movs	r0, r5
+     ebe:	aa02      	add	r2, sp, #8
+     ec0:	f7ff fc58 	bl	774 <bim_flash_read.constprop.0>
+     ec4:	2110      	movs	r1, #16
+     ec6:	0028      	movs	r0, r5
+     ec8:	aa06      	add	r2, sp, #24
+     eca:	f7ff fc53 	bl	774 <bim_flash_read.constprop.0>
+     ece:	0030      	movs	r0, r6
+     ed0:	2210      	movs	r2, #16
+     ed2:	a902      	add	r1, sp, #8
+     ed4:	f7ff fab6 	bl	444 <make_crc32>
+     ed8:	3701      	adds	r7, #1
+     eda:	0006      	movs	r6, r0
+     edc:	e794      	b.n	e08 <bim_main+0x1f0>
+     ede:	89e3      	ldrh	r3, [r4, #14]
+     ee0:	4a2e      	ldr	r2, [pc, #184]	; (f9c <bim_main+0x384>)
+     ee2:	4293      	cmp	r3, r2
+     ee4:	d00c      	beq.n	f00 <bim_main+0x2e8>
+     ee6:	4c36      	ldr	r4, [pc, #216]	; (fc0 <bim_main+0x3a8>)
+     ee8:	4b38      	ldr	r3, [pc, #224]	; (fcc <bim_main+0x3b4>)
+     eea:	81a3      	strh	r3, [r4, #12]
+     eec:	0022      	movs	r2, r4
+     eee:	2110      	movs	r1, #16
+     ef0:	4834      	ldr	r0, [pc, #208]	; (fc4 <bim_main+0x3ac>)
+     ef2:	f7ff fb77 	bl	5e4 <bim_flash_write.constprop.0>
+     ef6:	0022      	movs	r2, r4
+     ef8:	2110      	movs	r1, #16
+     efa:	4832      	ldr	r0, [pc, #200]	; (fc4 <bim_main+0x3ac>)
+     efc:	f7ff fc3a 	bl	774 <bim_flash_read.constprop.0>
+     f00:	2200      	movs	r2, #0
+     f02:	4b33      	ldr	r3, [pc, #204]	; (fd0 <bim_main+0x3b8>)
+     f04:	601a      	str	r2, [r3, #0]
+     f06:	4b33      	ldr	r3, [pc, #204]	; (fd4 <bim_main+0x3bc>)
+     f08:	3264      	adds	r2, #100	; 0x64
+     f0a:	601a      	str	r2, [r3, #0]
+     f0c:	4a32      	ldr	r2, [pc, #200]	; (fd8 <bim_main+0x3c0>)
+     f0e:	601a      	str	r2, [r3, #0]
+     f10:	4a32      	ldr	r2, [pc, #200]	; (fdc <bim_main+0x3c4>)
+     f12:	601a      	str	r2, [r3, #0]
+     f14:	b00b      	add	sp, #44	; 0x2c
+     f16:	bdf0      	pop	{r4, r5, r6, r7, pc}
+     f18:	2b55      	cmp	r3, #85	; 0x55
+     f1a:	d101      	bne.n	f20 <bim_main+0x308>
+     f1c:	7363      	strb	r3, [r4, #13]
+     f1e:	e7e5      	b.n	eec <bim_main+0x2d4>
+     f20:	2baa      	cmp	r3, #170	; 0xaa
+     f22:	d1e0      	bne.n	ee6 <bim_main+0x2ce>
+     f24:	0022      	movs	r2, r4
+     f26:	2110      	movs	r1, #16
+     f28:	4826      	ldr	r0, [pc, #152]	; (fc4 <bim_main+0x3ac>)
+     f2a:	7363      	strb	r3, [r4, #13]
+     f2c:	f7ff fb5a 	bl	5e4 <bim_flash_write.constprop.0>
+     f30:	e77f      	b.n	e32 <bim_main+0x21a>
+     f32:	46c0      	nop			; (mov r8, r8)
+     f34:	00400004 	.word	0x00400004
+     f38:	00400020 	.word	0x00400020
+     f3c:	0080000c 	.word	0x0080000c
+     f40:	0000891b 	.word	0x0000891b
+     f44:	00806300 	.word	0x00806300
+     f48:	00806500 	.word	0x00806500
+     f4c:	00806304 	.word	0x00806304
+     f50:	00001001 	.word	0x00001001
+     f54:	fffcffff 	.word	0xfffcffff
+     f58:	00806310 	.word	0x00806310
+     f5c:	0040347e 	.word	0x0040347e
+     f60:	00806318 	.word	0x00806318
+     f64:	00000404 	.word	0x00000404
+     f68:	0080631c 	.word	0x0080631c
+     f6c:	00700001 	.word	0x00700001
+     f70:	fffcfffc 	.word	0xfffcfffc
+     f74:	00806504 	.word	0x00806504
+     f78:	0040358e 	.word	0x0040358e
+     f7c:	00800040 	.word	0x00800040
+     f80:	00800044 	.word	0x00800044
+     f84:	00403594 	.word	0x00403594
+     f88:	00403048 	.word	0x00403048
+     f8c:	00403592 	.word	0x00403592
+     f90:	00401044 	.word	0x00401044
+     f94:	00002004 	.word	0x00002004
+     f98:	00403596 	.word	0x00403596
+     f9c:	0000ffff 	.word	0x0000ffff
+     fa0:	0040304c 	.word	0x0040304c
+     fa4:	0000c350 	.word	0x0000c350
+     fa8:	00403458 	.word	0x00403458
+     fac:	42424242 	.word	0x42424242
+     fb0:	00002203 	.word	0x00002203
+     fb4:	0001f810 	.word	0x0001f810
+     fb8:	ffffaaaa 	.word	0xffffaaaa
+     fbc:	ffff7810 	.word	0xffff7810
+     fc0:	00403468 	.word	0x00403468
+     fc4:	00005c04 	.word	0x00005c04
+     fc8:	00017020 	.word	0x00017020
+     fcc:	00005555 	.word	0x00005555
+     fd0:	0080001c 	.word	0x0080001c
+     fd4:	00806000 	.word	0x00806000
+     fd8:	005a0064 	.word	0x005a0064
+     fdc:	00a50064 	.word	0x00a50064
+
+00000fe0 <Undefined_Exception>:
+     fe0:	2200      	movs	r2, #0
+     fe2:	4b05      	ldr	r3, [pc, #20]	; (ff8 <Undefined_Exception+0x18>)
+     fe4:	601a      	str	r2, [r3, #0]
+     fe6:	4b05      	ldr	r3, [pc, #20]	; (ffc <Undefined_Exception+0x1c>)
+     fe8:	3210      	adds	r2, #16
+     fea:	601a      	str	r2, [r3, #0]
+     fec:	4a04      	ldr	r2, [pc, #16]	; (1000 <Undefined_Exception+0x20>)
+     fee:	601a      	str	r2, [r3, #0]
+     ff0:	4a04      	ldr	r2, [pc, #16]	; (1004 <Undefined_Exception+0x24>)
+     ff2:	601a      	str	r2, [r3, #0]
+     ff4:	e7fe      	b.n	ff4 <Undefined_Exception+0x14>
+     ff6:	46c0      	nop			; (mov r8, r8)
+     ff8:	0080001c 	.word	0x0080001c
+     ffc:	00806000 	.word	0x00806000
+    1000:	005a0010 	.word	0x005a0010
+    1004:	00a50010 	.word	0x00a50010
+
+00001008 <SoftwareInterrupt_Exception>:
+    1008:	b510      	push	{r4, lr}
+    100a:	f7ff ffe9 	bl	fe0 <Undefined_Exception>
+
+0000100e <PrefetchAbort_Exception>:
+    100e:	b510      	push	{r4, lr}
+    1010:	f7ff ffe6 	bl	fe0 <Undefined_Exception>
+
+00001014 <DataAbort_Exception>:
+    1014:	b510      	push	{r4, lr}
+    1016:	f7ff ffe3 	bl	fe0 <Undefined_Exception>
+
+0000101a <Reserved_Exception>:
+    101a:	b510      	push	{r4, lr}
+    101c:	f7ff ffe0 	bl	fe0 <Undefined_Exception>
+
+00001020 <Irq_Exception>:
+    1020:	e24ee004 	sub	lr, lr, #4
+    1024:	e92d507f 	push	{r0, r1, r2, r3, r4, r5, r6, ip, lr}
+    1028:	e3a03502 	mov	r3, #8388608	; 0x800000
+    102c:	e593c048 	ldr	ip, [r3, #72]	; 0x48
+    1030:	e31c0020 	tst	ip, #32
+    1034:	0a00000b 	beq	1068 <Irq_Exception+0x48>
+    1038:	e59f2064 	ldr	r2, [pc, #100]	; 10a4 <Irq_Exception+0x84>
+    103c:	e592e314 	ldr	lr, [r2, #788]	; 0x314
+    1040:	e31e0042 	tst	lr, #66	; 0x42
+    1044:	0a000005 	beq	1060 <Irq_Exception+0x40>
+    1048:	e59f1058 	ldr	r1, [pc, #88]	; 10a8 <Irq_Exception+0x88>
+    104c:	e59f5058 	ldr	r5, [pc, #88]	; 10ac <Irq_Exception+0x8c>
+    1050:	e59f6058 	ldr	r6, [pc, #88]	; 10b0 <Irq_Exception+0x90>
+    1054:	e5923308 	ldr	r3, [r2, #776]	; 0x308
+    1058:	e3130602 	tst	r3, #2097152	; 0x200000
+    105c:	1a000004 	bne	1074 <Irq_Exception+0x54>
+    1060:	e59f303c 	ldr	r3, [pc, #60]	; 10a4 <Irq_Exception+0x84>
+    1064:	e583e314 	str	lr, [r3, #788]	; 0x314
+    1068:	e3a03502 	mov	r3, #8388608	; 0x800000
+    106c:	e583c048 	str	ip, [r3, #72]	; 0x48
+    1070:	e8fd907f 	ldm	sp!, {r0, r1, r2, r3, r4, r5, r6, ip, pc}^
+    1074:	e1d140b0 	ldrh	r4, [r1]
+    1078:	e592030c 	ldr	r0, [r2, #780]	; 0x30c
+    107c:	e2843001 	add	r3, r4, #1
+    1080:	e1a03803 	lsl	r3, r3, #16
+    1084:	e1a03823 	lsr	r3, r3, #16
+    1088:	e1530006 	cmp	r3, r6
+    108c:	e1c130b0 	strh	r3, [r1]
+    1090:	03a03000 	moveq	r3, #0
+    1094:	e1a00420 	lsr	r0, r0, #8
+    1098:	e7c50004 	strb	r0, [r5, r4]
+    109c:	01c130b0 	strheq	r3, [r1]
+    10a0:	eaffffeb 	b	1054 <Irq_Exception+0x34>
+    10a4:	00806000 	.word	0x00806000
+    10a8:	00403594 	.word	0x00403594
+    10ac:	00401044 	.word	0x00401044
+    10b0:	00002004 	.word	0x00002004
+
+000010b4 <memcpy>:
+    10b4:	b5f0      	push	{r4, r5, r6, r7, lr}
+    10b6:	46c6      	mov	lr, r8
+    10b8:	b500      	push	{lr}
+    10ba:	2a0f      	cmp	r2, #15
+    10bc:	d943      	bls.n	1146 <memcpy+0x92>
+    10be:	2703      	movs	r7, #3
+    10c0:	000d      	movs	r5, r1
+    10c2:	003e      	movs	r6, r7
+    10c4:	4305      	orrs	r5, r0
+    10c6:	000c      	movs	r4, r1
+    10c8:	0003      	movs	r3, r0
+    10ca:	402e      	ands	r6, r5
+    10cc:	422f      	tst	r7, r5
+    10ce:	d13f      	bne.n	1150 <memcpy+0x9c>
+    10d0:	0015      	movs	r5, r2
+    10d2:	3d10      	subs	r5, #16
+    10d4:	092d      	lsrs	r5, r5, #4
+    10d6:	46a8      	mov	r8, r5
+    10d8:	012d      	lsls	r5, r5, #4
+    10da:	46ac      	mov	ip, r5
+    10dc:	4484      	add	ip, r0
+    10de:	6827      	ldr	r7, [r4, #0]
+    10e0:	601f      	str	r7, [r3, #0]
+    10e2:	6867      	ldr	r7, [r4, #4]
+    10e4:	605f      	str	r7, [r3, #4]
+    10e6:	68a7      	ldr	r7, [r4, #8]
+    10e8:	609f      	str	r7, [r3, #8]
+    10ea:	68e7      	ldr	r7, [r4, #12]
+    10ec:	001d      	movs	r5, r3
+    10ee:	60df      	str	r7, [r3, #12]
+    10f0:	3410      	adds	r4, #16
+    10f2:	3310      	adds	r3, #16
+    10f4:	4565      	cmp	r5, ip
+    10f6:	d1f2      	bne.n	10de <memcpy+0x2a>
+    10f8:	4645      	mov	r5, r8
+    10fa:	230f      	movs	r3, #15
+    10fc:	240c      	movs	r4, #12
+    10fe:	3501      	adds	r5, #1
+    1100:	012d      	lsls	r5, r5, #4
+    1102:	1949      	adds	r1, r1, r5
+    1104:	4013      	ands	r3, r2
+    1106:	1945      	adds	r5, r0, r5
+    1108:	4214      	tst	r4, r2
+    110a:	d024      	beq.n	1156 <memcpy+0xa2>
+    110c:	598c      	ldr	r4, [r1, r6]
+    110e:	51ac      	str	r4, [r5, r6]
+    1110:	3604      	adds	r6, #4
+    1112:	1b9c      	subs	r4, r3, r6
+    1114:	2c03      	cmp	r4, #3
+    1116:	d8f9      	bhi.n	110c <memcpy+0x58>
+    1118:	3b04      	subs	r3, #4
+    111a:	089b      	lsrs	r3, r3, #2
+    111c:	3301      	adds	r3, #1
+    111e:	009b      	lsls	r3, r3, #2
+    1120:	18ed      	adds	r5, r5, r3
+    1122:	18c9      	adds	r1, r1, r3
+    1124:	2303      	movs	r3, #3
+    1126:	401a      	ands	r2, r3
+    1128:	1e56      	subs	r6, r2, #1
+    112a:	2a00      	cmp	r2, #0
+    112c:	d006      	beq.n	113c <memcpy+0x88>
+    112e:	2300      	movs	r3, #0
+    1130:	5ccc      	ldrb	r4, [r1, r3]
+    1132:	001a      	movs	r2, r3
+    1134:	54ec      	strb	r4, [r5, r3]
+    1136:	3301      	adds	r3, #1
+    1138:	4296      	cmp	r6, r2
+    113a:	d1f9      	bne.n	1130 <memcpy+0x7c>
+    113c:	bc80      	pop	{r7}
+    113e:	46b8      	mov	r8, r7
+    1140:	bcf0      	pop	{r4, r5, r6, r7}
+    1142:	bc02      	pop	{r1}
+    1144:	4708      	bx	r1
+    1146:	0005      	movs	r5, r0
+    1148:	1e56      	subs	r6, r2, #1
+    114a:	2a00      	cmp	r2, #0
+    114c:	d1ef      	bne.n	112e <memcpy+0x7a>
+    114e:	e7f5      	b.n	113c <memcpy+0x88>
+    1150:	0005      	movs	r5, r0
+    1152:	1e56      	subs	r6, r2, #1
+    1154:	e7eb      	b.n	112e <memcpy+0x7a>
+    1156:	001a      	movs	r2, r3
+    1158:	e7f6      	b.n	1148 <memcpy+0x94>
+    115a:	46c0      	nop			; (mov r8, r8)
+    115c:	0000      	movs	r0, r0
+	...
+
+00001160 <____enable_irq_from_thumb>:
+    1160:	4778      	bx	pc
+    1162:	e7fd      	b.n	1160 <____enable_irq_from_thumb>
+    1164:	eafffc37 	b	248 <__enable_irq>
+
+00001168 <____aeabi_idiv0_from_arm>:
+    1168:	e59fc000 	ldr	ip, [pc]	; 1170 <____aeabi_idiv0_from_arm+0x8>
+    116c:	e12fff1c 	bx	ip
+    1170:	00000419 	.word	0x00000419
+
+00001174 <____disable_irq_from_thumb>:
+    1174:	4778      	bx	pc
+    1176:	e7fd      	b.n	1174 <____disable_irq_from_thumb>
+    1178:	eafffc36 	b	258 <__disable_irq>
+
+0000117c <____aeabi_uidiv_from_thumb>:
+    117c:	4778      	bx	pc
+    117e:	e7fd      	b.n	117c <____aeabi_uidiv_from_thumb>
+    1180:	eafffc5d 	b	2fc <__udivsi3>
+    1184:	00000000 	andeq	r0, r0, r0
+Contents of the .debug_frame section (loaded from build/BK3432_BIM.elf):
+
+
+00000000 0000000c ffffffff CIE
+  Version:               1
+  Augmentation:          ""
+  Code alignment factor: 1
+  Data alignment factor: -4
+  Return address column: 14
+
+  DW_CFA_def_cfa: r13 ofs 0
+
+00000010 0000000c 00000000 FDE cie=00000000 pc=000002fc..000003f8
+
+00000020 0000000c ffffffff CIE
+  Version:               1
+  Augmentation:          ""
+  Code alignment factor: 2
+  Data alignment factor: -4
+  Return address column: 14
+
+  DW_CFA_def_cfa: r13 ofs 0
+
+00000030 00000020 00000020 FDE cie=00000020 pc=000010b4..0000115a
+  DW_CFA_advance_loc: 2 to 000010b6
+  DW_CFA_def_cfa_offset: 20
+  DW_CFA_offset: r4 at cfa-20
+  DW_CFA_offset: r5 at cfa-16
+  DW_CFA_offset: r6 at cfa-12
+  DW_CFA_offset: r7 at cfa-8
+  DW_CFA_offset: r14 at cfa-4
+  DW_CFA_advance_loc: 4 to 000010ba
+  DW_CFA_def_cfa_offset: 24
+  DW_CFA_offset: r8 at cfa-24
+  DW_CFA_nop
+  DW_CFA_nop
+
