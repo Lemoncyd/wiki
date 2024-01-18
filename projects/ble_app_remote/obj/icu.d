@@ -1,0 +1,13 @@
+.\obj\icu.o: ..\..\sdk\plactform\driver\icu\icu.c
+.\obj\icu.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\obj\icu.o: .\config\rwip_config.h
+.\obj\icu.o: ..\..\sdk\ble_stack\com\rwble\rwble_config.h
+.\obj\icu.o: .\config\rwip_config.h
+.\obj\icu.o: ..\..\sdk\ble_stack\com\rwble_hl\rwble_hl_config.h
+.\obj\icu.o: ..\..\sdk\ble_stack\com\rwble_hl\rwble_hl_error.h
+.\obj\icu.o: .\config\rwprf_config.h
+.\obj\icu.o: .\config\user_config.h
+.\obj\icu.o: ..\..\sdk\plactform\arch\BK3432_reg.h
+.\obj\icu.o: ..\..\sdk\plactform\driver\icu\icu.h
+.\obj\icu.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\obj\icu.o: ..\..\sdk\plactform\core_modules\rf\api\rf.h
