@@ -62,8 +62,8 @@ intc_irq            DCD     IRQ_Handler
 intc_fiq            DCD     FIQ_Handler
 	
 I_SEL               EQU     0x00400000
-SYSirq_FIQ_Handler 	EQU     0x26700
-SYSirq_IRQ_Handler 	EQU     0x26720
+SYSirq_FIQ_Handler 	EQU     0x28AA0
+SYSirq_IRQ_Handler 	EQU     0x28AC0
 
 
 

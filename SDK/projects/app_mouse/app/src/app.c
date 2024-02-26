@@ -561,7 +561,8 @@ void appm_init()
     // Initialize Task state
     ke_state_set(TASK_APP, APPM_INIT);
 
-    flash_read_data(&app_env.dev_name[0],0x7E008,APP_DEVICE_NAME_MAX_LEN);
+    flash_read_data(&app_env.dev_name[0],(flash_env.bdaddr_def_addr_abs+8),APP_DEVICE_NAME_MAX_LEN);
+
     for(uint8_t i=0;i<APP_DEVICE_NAME_MAX_LEN;i++)
     {
         if( (app_env.dev_name[i]!=0xff) && (app_env.dev_name[i]!=0x00) )

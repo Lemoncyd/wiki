@@ -323,7 +323,6 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
                 // Do not support secure connections
                 cmd->pairing_mode = GAPM_PAIRING_LEGACY;
                 #endif //(BLE_APP_SEC_CON)
-                
                 // Set Data length parameters
                 cmd->sugg_max_tx_octets = LE_MAX_OCTETS;//LE_MIN_OCTETS;//LE_MAX_OCTETS;
                 cmd->sugg_max_tx_time   = LE_MAX_TIME;//LE_MIN_TIME;//LE_MAX_TIME;

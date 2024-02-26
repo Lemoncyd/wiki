@@ -63,7 +63,7 @@ void spi_init(uint8_t mode,uint8_t freq_div,uint8_t bit_wdth)
                     | (0x00UL << POS_SPI_REG0X0_TXFIFO_INT_EN)
                     | (0x00UL << POS_SPI_REG0X0_RXOVF_EN)
                     | (0x00UL << POS_SPI_REG0X0_TXUDF_EN)
-                    | (0x00UL << POS_SPI_REG0X0_RXFIFO_INT_LEVEL)
+                    | (0x03UL << POS_SPI_REG0X0_RXFIFO_INT_LEVEL)
                     | (0x00UL << POS_SPI_REG0X0_TXFIFO_INT_LEVEL);
 
     if(mode==0)
@@ -320,10 +320,12 @@ void spi_dma_read(uint8_t *buffer,uint16_t buffer_len,spi_read_cb result_callbac
 }
 void spi_dma_write_result_callback(void)
 {
+	SPI_REG0X1_CN &= ~(1<<POS_SPI_REG0X1_TX_EN);
 	uart_printf("write complete\r\n");
 }
 void spi_dma_read_result_callback(void)
 {
+	SPI_REG0X1_CN &= ~(1<<POS_SPI_REG0X1_RX_EN);
 	uart_printf("read complete\r\n");
 }
 

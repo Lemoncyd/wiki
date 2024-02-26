@@ -33,12 +33,35 @@ static uint8_t system_clk=0;
 #endif
 extern void CLK32K_AutoCali_init(void);
 extern volatile uint32_t XVR_ANALOG_REG_BAK[32];
+uint8_t system_mode;
+void sys_mode_init(uint8_t mode)
+{
+	system_mode = mode;
+}
+uint8_t get_sys_mode(void)
+{
+	return system_mode;
+}
 
 void icu_init(void)
 {
 #ifndef CFG_JTAG_DEBUG	
     clrf_SYS_Reg0x0_jtag_mode;   ///close JTAG
 #endif
+	if(get_sys_mode() !=DUT_FCC_MODE )
+	{
+		sys_mode_init(NORMAL_MODE);
+	}
+	
+	gpio_config(0x00,INPUT,PULL_HIGH);
+	Delay_ms(1);
+	if(0==gpio_get_input(0x00))
+	{
+	  Delay_ms(10);
+	  if(0==gpio_get_input(0x00))
+		  sys_mode_init(DUT_FCC_MODE);
+	}
+
     addPMU_Reg0x1 &= ~(1<<11);
 
     set_SYS_Reg0x2_core_sel(0x01);
@@ -51,8 +74,13 @@ void icu_init(void)
 
 #if(LDO_MODE)
     addPMU_Reg0x13 |= ((1<<12)+(1<<28));
-#endif
-    
+#else
+	if( get_sys_mode()==DUT_FCC_MODE )	// dut is in LDO mode
+	{
+		addPMU_Reg0x13 |= ((1<<12)+(1<<28));
+	}
+
+#endif    
 }
 
 uint8_t icu_get_sleep_mode(void)
@@ -86,13 +114,17 @@ void cpu_reduce_voltage_sleep()
     //set_flash_clk(0x08);
     set_SYS_Reg0x2_core_sel(0x01);
     set_SYS_Reg0x2_core_div(0x0);
+	
 #if(LDO_MODE==0)
 #if(LDO_MODE_IN_SLEEP)
-    ///切换到LDO模式
-    addXVR_Reg0x6 = 0x8487CC00;//0x80B7CE20  ;
-    XVR_ANALOG_REG_BAK[6] = 0x8487CC00;//0x80B7CE20;
-    addXVR_Reg0xa = 0x9C03F86B;//0x9C27785B  ;
-    XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86B;//0x9C27785B;
+	if( get_sys_mode()!=DUT_FCC_MODE )	// dut is in LDO mode
+	{
+	    ///切换到LDO模式
+	    addXVR_Reg0x6 = 0x8487CC00;//0x80B7CE20  ;
+	    XVR_ANALOG_REG_BAK[6] = 0x8487CC00;//0x80B7CE20;
+	    addXVR_Reg0xa = 0x9C03F86B;//0x9C27785B  ;
+	    XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86B;//0x9C27785B;
+	}
 #endif
 #endif
     setf_SYS_Reg0x17_enb_busrt_sel; 
@@ -103,9 +135,13 @@ void cpu_reduce_voltage_sleep()
 
     tmp_reg = addSYS_Reg0x17 | 0x08;
 
+
 #if(!LDO_MODE)
-    set_PMU_Reg0x14_voltage_ctrl_work_aon(0x05);
-    set_PMU_Reg0x14_voltage_ctrl_work_core(0x05);
+	if( get_sys_mode()!=DUT_FCC_MODE )	// dut is in LDO mode
+	{
+	    set_PMU_Reg0x14_voltage_ctrl_work_aon(0x05);
+	    set_PMU_Reg0x14_voltage_ctrl_work_core(0x05);
+	}
 #endif
     set_SYS_Reg0x2_core_sel(0x00);
 
@@ -127,10 +163,14 @@ void cpu_reduce_voltage_sleep()
 #if(LDO_MODE==0)
 #if(LDO_MODE_IN_SLEEP)
     ///切换到buck模式
-    addXVR_Reg0x6 = 0x84A7CC00;//0x8097CE20  ;
-    XVR_ANALOG_REG_BAK[6] = 0x84A7CC00;//0x8097CE20;
-    addXVR_Reg0xa = 0x9C03F86F;//0x9C27785B  ;
-    XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86F;//0x9C27785B;
+    
+	if( get_sys_mode()!=DUT_FCC_MODE )	// dut is in LDO mode
+	{
+	    addXVR_Reg0x6 = 0x84A7CC00;//0x8097CE20  ;
+	    XVR_ANALOG_REG_BAK[6] = 0x84A7CC00;//0x8097CE20;
+	    addXVR_Reg0xa = 0x9C03F86F;//0x9C27785B  ;
+	    XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86F;//0x9C27785B;
+	}
 #endif
 #endif
 }
@@ -304,7 +344,17 @@ void deep_sleep(void)
     addXVR_Reg0xa = 0x9C04785b;
     addPMU_Reg0x1 |= (1<<11);
     #else
-    addXVR_Reg0xa = 0x9C04785F;
+	
+	if( get_sys_mode()==DUT_FCC_MODE )	// dut is in LDO mode
+	{
+	
+	    addXVR_Reg0xa = 0x9C04785b;
+	    addPMU_Reg0x1 |= (1<<11);
+	}
+	else
+	{
+    	addXVR_Reg0xa = 0x9C04785F;
+	}
     #endif
 
     //addXVR_Reg0xa = 0x9C04785F;
@@ -466,10 +516,12 @@ void cpu_usb_reduce_voltage_sleep()
     setf_SYS_Reg0x17_HP_LDO_PWD;
     setf_SYS_Reg0x17_cb_bias_pwd;
     tmp_reg = addSYS_Reg0x17 | 0x08;
-
 #if(!LDO_MODE)
-    set_PMU_Reg0x14_voltage_ctrl_work_aon(0x05);
-    set_PMU_Reg0x14_voltage_ctrl_work_core(0x05);
+	if( get_sys_mode()!=DUT_FCC_MODE )	// dut is in LDO mode
+	{
+	    set_PMU_Reg0x14_voltage_ctrl_work_aon(0x05);
+	    set_PMU_Reg0x14_voltage_ctrl_work_core(0x05);
+	}
 #endif
 
 
@@ -532,8 +584,12 @@ void cpu_24_reduce_voltage_sleep()
     tmp_reg = addSYS_Reg0x17 | 0x08;
     system_sleep_status = 1;
     #if(!LDO_MODE)
+	
+	if( get_sys_mode()!=DUT_FCC_MODE )	// dut is in LDO mode
+	{
         set_PMU_Reg0x14_voltage_ctrl_work_aon(0x05);
         set_PMU_Reg0x14_voltage_ctrl_work_core(0x05);
+	}
     #endif
 
     set_SYS_Reg0x2_core_sel(0x00);

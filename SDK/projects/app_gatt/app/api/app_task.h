@@ -96,6 +96,8 @@ enum app_msg_id
 	APP_PERIOD_TIMER,	
 	
 	APP_GATTC_EXC_MTU_CMD,
+	
+	APP_CLI32K_TIMER,
 };
 
 

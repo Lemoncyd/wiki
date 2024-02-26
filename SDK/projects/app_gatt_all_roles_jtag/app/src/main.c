@@ -136,14 +136,16 @@ const struct rwip_eif_api uart_api =
 
 void bdaddr_env_init(void)
 {
-	struct bd_addr co_bdaddr;
-	flash_read_data(&co_bdaddr.addr[0],0x7E000,6);
-	if(co_bdaddr.addr[0]!=0xff ||co_bdaddr.addr[1]!=0xff||
-	        co_bdaddr.addr[2]!=0xff||co_bdaddr.addr[3]!=0xff||
-	        co_bdaddr.addr[4]!=0xff||co_bdaddr.addr[5]!=0xff )
-	{
-		memcpy(&co_default_bdaddr,&co_bdaddr,6);
-	}        
+    struct bd_addr co_bdaddr;
+    uart_printf("bdaddr_def_addr_abs=%x\r\n",flash_env.bdaddr_def_addr_abs);
+    flash_read_data(&co_bdaddr.addr[0],flash_env.bdaddr_def_addr_abs,6);
+
+    if(co_bdaddr.addr[0]!=0xff ||co_bdaddr.addr[1]!=0xff||
+    co_bdaddr.addr[2]!=0xff||co_bdaddr.addr[3]!=0xff||
+    co_bdaddr.addr[4]!=0xff||co_bdaddr.addr[5]!=0xff )
+    {
+        memcpy(&co_default_bdaddr,&co_bdaddr,6);
+    }
 }
 
 
@@ -183,15 +185,6 @@ void platform_reset(uint32_t error)
     cpu_reset();    
 }
 
-uint8_t system_mode;
-void sys_mode_init(uint8_t mode)
-{
-	system_mode = mode;
-}
-uint8_t get_sys_mode(void)
-{
-	return system_mode;
-}
 void enter_dut_fcc_mode(void)
 {
 	while(1)
@@ -269,17 +262,6 @@ int main(void)
     wdt_disable();
 
     intc_init();
-
-    sys_mode_init(NORMAL_MODE);
-    
-    gpio_config(0x00,INPUT,PULL_HIGH); 
-    Delay_ms(1);
-    if(0==gpio_get_input(0x00))
-    {
-        Delay_ms(10);
-        if(0==gpio_get_input(0x00))
-            sys_mode_init(DUT_FCC_MODE);
-    }
     
     uart_init(115200);
     uart2_init(1000000);

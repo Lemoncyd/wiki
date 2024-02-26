@@ -162,6 +162,7 @@ enum system_run_mode
 #define C_FORCE_ALL_RESET       0x0000
 #define C_POWERON_RESET         0x0000
 
+extern uint8_t system_mode;
 
 void system_sleep_init(void);
 
@@ -195,6 +196,7 @@ void system_set_reset_reson(uint32_t reson_data);
 void cpu_24_reduce_voltage_sleep(void);
 void cpu_24_wakeup(void);
 void cpu_usb_reduce_voltage_sleep(void);
-
+void sys_mode_init(uint8_t mode);
+uint8_t get_sys_mode(void);
 #endif
 

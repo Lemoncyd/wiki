@@ -166,7 +166,7 @@ static int fcc1_writer_cmd_handler(ke_msg_id_t const msgid,
                                      ke_task_id_t const dest_id,
                                      ke_task_id_t const src_id)
 {
-    uint8_t buf[20];
+//    uint8_t buf[20];
     // Drop the message
 	uart_printf("FCC1 conidx:%d,param->value = 0x ",param->conidx);
 	

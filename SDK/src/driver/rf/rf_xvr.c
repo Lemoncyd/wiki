@@ -434,15 +434,15 @@ void  xvr_reg_initial(void) {
 	    XVR_ANALOG_REG_BAK[6] = 0x84A7CC00;//0x8097CE20;
 #endif
     }
-    else
+    else	// dut is in LDO mode
     {
-#if(LDO_MODE)	
+//#if(LDO_MODE)	
 	    addXVR_Reg0x6 = 0x8487CC80;
 	    XVR_ANALOG_REG_BAK[6] = 0x8487CC80;
-#else
+/*#else
         addXVR_Reg0x6 = 0x84A7CC80;
 	    XVR_ANALOG_REG_BAK[6] = 0x84A7CC80;
-#endif
+#endif*/
         
     }
     
@@ -458,9 +458,16 @@ void  xvr_reg_initial(void) {
 	addXVR_Reg0xa = 0x9C03F86B;//0x9C27785B  ;
 	XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86B;//0x9C27785B;
 #else
-    addXVR_Reg0xa = 0x9C03F86F;//0x9C27785B  ;
-    XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86F;//0x9C27785B;
-
+    if(get_sys_mode() == DUT_FCC_MODE)	// dut is in LDO mode
+    {	
+		XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86B;//0x9C27785B;
+	}
+	else
+	{
+	    XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86F;//0x9C27785B  ;
+	}
+	
+	addXVR_Reg0xa = XVR_ANALOG_REG_BAK[0xa];//0x9C27785B  ;
     //addXVR_Reg0xa = 0x9E27F85F;//0x9C27785B  ;
     //XVR_ANALOG_REG_BAK[0xa] = 0x9E27F85F;//0x9C27785B;
 #endif
@@ -490,6 +497,9 @@ void  xvr_reg_initial(void) {
 	addXVR_Reg0x1f = 0x00000000  ;
 	XVR_ANALOG_REG_BAK[0x1f] = 0x00000000;
   
+  	xtal_cal_set(0x35);
+	//xtal_cal_set(0x4f);
+    
 	addXVR_Reg0x20 = 0x8E89BED6;// REG_20
 	addXVR_Reg0x21 = 0x96000000;//0x96000000;// REG_21
 	addXVR_Reg0x22 = 0x78000000;// REG_22
@@ -561,7 +571,7 @@ void  xvr_reg_initial(void) {
     XVR_ANALOG_REG_BAK[0x1e]  |= 0x80000000;
     addXVR_Reg0x1e = XVR_ANALOG_REG_BAK[0x1e];
     CLK32K_AutoCali_init(); 
-    Delay_ms(50);
+    
 #else
     XVR_ANALOG_REG_BAK[9] |= (0x01 << 26);
     addXVR_Reg0x9 = XVR_ANALOG_REG_BAK[9];
@@ -569,8 +579,7 @@ void  xvr_reg_initial(void) {
 	XVR_ANALOG_REG_BAK[0x1e] = 0x00010180;
 #endif
       
-	xtal_cal_set(0x35);
-	//xtal_cal_set(0x4f);
+
 }
 void rf_init(struct rwip_rf_api *api)
 {
@@ -726,27 +735,28 @@ void rf_init(struct rwip_rf_api *api)
 							   /*uint8_t rxpathdly0*/  0x6,
 							   /*uint8_t txpathdly0*/  0x6);
         if(get_sys_mode() != DUT_FCC_MODE){
-            ble_radiotxrxtim0_set(0x00000606);
+            ble_radiotxrxtim0_set(0x00000608);
         }else{
             ble_radiotxrxtim0_set(0x00000805);  //0x00001007 0x00000503
         }
         //uart_printf("BLE_RADIOTXRXTIM0 addr:0x%08x,val:0x%08x\r\n",BLE_RADIOTXRXTIM0_ADDR,ble_radiotxrxtim0_get());
 
-#ifdef CFG_CENTRAL	
+#if(BLE_CENTRAL	)
 
 
         /* BLE RADIOTXRXTIM1 */
 		ble_radiotxrxtim1_pack(/*uint8_t rfrxtmda1*/ 0x00,
 							   /*uint8_t rxpathdly1*/	   0x04,
 							   /*uint8_t txpathdly1*/	   0x04);
-        ble_radiotxrxtim1_set(0x00000404);
+        ble_radiotxrxtim1_set(0x00000402);
         //uart_printf("BLE_RADIOTXRXTIM1 addr:0x%08x,val:0x%08x\r\n",BLE_RADIOTXRXTIM1_ADDR,ble_radiotxrxtim1_get());
 #else
 	    /* BLE RADIOTXRXTIM1 */
 		ble_radiotxrxtim1_pack(/*uint8_t rfrxtmda1*/ 0x00,
 							   /*uint8_t rxpathdly1*/	   0x04,
 							   /*uint8_t txpathdly1*/	   0x0b);
-        ble_radiotxrxtim1_set(0x0000040b);
+        ble_radiotxrxtim1_set(0x00000408);
+       
         //uart_printf("BLE_RADIOTXRXTIM1 addr:0x%08x,val:0x%08x\r\n",BLE_RADIOTXRXTIM1_ADDR,ble_radiotxrxtim1_get());
 #endif
 
@@ -1063,20 +1073,19 @@ void kmod_fm_gain_set_2M(void)
 
 void CLK32K_AutoCali_init(void)
 {
-    #if (!CALI_32K_MANU_ENABLE)
+    #if 1
+    #if 0//enable HW cali one time
     XVR_ANALOG_REG_BAK[0xc] &= ~(0x01 << 15);
     addXVR_Reg0xc = XVR_ANALOG_REG_BAK[0xc]; 
-
+    Delay_ms(2);
     XVR_ANALOG_REG_BAK[0xc] |= (0x01 << 15);
     addXVR_Reg0xc = XVR_ANALOG_REG_BAK[0xc];
-
-    XVR_ANALOG_REG_BAK[0xc] |= (0x1388 << 16);
-    XVR_ANALOG_REG_BAK[0xc] |= (0x1 << 14);    
-    addXVR_Reg0xc = XVR_ANALOG_REG_BAK[0xc]; 
-    addXVR_Reg0xc = 0x13881004; 
-    Delay_ms(10);
-    XVR_ANALOG_REG_BAK[0xc] = 0x1388d004;
-    addXVR_Reg0xc = 0x1388d004;
+    Delay_ms(30);
+    #else //enable HW auto cali
+    XVR_ANALOG_REG_BAK[0xc] = 0x3a98d004;
+    addXVR_Reg0xc = 0x3a98d004;
+    #endif
+    
     #else
     volatile uint32_t temp_reg = 0;
     XVR_ANALOG_REG_BAK[0x9] &= ~(0x01 << 6);
@@ -1089,20 +1098,20 @@ void CLK32K_AutoCali_init(void)
     addXVR_Reg0xc = XVR_ANALOG_REG_BAK[0xc];
     Delay_ms(30);   ///Delay_ms(100);
     temp_reg = addPMU_Reg0x5;
-    uart_printf("addPMU_Reg0x5 = 0x%x\n", addPMU_Reg0x5);
+    uart_printf("addPMU_Reg0x5 = 0x%x\n", temp_reg);
     ///backset 1
     XVR_ANALOG_REG_BAK[0xc] &= ~(0x1ff << 4);
-    XVR_ANALOG_REG_BAK[0xc] |= ((temp_reg >> 9) && 0x1ff) << 4;
+    XVR_ANALOG_REG_BAK[0xc] |= ((temp_reg >> 9) & 0x1ff) << 4;
 
     ///backset 2
     XVR_ANALOG_REG_BAK[0xc] &= ~(0x0f);
-    XVR_ANALOG_REG_BAK[0xc] |= ((temp_reg >> 18) && 0x0f);
+    XVR_ANALOG_REG_BAK[0xc] |= ((temp_reg >> 18) & 0x0f);
 
     addXVR_Reg0xc = XVR_ANALOG_REG_BAK[0xc];
 
     ///backset 3
     XVR_ANALOG_REG_BAK[0x9] &= ~(0x07 << 3);
-    XVR_ANALOG_REG_BAK[0x9] |= ((temp_reg >> 22) && 0x7) << 3;
+    XVR_ANALOG_REG_BAK[0x9] |= ((temp_reg >> 22) & 0x7) << 3;
     addXVR_Reg0x9 = XVR_ANALOG_REG_BAK[0x9];
 
     //manu set
@@ -1116,6 +1125,7 @@ void CLK32K_AutoCali_init(void)
     addXVR_Reg0xc = XVR_ANALOG_REG_BAK[0xc];
     uart_printf("XVR_ANALOG_REG_BAK[0x9] = 0x%x\n", XVR_ANALOG_REG_BAK[0x9]);
     uart_printf("XVR_ANALOG_REG_BAK[0xc] = 0x%x\n", XVR_ANALOG_REG_BAK[0xc]);
+    Delay_ms(50);
     #endif
 }
 

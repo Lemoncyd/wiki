@@ -15,12 +15,12 @@
 #include "uart.h"
 
 #define VIRTUAL_UART_H4TL          1
-#define UART_PRINTF_ENABLE         1///´®¿Ú´òÓ¡¿ª¹Ø
-#define DEBUG_HW                   0///Ó²¼þµ÷ÊÔ
-#define DEBUG_HW_DIGITAL           0///Êý×ÖÓ²¼þµ÷ÊÔ
-#define GPIO_DBG_MSG               0///DEBUGÐÅÏ¢¿ÉÒÔÍ¨¹ýDEBUG_MSGº¯ÊýÊä³öµ½GPIO
-#define DEBUG_RF_REG               1///RFµ÷ÊÔ£¬Îª1¿ÉÒÔÍ¨¹ý´®¿Ú¶ÁÐ´RF¼Ä´æÆ÷
-#define LDO_MODE                   0///LDO¹¤×÷Ä£Ê½
+#define UART_PRINTF_ENABLE         1///ï¿½ï¿½ï¿½Ú´ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½
+#define DEBUG_HW                   0///Ó²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#define DEBUG_HW_DIGITAL           0///ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#define GPIO_DBG_MSG               0///DEBUGï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½DEBUG_MSGï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½GPIO
+#define DEBUG_RF_REG               1///RFï¿½ï¿½ï¿½Ô£ï¿½Îª1ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½Ð´RFï¿½Ä´ï¿½ï¿½ï¿½
+#define LDO_MODE                   0///LDOï¿½ï¿½ï¿½ï¿½Ä£Ê½
 #define LDO_MODE_IN_SLEEP          1
 
 //DRIVER CONFIG
@@ -35,14 +35,14 @@
 #define AON_RTC_DRIVER              0
 #define I2S_DRIVER					1
 
-#define ADC_CALIB					0//////Ð£×¼ADCÐèÒª¸øÐ¾Æ¬Ò»¸öÎÈ¶¨µÄ¹©µçÑ¹£¬È»ºóËãADC²Î¿¼µçÑ¹
+#define ADC_CALIB					0//////Ð£×¼ADCï¿½ï¿½Òªï¿½ï¿½Ð¾Æ¬Ò»ï¿½ï¿½ï¿½È¶ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½ADCï¿½Î¿ï¿½ï¿½ï¿½Ñ¹
 
-#define ENABLE_PHY_2M_LE_CODE       0 ////2MÖ§³Ö2MÊÕ·¢   
+#define ENABLE_PHY_2M_LE_CODE       0 ////2MÖ§ï¿½ï¿½2Mï¿½Õ·ï¿½   
 
-#define ENABLE_EXT_ADV              0 ////Ö§³ÖEXT ADV at  2M/LE_CODE
+#define ENABLE_EXT_ADV              0 ////Ö§ï¿½ï¿½EXT ADV at  2M/LE_CODE
 /******************************************************/
 
-#define uart_printf              uart2_printf
+#define uart_printf              uart0_printf
 
 /// Default Device Name
 #define APP_DFLT_DEVICE_NAME            ("BK3633_BLE789")
@@ -63,18 +63,19 @@
 #define APP_ADV_FAST_INT        (32)
 
 
-//×îÐ¡Á¬½Ó¼ä¸ô
+//ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½Ó¼ï¿½ï¿½
 #define BLE_UAPDATA_MIN_INTVALUE		60
-//×î´óÁ¬½Ó¼ä¸ô 
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¼ï¿½ï¿½ 
 #define BLE_UAPDATA_MAX_INTVALUE		80
-//Á¬½ÓLatency
+//ï¿½ï¿½ï¿½ï¿½Latency
 #define BLE_UAPDATA_LATENCY				0
-//Á¬½Ó³¬Ê±
+//ï¿½ï¿½ï¿½Ó³ï¿½Ê±
 #define BLE_UAPDATA_TIMEOUT				600
 
 #define MULTI_BOND 0
 
-#define CALI_32K_MANU_ENABLE            0
+//#define GD_25WD80E_1MB	1
+
 
 //#define __APP_ATTR_ARM __attribute__((section("APP_BLE_FIQ")))
 #define __APP_ATTR_ARM 

@@ -15,8 +15,8 @@ uint8_t adc_flag;
 uint16_t referance_voltage;
 extern volatile uint32_t XVR_ANALOG_REG_BAK[16];
 /************************************************************************
-//ADC²Î¿¼µçÑ¹Ä¬ÈÏÎª1.05V
-//È·±£ADCÎÈ¶¨²ÉÑù£¬ADC¿ÚĞèÒª½Ó¸ö10nfµ½µØµÄµçÈİ
+//ADCå‚è€ƒç”µå‹é»˜è®¤ä¸º1.05V
+//ç¡®ä¿ADCç¨³å®šé‡‡æ ·ï¼ŒADCå£éœ€è¦æ¥ä¸ª10nfåˆ°åœ°çš„ç”µå®¹
 *************************************************************************/
 void adc_init(uint8_t channel,uint8_t mode)
 {
@@ -38,7 +38,7 @@ void adc_init(uint8_t channel,uint8_t mode)
           | (0x01 << POS_SADC_REG0X0_CFG0_INT_CLEAR));
     
     SADC_REG0X0_CFG0=cfg;
-	//REG_APB7_ADC_CFG |= (0x01 << BIT_ADC_EN);//²»ÄÜÏÈÊ¹ÄÜADC£¬²»È»ADC FIFOÂúÊ±Ã»ÓĞ¶Á³öÔÙ´ÎÆô¶¯ADC¾Í²»»áÓĞÖĞ¶Ï
+	//REG_APB7_ADC_CFG |= (0x01 << BIT_ADC_EN);//ä¸èƒ½å…ˆä½¿èƒ½ADCï¼Œä¸ç„¶ADC FIFOæ»¡æ—¶æ²¡æœ‰è¯»å‡ºå†æ¬¡å¯åŠ¨ADCå°±ä¸ä¼šæœ‰ä¸­æ–­
 
     SADC_REG0X2_CFG1 = ((1<<POS_SADC_REG0X2_CHANN_EXPAND)|(1<<POS_SADC_REG0X2_STEADY_CTRL));
     SADC_REG0X3_CFG2 = (3<<POS_SADC_REG0X3_STA_CTRL);
@@ -100,18 +100,18 @@ uint16_t adc_get_value(uint8_t channel,uint8_t mode)
         
     }
     
-    SADC_REG0X0_CFG0 &= ~(SET_ADC_EN+(0x03 << POS_SADC_REG0X0_CFG0_MODE )+(0x0f << POS_SADC_REG0X0_CFG0_CHNL)); //ADCÖµ¶ÁÈ¡Íê³Éºó±ØĞë°ÑÊ¹ÄÜÎ»Çå³ı       
+    SADC_REG0X0_CFG0 &= ~(SET_ADC_EN+(0x03 << POS_SADC_REG0X0_CFG0_MODE )+(0x0f << POS_SADC_REG0X0_CFG0_CHNL)); //ADCå€¼è¯»å–å®Œæˆåå¿…é¡»æŠŠä½¿èƒ½ä½æ¸…é™¤       
     return g_adc_value;     
 }
 
 /**************************************************************************
-//×¢ÒâÈ·±£×ª»»ÖµµÄÎÈ¶¨ĞÔ£¬ADC¿ÚĞèÒª¼Ó¸ö10nfµ½µØµÄµçÈİ
-//ADCĞ£×¼
-//Ğ£×¼ADCĞèÒª¸øĞ¾Æ¬Ò»¸öÎÈ¶¨µÄ¹©µçÑ¹£¬È»ºóËãADC²Î¿¼µçÑ¹
-//Õâ¸öº¯ÊıĞ£×¼Ä¬ÈÏÊ¹ÓÃ3VµçÔ´¹©µç,ÄÚ²¿·ÖÑ¹ºóÎª0.75V
+//æ³¨æ„ç¡®ä¿è½¬æ¢å€¼çš„ç¨³å®šæ€§ï¼ŒADCå£éœ€è¦åŠ ä¸ª10nfåˆ°åœ°çš„ç”µå®¹
+//ADCæ ¡å‡†
+//æ ¡å‡†ADCéœ€è¦ç»™èŠ¯ç‰‡ä¸€ä¸ªç¨³å®šçš„ä¾›ç”µå‹ï¼Œç„¶åç®—ADCå‚è€ƒç”µå‹
+//è¿™ä¸ªå‡½æ•°æ ¡å‡†é»˜è®¤ä½¿ç”¨3Vç”µæºä¾›ç”µ,å†…éƒ¨åˆ†å‹åä¸º0.75V
 *************************************************************************/
 #define CALIB_COUNT 6
-#define STABL_VALT 75///·ÖÑ¹ºóµÄ0.75VÎÈ¶¨µçÑ¹
+#define STABL_VALT 75///åˆ†å‹åçš„0.75Vç¨³å®šç”µå‹
 
 void calib_adc(void)
 {
@@ -130,7 +130,7 @@ void calib_adc(void)
         Delay_us(1000);
     }
     
-    referance_voltage=(0xff*STABL_VALT)/(calib_temp/CALIB_COUNT);///¼ÆËãºóÖµÎª103£¬ÄÇÃ´²Î¿¼µçÑ¹¾ÍÎª1.03V
+    referance_voltage=(0xff*STABL_VALT)/(calib_temp/CALIB_COUNT);///è®¡ç®—åå€¼ä¸º103ï¼Œé‚£ä¹ˆå‚è€ƒç”µå‹å°±ä¸º1.03V
     uart_printf("referance_voltage=%d\r\n",referance_voltage);
 
     XVR_ANALOG_REG_BAK[7] &= ~(1<<19);
@@ -171,7 +171,8 @@ void check_low_volt_sleep(void)
     if(referance_voltage < LOW_VOlTAGE && referance_voltage != 0)
     {
     	addSYS_Reg0x3 = 0xfffffff;
-        wdt_enable(0x10);
+        //wdt_enable(0x10);
+        cpu_reset();
     	//set_PMU_Reg0x4_gotosleep(0x3633);
     	while(1);
     }

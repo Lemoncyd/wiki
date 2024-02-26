@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "bim_flash.h"
 
 #define BOOT_MAX_SIZE                            (0x2000)
 #define FLASH_SEC_SIZE                           (0X1000)
@@ -14,12 +15,32 @@
 #define SEC_IMAGE_OAD_HEADER_APP_FADDR           (0x280A0)
 
 #define SEC_IMAGE_ALLOC_START_STACK_FADDR        (0x2000)  //(8KB)
-#define SEC_ALL_IMAGE_ALLOC_END_FADDR            (0x40000) //(256KB)
-#define SEC_ALL_BACKUP_OAD_HEADER_FADDR          (0x40000) //256kb * 1024
-#define SEC_ALL_BACKUP_OAD_IMAGE_FADDR           (0x40010) //256kb * 1024 + 0X10
-#define SEC_PART_IMAGE_ALLOC_END_FADDR           (0x52000) 
-#define SEC_PART_BACKUP_OAD_HEADER_FADDR         (0x52000) 
-#define SEC_PART_BACKUP_OAD_IMAGE_FADDR          (0x52010) 
+
+
+#define SEC_ALL_IMAGE_ALLOC_START_8M_FADDR          (0x2000)
+#define SEC_ALL_IMAGE_ALLOC_END_8M_FADDR            (0x80000) //(512KB)
+#define SEC_ALL_BACKUP_OAD_HEADER_8M_FADDR          (0x80000) //512b * 1024
+#define SEC_ALL_BACKUP_OAD_IMAGE_8M_FADDR           (0x80010) //512kb * 1024 + 0X10
+#define SEC_ALL_BACKUP_OAD_END_8M_FADDR             (0xFC000) //(1024-16) * 1024
+
+#define SEC_PART_IMAGE_ALLOC_START_8M_FADDR         (0x28000)
+#define SEC_PART_IMAGE_ALLOC_END_8M_FADDR           (0x80000) //(512KB)
+#define SEC_PART_BACKUP_OAD_HEADER_8M_FADDR         (0x80000) 
+#define SEC_PART_BACKUP_OAD_IMAGE_8M_FADDR          (0x80010) //512KB * 1024 + 0X10
+#define SEC_PART_BACKUP_OAD_END_8M_FADDR            (0xFC000) //(1024-16) * 1024
+
+#define SEC_ALL_IMAGE_ALLOC_START_4M_FADDR          (0x2000)
+#define SEC_ALL_IMAGE_ALLOC_END_4M_FADDR            (0x40000) //(256KB)
+#define SEC_ALL_BACKUP_OAD_HEADER_4M_FADDR          (0x40000) //256kb * 1024
+#define SEC_ALL_BACKUP_OAD_IMAGE_4M_FADDR           (0x40010) //256kb * 1024 + 0X10
+#define SEC_ALL_BACKUP_OAD_END_4M_FADDR             (0x7C000) //(512-16) * 1024
+
+#define SEC_PART_IMAGE_ALLOC_START_4M_FADDR         (0x28000)
+#define SEC_PART_IMAGE_ALLOC_END_4M_FADDR           (0x52000) 
+#define SEC_PART_BACKUP_OAD_HEADER_4M_FADDR         (0x52000) 
+#define SEC_PART_BACKUP_OAD_IMAGE_4M_FADDR          (0x52010) 
+#define SEC_PART_BACKUP_OAD_END_4M_FADDR            (0x7C000) //(512-16) * 1024
+
 #define OAD_APP_PART_UID                         (0x42424242)
 #define OAD_APP_STACK_UID                        (0x53535353)
 /*********************************************************************

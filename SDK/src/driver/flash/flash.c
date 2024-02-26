@@ -13,40 +13,41 @@
 #define max(x, y)                  (((x) > (y)) ? (x) : (y))
 #define min(x, y)                  (((x) < (y)) ? (x) : (y))
 
-//#define CHECK_LOW_VOLT_ENABLE
-
-/// Flash environment structure
-struct flash_env_tag
-{
-    /// base address
-    uint32_t    base_addr;
-    /// length
-    uint32_t    length;
-    /// type
-    uint32_t    space_type;
-};
-
 
 /// Flash environment structure variable
 struct flash_env_tag flash_env;
 
 
-extern uint8_t system_mode;
-
 #ifdef CHECK_LOW_VOLT_ENABLE
 extern void check_low_volt_sleep(void);
 #endif
 
-uint8_t flash_enable_write_flag1;
-uint8_t flash_enable_write_flag2;
-uint8_t flash_enable_write_flag3;
-uint8_t flash_enable_write_flag4;
-uint8_t flash_enable_erase_flag1;
-uint8_t flash_enable_erase_flag2;
+static uint8_t flash_enable_write_flag1;
+static uint8_t flash_enable_write_flag2;
+static uint8_t flash_enable_write_flag3;
+static uint8_t flash_enable_write_flag4;
+static uint8_t flash_enable_erase_flag1;
+static uint8_t flash_enable_erase_flag2;
+static uint32_t flash_mid = 0;
 
-
-
-uint32_t flash_mid = 0;
+void set_flash_info()
+{
+    uint32_t flash_type = flash_mid & 0xff;
+    if(flash_type==0x14)
+    {
+        flash_env.ota_app_def_addr_abs = FLASH_ENV_OTA_APP_DEF_ADDR_8M_ABS;
+        flash_env.ota_stack_app_def_addr_abs = FLASH_ENV_OTA_APP_STACK_DEF_ADDR_8M_ABS;
+        flash_env.bdaddr_def_addr_abs = FLASH_ENV_BDADDR_DEF_ADDR_8M_ABS;
+        flash_env.nvds_def_addr_abs = FLASH_ENV_NVDS_DEF_ADDR_8M_ABS;
+    }
+    else
+    {
+        flash_env.ota_app_def_addr_abs = FLASH_ENV_OTA_APP_DEF_ADDR_4M_ABS;
+        flash_env.ota_stack_app_def_addr_abs = FLASH_ENV_OTA_APP_STACK_DEF_ADDR_4M_ABS;
+        flash_env.bdaddr_def_addr_abs = FLASH_ENV_BDADDR_DEF_ADDR_4M_ABS;
+        flash_env.nvds_def_addr_abs = FLASH_ENV_NVDS_DEF_ADDR_4M_ABS;
+    }
+}
 void set_flash_clk(unsigned char clk_conf) 
 {
 	//note :>16M don't use la for flash debug
@@ -64,72 +65,74 @@ uint32_t get_flash_ID(void)
 {
     unsigned int temp0;
 
-	while(REG_FLASH_OPERATE_SW & 0x80000000);
-	
-	REG_FLASH_OPERATE_SW = (       FLASH_ADDR_FIX
-								| (FLASH_OPCODE_RDID << BIT_OP_TYPE_SW)
-								| (0x1				 << BIT_OP_SW));
-	while(REG_FLASH_OPERATE_SW & 0x80000000);
+    while(REG_FLASH_OPERATE_SW & 0x80000000);
+
+    REG_FLASH_OPERATE_SW = ( FLASH_ADDR_FIX
+                            | (FLASH_OPCODE_RDID << BIT_OP_TYPE_SW)
+                            | (0x1 << BIT_OP_SW));
+    while(REG_FLASH_OPERATE_SW & 0x80000000);
 
     for (temp0=0; temp0<8; temp0++)
             REG_FLASH_DATA_SW_FLASH = 0xffffffff;
 
-	return REG_FLASH_RDID_DATA_FLASH ;
+    return REG_FLASH_RDID_DATA_FLASH ;
 }
 
 uint32_t flash_read_sr(void)
 {
-	uint32_t temp = 0;
+    uint32_t temp = 0;
 
-	while(REG_FLASH_OPERATE_SW & 0x80000000);
+    while(REG_FLASH_OPERATE_SW & 0x80000000);
 
-	REG_FLASH_OPERATE_SW = ( FLASH_ADDR_FIX
-								| (FLASH_OPCODE_RDSR << BIT_OP_TYPE_SW)
-								| (0x1 							<< BIT_OP_SW));
+    REG_FLASH_OPERATE_SW = ( FLASH_ADDR_FIX
+                            | (FLASH_OPCODE_RDSR << BIT_OP_TYPE_SW)
+                            | (0x1 << BIT_OP_SW));
 
-	while(REG_FLASH_OPERATE_SW & 0x80000000);
+    while(REG_FLASH_OPERATE_SW & 0x80000000);
 
-	temp = (REG_FLASH_SR_DATA_CRC_CNT&0xff);
+    temp = (REG_FLASH_SR_DATA_CRC_CNT&0xff);
 
-	REG_FLASH_OPERATE_SW = (	FLASH_ADDR_FIX
-															| (FLASH_OPCODE_RDSR2 << BIT_OP_TYPE_SW)
-															| (0x1 								 << BIT_OP_SW));
+    REG_FLASH_OPERATE_SW = (FLASH_ADDR_FIX
+                            | (FLASH_OPCODE_RDSR2 << BIT_OP_TYPE_SW)
+                            | (0x1 << BIT_OP_SW));
 
-	while(REG_FLASH_OPERATE_SW & 0x80000000);
+    while(REG_FLASH_OPERATE_SW & 0x80000000);
 
-	temp |= (REG_FLASH_SR_DATA_CRC_CNT&0xff) << 8;
+    temp |= (REG_FLASH_SR_DATA_CRC_CNT&0xff) << 8;
 
-
-	return temp ;
+    return temp ;
 }
 
 void flash_write_sr_temp( uint8_t bytes,  uint16_t val )
 {
-	if(flash_mid != get_flash_ID())
-		return;
-	switch(flash_mid)
-	{
-		case MX_FLASH_4M:
-		case MX_FLASH_1:			   //MG xx
-			REG_FLASH_CONF &= 0xffdf0fff;
-		break;     
-		
-		case GD_FLASH_1:			  //QD xx ,
-		case BY25Q80:
-		case PN25f04:
-			REG_FLASH_CONF &= 0xfefe0fff;
+    if(flash_mid != get_flash_ID())
+    return;
+    switch(flash_mid)
+    {
+        case MX_FLASH_4M:
+        case MX_FLASH_1:			   //MG xx
+            REG_FLASH_CONF &= 0xffdf0fff;
+        break;     
+
+        case GD_FLASH_1:			  //QD xx ,
+        case BY25Q80:
+        case PN25f04:
+            REG_FLASH_CONF &= 0xfefe0fff;
         break;
         case P25Q40U:
         case TH25D40HB:
             REG_FLASH_CONF &= 0xfef00fff;
-		break;
+        break;
+        case GD_25WD80E:
+            REG_FLASH_CONF &= 0xfffe0fff;
+        break;
         case XTX_FLASH_1:			   //XTX xx
-		case GD_MD25D40:
+        case GD_MD25D40:
         case GD_GD25WD40:
         default:
-			REG_FLASH_CONF &= 0xffff0fff;
-		break;
-	}
+            REG_FLASH_CONF &= 0xffff0fff;
+        break;
+    }
 
     if(bytes==0||bytes>2)
     {
@@ -154,7 +157,7 @@ void flash_write_sr_temp( uint8_t bytes,  uint16_t val )
     {
         REG_FLASH_OPERATE_SW = (FLASH_ADDR_FIX|(FLASH_OPCODE_WRSR2 << BIT_OP_TYPE_SW)
 	                           | (0x1<< BIT_OP_SW)
-	                           | (0x1<< BIT_WP_VALUE));       
+	                           | (0x1<< BIT_WP_VALUE));
     }
         
     while(REG_FLASH_OPERATE_SW & 0x80000000);
@@ -167,29 +170,52 @@ void flash_write_sr_temp( uint8_t bytes,  uint16_t val )
 
 void flash_write_sr( uint8_t bytes,  uint16_t val )
 {
-	static uint8_t write_sr_cnt = 0;
+    static uint8_t write_sr_cnt = 0;
+    uint16_t sr_data=0;
     #ifdef CHECK_LOW_VOLT_ENABLE
-	check_low_volt_sleep();
+    check_low_volt_sleep();
     #endif
-	if(flash_read_sr() == val) 
-	{
-		return; 
-	}
-	
-	flash_write_sr_temp(bytes, val);
 
-	while (flash_read_sr() != val)
-	{
-		flash_write_sr_temp(bytes, val);
-		
-		write_sr_cnt++;
-		if(write_sr_cnt > 20)
-		{
-			uart_printf("boot write sr error! WDT_RESET!!!\r\n");
-			wdt_enable(0x10);
-			while(1);
-		}
-	}
+    sr_data=flash_read_sr();
+    //uart_printf("sr_data = 0x%x,VAL=%x\r\n", sr_data,val);
+    if(flash_mid==GD_GD25WD40 || flash_mid==GD_25WD80E)
+    {
+        if((sr_data&0xbf)==val)
+            return;
+    }
+    if(sr_data == val)
+    {
+        return; 
+    }
+
+    flash_write_sr_temp(bytes, val);
+    sr_data=flash_read_sr();
+    if(flash_mid==GD_GD25WD40 || flash_mid==GD_25WD80E)
+    {
+        sr_data &= 0xbf;
+    }
+
+    while (sr_data != val)
+    {
+        flash_write_sr_temp(bytes, val);
+
+        write_sr_cnt++;
+        if(write_sr_cnt > 10)
+        {
+            //uart_printf("boot write sr error! WDT_RESET!!!\r\n");
+            //wdt_enable(0x10);
+            uart_printf("write sr error! cpu_reset!!!\r\n");
+            uart_printf("sr = 0x%x\r\n", flash_read_sr());
+            extern void cpu_reset(void);
+            cpu_reset();
+            while(1);
+        }
+        sr_data=flash_read_sr();
+        if(flash_mid==GD_GD25WD40 || flash_mid==GD_25WD80E)
+        {
+            sr_data &= 0xbf;
+        }
+    }
 }
 
 void flash_wp_256k( void)
@@ -203,109 +229,103 @@ void flash_wp_256k( void)
     {
         case MX_FLASH_4M:
         case MX_FLASH_1:			   //MG xx
-					  if(flash_sr!=0x088C)
-							flash_write_sr( 2, 0x088C );
+            if(flash_sr!=0x088C)
+                flash_write_sr( 2, 0x088C );
             break;
         case XTX_FLASH_1:			   //XTX xx
-					  if(flash_sr!=0xAC)							
-							flash_write_sr( 1, 0xAC );
+            if(flash_sr!=0xAC)							
+                flash_write_sr( 1, 0xAC );
             break;   
 
         case GD_FLASH_1:			  //QD xx ,
         case BY25Q80:
         case PN25f04:
-					  if(flash_sr!=0x00ac)						
-							flash_write_sr( 2, 0x00ac );
+            if(flash_sr!=0x00ac)						
+                flash_write_sr( 2, 0x00ac );
             break;
         case P25Q40U:
         case TH25D40HB:
-					  if(flash_sr!=0x002c)							
-							flash_write_sr( 2, 0x002c );  
+            if(flash_sr!=0x002c)							
+                flash_write_sr( 2, 0x002c );  
             break;
+        case GD_25WD80E:
+
+            if(flash_sr!=0x98)
+                flash_write_sr(1, 0x98);  //portect 0 ~ 768KB area
+        break;
         case GD_MD25D40:
-        case GD_GD25WD40:    
+        case GD_GD25WD40:
         default:
-					  if(flash_sr!=0x98)						
-							flash_write_sr( 1, 0x98 );
+            if(flash_sr!=0x98)						
+                flash_write_sr( 1, 0x98 );
             break;    
     }
 }
 
-void flash_wp_ALL( void )
+void flash_wp_all( void )
 {
-	uint32_t flash_sr;
+    uint32_t flash_sr;
     #ifdef CHECK_LOW_VOLT_ENABLE
-	check_low_volt_sleep();
+    check_low_volt_sleep();
     #endif
-	flash_sr=flash_read_sr();
+    flash_sr=flash_read_sr();
+    
     switch(flash_mid)
     {
         case MX_FLASH_4M:
         case MX_FLASH_1:			   //MG xx
-					  if(flash_sr!=0x00bc)	
-							flash_write_sr( 2, 0x00bc );
-            break;
+        if(flash_sr!=0x00bc)	
+            flash_write_sr( 2, 0x00bc );
+        break;
         case XTX_FLASH_1:			   //XTX xx
-					  if(flash_sr!=0xBC)	
-							flash_write_sr( 1, 0xBC );
-            break;  
+        if(flash_sr!=0xBC)	
+            flash_write_sr( 1, 0xBC );
+        break;  
         case GD_FLASH_1:			  //QD xx ,
         case BY25Q80:
         case PN25f04:
-					  if(flash_sr!=0x0094)	
-							flash_write_sr( 2, 0x0094 );
-            break;
+        if(flash_sr!=0x0094)	
+            flash_write_sr( 2, 0x0094 );
+        break;
         case P25Q40U:
         case TH25D40HB:
-					  if(flash_sr!=0x0010)	
-							flash_write_sr( 2, 0x0010 );
-            break;    
+        if(flash_sr!=0x0010)	
+            flash_write_sr( 2, 0x0010 );
+        break;    
         case GD_MD25D40:
-        case GD_GD25WD40:    
+        case GD_GD25WD40:
+		case GD_25WD80E:
         default:
-					  if(flash_sr!=0x9c)	
-							flash_write_sr( 1, 0x9c );
-            break;    
+        if(flash_sr!=0x9c)	
+            flash_write_sr( 1, 0x9c );
+        break;    
+    }
+}
+void flash_wp_none( void)
+{
+    uint32_t flash_sr;
+    #ifdef CHECK_LOW_VOLT_ENABLE
+    check_low_volt_sleep();
+    #endif
+    flash_sr=flash_read_sr( );
+    switch(flash_mid)
+    {
+        case GD_25WD80E:
+        if(flash_sr!=0x80)
+            flash_write_sr(1, 0x80);  //portect none area
+
+        break;
+        default:
+        break;    
     }
 }
 
+
 void flash_advance_init(void)
 {
-//    uint32_t flash_sr;
-
     flash_mid = get_flash_ID();
-    
-  //  flash_sr=flash_read_sr( );
-		flash_wp_ALL();
-  /*  switch(flash_mid)
-    {
-        case MX_FLASH_4M:
-        case MX_FLASH_1:			   //MG xx
-            if(flash_sr!=0x00bc)
-                flash_write_sr( 2, 0x00bc );
-            break;
-        case XTX_FLASH_1:			   //XTX xx
-            if(flash_sr!=0xbc)
-                flash_write_sr( 1, 0xBC );
-            break;  
-        case GD_FLASH_1:			  //QD xx ,
-        case BY25Q80:
-        case PN25f04:
-            if(flash_sr!=0x0094)
-                flash_write_sr( 2, 0x0094 );
-            break;
-        case P25Q40U:
-        case TH25D40HB:
-            if(flash_sr!=0x0010)
-                flash_write_sr( 2, 0x0010 );
-            break;
-        case GD_MD25D40:
-        case GD_GD25WD40:    
-        default:
-            if(flash_sr!=0x9c)
-                flash_write_sr( 1, 0x9c );
-            break;    
-    }*/
+    set_flash_info();
+    flash_wp_all();
     uart_printf("flash_mid=%x\n",flash_mid);   
 }
 
@@ -324,19 +344,19 @@ void flash_erase_sector(uint32_t address)
     flash_set_line_mode(1);
     if(flash_enable_erase_flag1==FLASH_ERASE_ENABLE1&&flash_enable_erase_flag2==FLASH_ERASE_ENABLE2)    
     {
-			// 2021/7/16 user maybe modify this ,the SRreg(proctor) is more slower by writed, n*100 times?
+        // 2021/7/16 user maybe modify this ,the SRreg(proctor) is more slower by writed, n*100 times?
         flash_wp_256k();
         
         while(REG_FLASH_OPERATE_SW & 0x80000000);
 
-        REG_FLASH_OPERATE_SW = (  (address << BIT_ADDRESS_SW)
-                                                   | (FLASH_OPCODE_SE<< BIT_OP_TYPE_SW)
-                                                   | (0x1             << BIT_OP_SW));
+        REG_FLASH_OPERATE_SW = ( (address << BIT_ADDRESS_SW)
+                               | (FLASH_OPCODE_SE<< BIT_OP_TYPE_SW)
+                               | (0x1             << BIT_OP_SW));
 
         while(REG_FLASH_OPERATE_SW & 0x80000000);
         flash_set_line_mode(4);
-			// 2021/7/16 user maybe modify this ,the SRreg(proctor) is more slower by writed, n*100 times?
-        flash_wp_ALL();
+        // 2021/7/16 user maybe modify this ,the SRreg(proctor) is more slower by writed, n*100 times?
+        flash_wp_all();
     }
     GLOBAL_INT_RESTORE();
 }
@@ -396,13 +416,20 @@ void flash_write_data (uint8_t *buffer, uint32_t address, uint32_t len)
     if (address<0x40000)
         return;
     GLOBAL_INT_DISABLE();
-	flash_set_line_mode(1);
+    flash_set_line_mode(1);
 
     while(REG_FLASH_OPERATE_SW & 0x80000000);
-    
+
     flash_enable_write_flag3=FLASH_WRITE_ENABLE3; 
-		// 2021/7/16 user maybe modify this ,the SRreg(proctor) is more slower by writed, n*100 times?
-    flash_wp_256k();
+    // 2021/7/16 user maybe modify this ,the SRreg(proctor) is more slower by writed, n*100 times?
+    if((flash_mid==GD_25WD80E) && address<768*1024)
+    {    
+        flash_wp_none();
+    }
+    else
+    {
+        flash_wp_256k();
+    }
 
     while(len) 
     {
@@ -440,27 +467,26 @@ void flash_write_data (uint8_t *buffer, uint32_t address, uint32_t len)
         }
         addr+=32;
     }
-		// 2021/7/16 user maybe modify this ,the SRreg(proctor) is more slower by writed, n*100 times?
-    flash_wp_ALL();
+    // 2021/7/16 user maybe modify this ,the SRreg(proctor) is more slower by writed, n*100 times?
+    flash_wp_all();
     REG_FLASH_OPERATE_SW=FLASH_ADDR_FIX ;
     flash_enable_write_flag3=0;
     flash_enable_write_flag4=0;
     for (i=0; i<8; i++)
         REG_FLASH_DATA_SW_FLASH = 0xffffffff;
-	flash_set_line_mode(4);
-	GLOBAL_INT_RESTORE();
+    flash_set_line_mode(4);
+    GLOBAL_INT_RESTORE();
 }
-
 
 
 void flash_set_qe(void)
 {
 	uint32_t temp0;
 	while(REG_FLASH_OPERATE_SW & 0x80000000){;}
-//XTX_FLASH_1 Ã»ÓÐQE,²»ÐèÒª,¿¿ EQPI(38h) CMD À´´¦Àí
-//Õâ¸ö½ö¶ÔMX_FLASH_1 ¡¢MX_FLASH_4M¡¢XTX_FLASH_1ÓÐÐ§¡£
+//XTX_FLASH_1 Ã»ï¿½ï¿½QE,ï¿½ï¿½ï¿½ï¿½Òª,ï¿½ï¿½ EQPI(38h) CMD ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½MX_FLASH_1 ï¿½ï¿½MX_FLASH_4Mï¿½ï¿½XTX_FLASH_1ï¿½ï¿½Ð§ï¿½ï¿½
 
-	temp0 = REG_FLASH_CONF; //ÅäÖÃWRSR Status data
+	temp0 = REG_FLASH_CONF; //ï¿½ï¿½ï¿½ï¿½WRSR Status data
 
 	if(flash_mid == XTX_FLASH_1)  // wanghong
 		return;
@@ -619,11 +645,8 @@ uint8_t flash_write(uint8_t flash_space, uint32_t address, uint32_t len, uint8_t
     return CO_ERROR_NO_ERROR;
 }
 
-
-
-
 // 2021/7/16   verify by lipenghui
-////²Á³ýº¯Êý£¬µØÖ·ºÍ³¤¶È¶¼Òª4KµÄÕûÊý±¶
+////ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½Í³ï¿½ï¿½È¶ï¿½Òª4Kï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 uint8_t flash_erase(uint8_t flash_type, uint32_t address, uint32_t len, void (*callback)(void))
 {
     /* assume: the worst span is four sectors*/
@@ -648,7 +671,7 @@ uint8_t flash_erase(uint8_t flash_type, uint32_t address, uint32_t len, void (*c
         int i;
         int erase_whole_sector_cnt;
         //erase_whole_sector_cnt = erase_len >> FLASH_ERASE_SECTOR_SIZE_RSL_BIT_CNT;
-        erase_whole_sector_cnt = erase_len/FLASH_ERASE_SECTOR_SIZE + (erase_len%FLASH_ERASE_SECTOR_SIZE>0? 1:0);//²»ÒªÇó³¤¶ÈÊÇ4kÕûÊý±¶
+        erase_whole_sector_cnt = erase_len/FLASH_ERASE_SECTOR_SIZE + (erase_len%FLASH_ERASE_SECTOR_SIZE>0? 1:0);//ï¿½ï¿½Òªï¿½ó³¤¶ï¿½ï¿½ï¿½4kï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         flash_enable_erase_flag2=FLASH_ERASE_ENABLE2;
         for(i = 0; i < erase_whole_sector_cnt; i ++)
         {
@@ -666,20 +689,24 @@ uint8_t flash_erase(uint8_t flash_type, uint32_t address, uint32_t len, void (*c
 
 
 void flash_write_some_data(uint8_t *buffer, uint32_t address, uint32_t len)
-    // ½ö±£´æµ±Ç°µØÖ·ÏÂµÄÍêÕû1KÊý¾Ý
+    // ï¿½ï¿½ï¿½ï¿½ï¿½æµ±Ç°ï¿½ï¿½Ö·ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½1Kï¿½ï¿½ï¿½ï¿½
 {
     unsigned char flash_temp[1024];
-    flash_wp_256k(); // ÓÐ bug 1¡¢ ±£»¤¿Õ¼ä²»¶Ô£¬2¡¢Ð´ÍêÃ»ÓÐ»Ö¸´±£»¤
+    flash_wp_256k(); // ï¿½ï¿½ bug 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ä²»ï¿½Ô£ï¿½2ï¿½ï¿½Ð´ï¿½ï¿½Ã»ï¿½Ð»Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½
     flash_read(0,address&0xfffffc00, 1024,flash_temp, (void*)0);//the addr is the word,so the addr +20
     memcpy(&flash_temp[address&0x3ff],buffer,len);
     flash_erase(0,address,0x1000,0);
     flash_write(0,address&0xfffffc00,1024,flash_temp,(void*)0);
-    flash_wp_ALL();
+    flash_wp_all();
 
 }
 
-#define  TEST_FLASH_ADDRESS  0x7FF00
-#define  TEST_LEN 0xff
+#if GD_25WD80E_1MB
+#define TEST_FLASH_ADDRESS  0xFC000  
+#else
+#define TEST_FLASH_ADDRESS  0x7E000
+#endif
+#define TEST_LEN 0xff
 void flash_test(void)
 {
 	unsigned char w_temp[TEST_LEN];

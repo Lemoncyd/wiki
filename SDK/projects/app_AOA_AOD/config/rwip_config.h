@@ -407,8 +407,8 @@
 /******************************************************************************************/
 #if (1)
 
-   // #define CFG_CONLESS_CTE_TX
-    #define CFG_CONLESS_CTE_RX
+    #define CFG_CONLESS_CTE_TX
+   // #define CFG_CONLESS_CTE_RX
     #define CFG_AOD
     #define CFG_AOA
 #endif

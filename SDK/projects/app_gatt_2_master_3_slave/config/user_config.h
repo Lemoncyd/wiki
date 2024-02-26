@@ -35,7 +35,7 @@
 #define AON_RTC_DRIVER              1
 #define TIMER0_DRIVER                0
 
-#define uart_printf              uart2_printf  ///UART2 LOG¥Ú”°
+#define uart_printf              uart0_printf  ///UART2 LOG¥Ú”°
 
 /// Default Device Name
 #define APP_DFLT_DEVICE_NAME            ("BK3633_BLE789")

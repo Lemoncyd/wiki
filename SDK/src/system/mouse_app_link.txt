@@ -1,15 +1,15 @@
 
-SECTIONS 0x26400 ALIGN 32
+SECTIONS 0x287A0 ALIGN 32
 {
 	
-    ROM_SYS  0x26400
+    ROM_SYS  0x287A0
     {
         *boot_vectors.o(SYS_BOOT,+FIRST)	
 				
         *boot_handlers.o(SYS_BOOT)
     }
-
-	FAST_CALL_SEG 0x26700 FIXED ALIGNALL 32 { ;Do not change the section order, for image;	
+ 
+	FAST_CALL_SEG 0x28AA0 FIXED ALIGNALL 32 { ;Do not change the section order, for image;	
 	   *(sys_fiq_entry)   
        *(sys_irq_entry)   
     }
@@ -19,7 +19,7 @@ SECTIONS 0x26400 ALIGN 32
         *.o(+RO)
     } 
 
-    RAM_DATA  0x00400800 NOCOMPRESS
+    RAM_DATA  0x00400900 NOCOMPRESS
     {
         *(+RW)
     }

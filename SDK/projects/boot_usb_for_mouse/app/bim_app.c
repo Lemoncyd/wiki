@@ -85,7 +85,7 @@ void usb_cmd_dispath(uint8_t *buff,uint8_t len)
 
             bim_printf("CRC_CHECK\r\n");
             flash_erase(0x7d000,0x1000);
-            flash_wp_ALL();
+            flash_wp_all();
 
             make_crc32_table();
 
@@ -338,7 +338,7 @@ void bim_usb_data_callback( uint8_t * buff, uint16_t len)
                 {
                     write_addr = bim_uart_data[1]|(bim_uart_data[2]<<8)|(bim_uart_data[3]<<16)|(bim_uart_data[4]<<24) ;
 
-                    if(write_addr<SEC_ALL_IMAGE_ALLOC_END_FADDR)
+                    if(write_addr<flash_env.ota_all_image_end_faddr_abs)
                     {
                         bim_uart_data[5]=scmd_length-5;
                         usb_operate_flash_cmd_response(0x06,6,7,&bim_uart_data[1]);
@@ -478,15 +478,15 @@ void usb_init_boot(void)
 extern void Delay_ms(int num);
 void bim_main(void)
 {
-		uint32 addr_tmp,i;
-		uint8 tmp=0xff;
+    uint32 addr_tmp,i;
+    uint8 tmp=0xff;
     updata_memset32((uint8 *)0x00400000, 1, 1);
     icu_init();
     wdt_disable();
     uart2_init(1000000);
-	  bim_printf("boot_start1\r\n");
-	  Delay_ms(50);
-	  GLOBAL_INT_START();
+    bim_printf("boot_start1\r\n");
+    Delay_ms(50);
+    GLOBAL_INT_START();
     flash_advance_init();
 
     xvr_reg_initial();
@@ -497,7 +497,7 @@ void bim_main(void)
     {
         flash_wp_8k();
         usb_init_boot();
-		}
+    }
     else
     {
         bim_get_psec_image_header();
@@ -505,8 +505,6 @@ void bim_main(void)
         bim_printf("uuid=%x\r\n",hdr_img.uid);
         if(hdr_img.uid == OAD_APP_PART_UID)
         {
-            addr_tmp = (hdr_img.len << 2)+ SEC_OAD_RUN_APP_FADDR-0x100;
-            bim_printf("ad_t=%x\r\n",addr_tmp);
 
             flash_read(bim_uart_data,addr_tmp,256);
             for(i=0;i<256;i++)
@@ -527,7 +525,7 @@ void bim_main(void)
         }
         else
         {
-						addr_tmp = (hdr_img.len << 2)+ SEC_IMAGE_OAD_HEADER_STACK_FADDR-0x100;
+            addr_tmp = (hdr_img.len << 2)+ SEC_IMAGE_OAD_HEADER_STACK_FADDR-0x100;
             bim_printf("ad_t=%x\r\n",addr_tmp);
 
             flash_read(bim_uart_data,addr_tmp,256);
@@ -539,67 +537,62 @@ void bim_main(void)
             bim_printf("tmp=%x\r\n",tmp);
             if(tmp == 0xff)
             {
-             	flash_wp_8k();
+                flash_wp_8k();
 
-            flash_write(bim_user_flash_data1,0x7d000,16);
+                flash_write(bim_user_flash_data1,0x7d000,16);
 
-            read_updata_status[0]=0x12;
-            read_updata_status[1]=0x34;
-            usb_init_boot();
+                read_updata_status[0]=0x12;
+                read_updata_status[1]=0x34;
+                usb_init_boot();
+            }
         }
-    }
 
-    while(1)
-    {
-        if (b_isDataing == 1)
+        while(1)
         {
-            b_isTRxing == 0;
-            bim_usb_data_callback(MGC_RX_Buffer,sizeof(MGC_RX_Buffer));
-            b_isDataing = 0;
-          //  test_usb_device();
-            check_cnt=0;
-        }
-        else
-        {
-            if( (read_updata_status[0]==0x12) && (read_updata_status[1]==0x34) )
+            if (b_isDataing == 1)
             {
-                if(read_updata_status[2]==0x55)
-                {
-                    delay_timer_count=(read_updata_status[5]<<16)+(read_updata_status[4]<<8)+read_updata_status[3];
-                    if(check_cnt++>delay_timer_count)
-                    break;
-                }
+                b_isTRxing == 0;
+                bim_usb_data_callback(MGC_RX_Buffer,sizeof(MGC_RX_Buffer));
+                b_isDataing = 0;
+              //  test_usb_device();
+                check_cnt=0;
             }
             else
             {
-                if(check_cnt++>2)
-                    break;
+                if( (read_updata_status[0]==0x12) && (read_updata_status[1]==0x34) )
+                {
+                    if(read_updata_status[2]==0x55)
+                    {
+                        delay_timer_count=(read_updata_status[5]<<16)+(read_updata_status[4]<<8)+read_updata_status[3];
+                        if(check_cnt++>delay_timer_count)
+                        break;
+                    }
+                }
+                else
+                {
+                    if(check_cnt++>2)
+                        break;
+                }
+            }
+        }
+
+        if(1 == bim_select_sec())
+        {
+            updata_memset32((uint8 *)0x00400000, 0, 1);
+            GLOBAL_INT_STOP();
+            (*(FUNCPTR)SEC_IMAGE_RUN_STACK_CADDR)();
+        }
+        else
+        {
+            updata_memset32((uint8 *)0x00400000, 0, 1);
+            GLOBAL_INT_STOP();
+            while(1)
+            {
+                bim_printf("error_start\r\n");
             }
         }
     }
-
-    if(1 == bim_select_sec())
-    {
-			  updata_memset32((uint8 *)0x00400000, 0, 1);
-			  GLOBAL_INT_STOP();
-        (*(FUNCPTR)SEC_IMAGE_RUN_CADDR)();
-    }
-    else
-    {
-			  updata_memset32((uint8 *)0x00400000, 0, 1);
-			  GLOBAL_INT_STOP();
-        while(1)
-        {
-
-            bim_printf("error_start\r\n");
-        }
-    }
-
-	}
-
-
 }
-
 
 
 

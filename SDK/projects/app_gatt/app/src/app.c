@@ -89,6 +89,7 @@
 #include "nvds.h"                    // NVDS Definitions
 #endif //(NVDS_SUPPORT)
 #include "flash.h"  
+#include "ke_timer.h"
 /*
  * DEFINES
  ****************************************************************************************
@@ -339,6 +340,7 @@ void appm_start_advertising(void)
     app_env.adv_state = APP_ADV_STATE_STARTING;
     // And the next expected operation code for the command completed event
     app_env.adv_op = GAPM_START_ACTIVITY;
+
 }
 
 void apptc_cmd_encode(uint8_t cmd, uint8_t *data, uint8_t len)
@@ -472,14 +474,13 @@ void appm_init()
 {
     // Reset the application manager environment
     memset(&app_env, 0, sizeof(app_env));
-    
     // Create APP task
     ke_task_create(TASK_APP, &TASK_DESC_APP);
-
     // Initialize Task state
     ke_state_set(TASK_APP, APPM_INIT);
 
-    flash_read_data(&app_env.dev_name[0],0x7E008,APP_DEVICE_NAME_MAX_LEN); ;
+    flash_read_data(&app_env.dev_name[0],(flash_env.bdaddr_def_addr_abs+8),APP_DEVICE_NAME_MAX_LEN);
+
     for(uint8_t i=0;i<APP_DEVICE_NAME_MAX_LEN;i++)
     {
         if( (app_env.dev_name[i]!=0xff) && (app_env.dev_name[i]!=0x00) )
@@ -490,7 +491,6 @@ void appm_init()
         {
             break;
         }
-
     }       
     if( (app_env.dev_name[0]==0xff) && (app_env.dev_name[1]==0xff) )
     {
@@ -500,14 +500,10 @@ void appm_init()
 
         // TODO update this value per profiles
     }
-
-
     /*------------------------------------------------------
      * INITIALIZE ALL MODULES
      *------------------------------------------------------*/
-
     // load device information:
-
     #if (DISPLAY_SUPPORT)
     app_display_init();
     #endif //(DISPLAY_SUPPORT)

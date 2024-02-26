@@ -73,11 +73,11 @@
 
 
 //最小连接间隔
-#define BLE_UAPDATA_MIN_INTVALUE		6
+#define BLE_UAPDATA_MIN_INTVALUE		9
 //最大连接间隔
-#define BLE_UAPDATA_MAX_INTVALUE		6
+#define BLE_UAPDATA_MAX_INTVALUE		9
 //连接Latency
-#define BLE_UAPDATA_LATENCY				0//100
+#define BLE_UAPDATA_LATENCY				  100 //0
 //连接超时
 #define BLE_UAPDATA_TIMEOUT				600
 

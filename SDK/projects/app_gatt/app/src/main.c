@@ -129,39 +129,34 @@ const struct rwip_eif_api uart_api =
     uart_flow_off,
 };
 #endif
-
-
-
-
-
 void bdaddr_env_init(void)
 {
-	struct bd_addr co_bdaddr;
-	flash_read_data(&co_bdaddr.addr[0],0x7E000,6);
-	if(co_bdaddr.addr[0]!=0xff ||co_bdaddr.addr[1]!=0xff||
-	        co_bdaddr.addr[2]!=0xff||co_bdaddr.addr[3]!=0xff||
-	        co_bdaddr.addr[4]!=0xff||co_bdaddr.addr[5]!=0xff )
-	{
-		memcpy(&co_default_bdaddr,&co_bdaddr,6);
-	}        
+    struct bd_addr co_bdaddr;
+    uart_printf("bdaddr_def_addr_abs=%x\r\n",flash_env.bdaddr_def_addr_abs);
+    flash_read_data(&co_bdaddr.addr[0],flash_env.bdaddr_def_addr_abs,6);
+
+    if(co_bdaddr.addr[0]!=0xff ||co_bdaddr.addr[1]!=0xff||
+    co_bdaddr.addr[2]!=0xff||co_bdaddr.addr[3]!=0xff||
+    co_bdaddr.addr[4]!=0xff||co_bdaddr.addr[5]!=0xff )
+    {
+        memcpy(&co_default_bdaddr,&co_bdaddr,6);
+    }
 }
-
-
 
 #if (PLF_DEBUG)
 void assert_err(const char *condition, const char * file, int line)
 {
-	uart_printf("%s,condition %s,file %s,line = %d\r\n",__func__,condition,file,line);
+    uart_printf("%s,condition %s,file %s,line = %d\r\n",__func__,condition,file,line);
 }
 
 void assert_param(int param0, int param1, const char * file, int line)
 {
-	uart_printf("%s,param0 = %d,param1 = %d,file = %s,line = %d\r\n",__func__,param0,param1,file,line);
+    uart_printf("%s,param0 = %d,param1 = %d,file = %s,line = %d\r\n",__func__,param0,param1,file,line);
 }
 
 void assert_warn(int param0, int param1, const char * file, int line)
 {
-	uart_printf("%s,param0 = %d,param1 = %d,file = %s,line = %d\r\n",__func__,param0,param1,file,line);
+    uart_printf("%s,param0 = %d,param1 = %d,file = %s,line = %d\r\n",__func__,param0,param1,file,line);
 }
 
 void dump_data(uint8_t* data, uint16_t length)
@@ -182,15 +177,6 @@ void platform_reset(uint32_t error)
     cpu_reset();    
 }
 
-uint8_t system_mode;
-void sys_mode_init(uint8_t mode)
-{
-	system_mode = mode;
-}
-uint8_t get_sys_mode(void)
-{
-	return system_mode;
-}
 void enable_phy_2mbps(void)
 {
     extern uint8_t enable_phy_2m;   
@@ -224,6 +210,7 @@ void enter_normal_app_mode(void)
         oad_updating_user_section_pro();
         // Checks for sleep have to be done with interrupt disabled
         GLOBAL_INT_DISABLE();
+
         
         // Check if the processor clock can be gated
         #if 1  
@@ -270,27 +257,13 @@ void enter_normal_app_mode(void)
         stack_integrity_check();
     }
 }
-
+   
 int main(void)
 {
-    icu_init();
-    
+    icu_init();  
     wdt_disable();
-
-    intc_init();
-
-    sys_mode_init(NORMAL_MODE);
-    
-    gpio_config(0x00,INPUT,PULL_HIGH); 
-    Delay_ms(1);
-    if(0==gpio_get_input(0x00))
-    {
-        Delay_ms(10);
-        if(0==gpio_get_input(0x00))
-            sys_mode_init(DUT_FCC_MODE);
-    }	
-		
-    uart_init(115200);
+    intc_init();	
+    uart_init(1000000);
     uart2_init(1000000);
     gpio_init(); 
 
@@ -325,7 +298,7 @@ int main(void)
     }
     else //normal mode
     {
-        uart_printf("enter_normal_app_mode \r\n");
+        uart_printf("enter_normal_app_mode00000000000 \r\n");
 
         icu_set_sleep_mode(MCU_REDUCE_VO_SLEEP);
 
@@ -334,7 +307,7 @@ int main(void)
         #else
         mcu_clk_switch(MCU_CLK_16M);
         #endif
-
+        //flash_test();
         #if(AON_RTC_DRIVER)   
         aon_rtc_init();
         #endif
@@ -356,6 +329,8 @@ int main(void)
         calib_adc();
         #endif   
 
+        //add for test adc
+		//check_low_volt_sleep();
         enter_normal_app_mode();
     }
     

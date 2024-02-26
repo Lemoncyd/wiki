@@ -10,6 +10,8 @@
  *
  ****************************************************************************************
  */
+#ifndef _INTC_H_
+#define _INTC_H_
 #include <stdint.h>
 //#include "compiler.h"
 //#include "BK3435_reg.h"
@@ -39,3 +41,5 @@
 #define SDM_IRQ_ISR_IDX                                 17
 #define I2S_IRQ_ISR_IDX                                 18
 /***************************************************/
+
+#endif

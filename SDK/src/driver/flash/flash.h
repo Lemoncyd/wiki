@@ -87,7 +87,7 @@
 #define GD_FLASH_1	 0XC84013
 #define GD_MD25D40   0x514013
 #define GD_GD25WD40  0xc86413
-
+#define GD_25WD80E   0xc86414
 
 #define MX_FLASH_1	0XC22314
 #define XTX_FLASH_1	0X1C3113
@@ -115,6 +115,19 @@
 #define FLASH_ERASE_ENABLE1  0XAB
 #define FLASH_ERASE_ENABLE2  0XBC
 
+#define FLASH_ENV_OTA_APP_DEF_ADDR_4M_ABS             0x52000
+#ifdef __MOUSE__
+#define FLASH_ENV_OTA_APP_STACK_DEF_ADDR_4M_ABS       0x40000
+#else
+#define FLASH_ENV_OTA_APP_STACK_DEF_ADDR_4M_ABS       0x41000
+#endif
+#define FLASH_ENV_BDADDR_DEF_ADDR_4M_ABS              0x7E000
+#define FLASH_ENV_NVDS_DEF_ADDR_4M_ABS                0x7F000
+
+#define FLASH_ENV_OTA_APP_DEF_ADDR_8M_ABS             0x80000
+#define FLASH_ENV_OTA_APP_STACK_DEF_ADDR_8M_ABS       0x80000
+#define FLASH_ENV_BDADDR_DEF_ADDR_8M_ABS              0xFE000
+#define FLASH_ENV_NVDS_DEF_ADDR_8M_ABS                0xFF000
 
 
 /// flash operation command type(decimal)
@@ -144,7 +157,16 @@ typedef enum {
  * FUNCTION DECLARATIONS
  ****************************************************************************************
  */
+ /// Flash environment structure
+struct flash_env_tag
+{
+    uint32_t ota_app_def_addr_abs ;
+    uint32_t ota_stack_app_def_addr_abs;
+    uint32_t bdaddr_def_addr_abs ;
+    uint32_t nvds_def_addr_abs ;
+};
 extern struct flash_env_tag flash_env;
+
 
 void flash_advance_init(void);
 
@@ -204,6 +226,9 @@ uint8_t flash_erase(uint8_t flash_type, uint32_t offset, uint32_t size, void (*c
  ****************************************************************************************
  */
 uint8_t flash_write(uint8_t flash_type, uint32_t offset, uint32_t length, uint8_t *buffer, void (*callback)(void));
+
+//add 231225
+uint8_t flash_write_ota(uint8_t flash_space, uint32_t address, uint32_t len, uint8_t *buffer, void (*callback)(void), uint32_t oad_uuid);
 
 /**
  ****************************************************************************************

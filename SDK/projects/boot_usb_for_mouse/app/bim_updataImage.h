@@ -4,25 +4,45 @@
 #define FLASH_ONE_BLOCK_SIZE                 (0X10000)//64k
 #define SEC_MAX_FSIZE_APP_BLOCK              (0x2A00)
 #define SEC_MAX_FSIZE_STACK_BLOCK            (0x3E00)
-#define SEC_IMAGE_RUN_CADDR                  (0x3400 )///==(BOOT_MAX_SIZE/272+1)*256
+#define SEC_IMAGE_RUN_STACK_CADDR            (0x3400 )///==(BOOT_MAX_SIZE/272+1)*256
+#define SEC_IMAGE_RUN_STACK_FADDR            (SEC_IMAGE_RUN_STACK_CADDR*34/32) /////==(BOOT_MAX_SIZE/272+1)*272
+#define SEC_IMAGE_OAD_HEADER_STACK_FADDR     (SEC_IMAGE_RUN_STACK_FADDR-0x10) /////==(BOOT_MAX_SIZE/272+1)*272-0x10
+
 #define SEC_IMAGE_RUN_APP_CADDR              (0x287A0 )///==(BOOT_MAX_SIZE/272+1)*256
 #define SEC_IMAGE_RUN_APP_FADDR              (SEC_IMAGE_RUN_APP_CADDR*34/32)/////==(BOOT_MAX_SIZE/272+1)*272
-#define SEC_IMAGE_RUN_STACK_FADDR            (SEC_IMAGE_RUN_CADDR*34/32) /////==(BOOT_MAX_SIZE/272+1)*272
 #define SEC_IMAGE_OAD_HEADER_APP_FADDR       (SEC_IMAGE_RUN_APP_FADDR-0x10)
-#define SEC_IMAGE_OAD_HEADER_STACK_FADDR     (SEC_IMAGE_RUN_STACK_FADDR-0x10) /////==(BOOT_MAX_SIZE/272+1)*272-0x10
-#define SEC_IMAGE_ALLOC_START_STACK_FADDR    (0x5000)  //(8KB)
-#define SEC_ALL_IMAGE_ALLOC_END_FADDR            (0x41000) //(256KB)
-#define SEC_ALL_BACKUP_OAD_HEADER_FADDR          (0x41000) //256kb * 1024
-#define SEC_ALL_BACKUP_OAD_IMAGE_FADDR           (0x41010) //256kb * 1024 + 0X10
-#define SEC_PART_IMAGE_ALLOC_END_FADDR           (0x52000) //(256KB)  //app updata.usb updata is not used
-#define SEC_PART_BACKUP_OAD_HEADER_FADDR         (0x52000) //256kb * 1024 //app updata.usb updata is not used
-#define SEC_PART_BACKUP_OAD_IMAGE_FADDR          (0x52010) //256kb * 1024 + // 0X10 //app updata.usb updata is not used
+
+
+#define SEC_ALL_IMAGE_ALLOC_START_8M_FADDR          (0x2000)
+#define SEC_ALL_IMAGE_ALLOC_END_8M_FADDR            (0x80000) //(512KB)
+#define SEC_ALL_BACKUP_OAD_HEADER_8M_FADDR          (0x80000) //512b * 1024
+#define SEC_ALL_BACKUP_OAD_IMAGE_8M_FADDR           (0x80010) //512kb * 1024 + 0X10
+#define SEC_ALL_BACKUP_OAD_END_8M_FADDR             (0xFC000) //(1024-16) * 1024
+
+#define SEC_PART_IMAGE_ALLOC_START_8M_FADDR         (0x28000)
+#define SEC_PART_IMAGE_ALLOC_END_8M_FADDR           (0x80000) //(512KB)
+#define SEC_PART_BACKUP_OAD_HEADER_8M_FADDR         (0x80000) 
+#define SEC_PART_BACKUP_OAD_IMAGE_8M_FADDR          (0x80010) //512KB * 1024 + 0X10
+#define SEC_PART_BACKUP_OAD_END_8M_FADDR            (0xFC000) //(1024-16) * 1024
+
+#define SEC_ALL_IMAGE_ALLOC_START_4M_FADDR          (0x2000)
+#define SEC_ALL_IMAGE_ALLOC_END_4M_FADDR            (0x40000) //(256KB)
+#define SEC_ALL_BACKUP_OAD_HEADER_4M_FADDR          (0x40000) //256kb * 1024
+#define SEC_ALL_BACKUP_OAD_IMAGE_4M_FADDR           (0x40010) //256kb * 1024 + 0X10
+#define SEC_ALL_BACKUP_OAD_END_4M_FADDR             (0x7C000) //(512-16) * 1024
+
+#define SEC_PART_IMAGE_ALLOC_START_4M_FADDR         (0x28000)
+#define SEC_PART_IMAGE_ALLOC_END_4M_FADDR           (0x52000) 
+#define SEC_PART_BACKUP_OAD_HEADER_4M_FADDR         (0x52000) 
+#define SEC_PART_BACKUP_OAD_IMAGE_4M_FADDR          (0x52010) 
+#define SEC_PART_BACKUP_OAD_END_4M_FADDR            (0x7C000) //(512-16) * 1024
+
+
 #define OAD_APP_PART_UID                    (0x42424242)
 #define OAD_APP_STACK_UID                   (0x53535353)
-#define SEC_OAD_RUN_APP_FADDR            (SEC_IMAGE_RUN_APP_FADDR-0x10) /////==(BOOT_MAX_SIZE/272+1)*272  //0x30ac0
 
-#define ERASE_FLASH_SEC_SIZE     		     0X20   // 4K
-#define ERASE_FLASH_ONE_BLOCK_SIZE    	     0XD8   //64K  erase cmd
+#define ERASE_FLASH_SEC_SIZE                 0X20   // 4K
+#define ERASE_FLASH_ONE_BLOCK_SIZE           0XD8   //64K  erase cmd
 /*********************************************************************
  * TYPEDEFS
  */

@@ -4,32 +4,56 @@
 #include "bim_uart2.h"
 #include "bim_wdt.h"
 #include "bim_adc.h"
-
-/// Flash environment structure
-struct flash_env_tag
-{
-    /// base address
-    uint32_t    base_addr;
-    /// length
-    uint32_t    length;
-    /// type
-    uint32_t    space_type;
-};
-
+#include "bim_updataImage.h"
 
 
 /// Flash environment structure variable
 struct flash_env_tag flash_env;
 extern uint8_t system_mode;
-uint8_t flash_enable_write_flag1;
-uint8_t flash_enable_write_flag2;
-uint8_t flash_enable_write_flag3;
-uint8_t flash_enable_write_flag4;
-uint8_t flash_enable_erase_flag1;
-uint8_t flash_enable_erase_flag2;
+static uint8_t flash_enable_write_flag1;
+static uint8_t flash_enable_write_flag2;
+static uint8_t flash_enable_write_flag3;
+static uint8_t flash_enable_write_flag4;
+static uint8_t flash_enable_erase_flag1;
+static uint8_t flash_enable_erase_flag2;
 uint32_t flash_mid = 0;
 
+void set_flash_info()
+{
+    uint32_t flash_type = flash_mid & 0xff;
+    if(flash_type==0x14)
+    {
+        flash_env.ota_all_image_start_faddr_abs = SEC_ALL_IMAGE_ALLOC_START_8M_FADDR;
+        flash_env.ota_all_image_end_faddr_abs = SEC_ALL_IMAGE_ALLOC_END_8M_FADDR;
+        flash_env.ota_all_backup_start_faddr_abs = SEC_ALL_BACKUP_OAD_HEADER_8M_FADDR;
+        flash_env.ota_all_backup_end_faddr_abs =SEC_ALL_BACKUP_OAD_END_8M_FADDR;
+        flash_env.ota_all_backup_oad_header_faddr_abs = SEC_ALL_BACKUP_OAD_HEADER_8M_FADDR;
+        flash_env.ota_all_backup_oad_image_faddr_abs = SEC_ALL_BACKUP_OAD_IMAGE_8M_FADDR;
 
+        flash_env.ota_part_image_start_faddr_abs = SEC_PART_IMAGE_ALLOC_START_8M_FADDR;
+        flash_env.ota_part_image_end_faddr_abs = SEC_PART_IMAGE_ALLOC_END_8M_FADDR;
+        flash_env.ota_part_backup_start_faddr_abs = SEC_PART_BACKUP_OAD_HEADER_8M_FADDR;
+        flash_env.ota_part_backup_end_faddr_abs = SEC_PART_BACKUP_OAD_END_8M_FADDR;
+        flash_env.ota_part_backup_oad_header_faddr_abs = SEC_PART_BACKUP_OAD_HEADER_8M_FADDR;
+        flash_env.ota_part_backup_oad_image_faddr_abs = SEC_PART_BACKUP_OAD_IMAGE_8M_FADDR;
+    }
+    else
+    {
+        flash_env.ota_all_image_start_faddr_abs = SEC_ALL_IMAGE_ALLOC_START_4M_FADDR;
+        flash_env.ota_all_image_end_faddr_abs = SEC_ALL_IMAGE_ALLOC_END_4M_FADDR;
+        flash_env.ota_all_backup_start_faddr_abs = SEC_ALL_BACKUP_OAD_HEADER_4M_FADDR;
+        flash_env.ota_all_backup_end_faddr_abs =SEC_ALL_BACKUP_OAD_END_4M_FADDR;
+        flash_env.ota_all_backup_oad_header_faddr_abs = SEC_ALL_BACKUP_OAD_HEADER_4M_FADDR;
+        flash_env.ota_all_backup_oad_image_faddr_abs = SEC_ALL_BACKUP_OAD_IMAGE_4M_FADDR;
+
+        flash_env.ota_part_image_start_faddr_abs = SEC_PART_IMAGE_ALLOC_START_4M_FADDR;
+        flash_env.ota_part_image_end_faddr_abs = SEC_PART_IMAGE_ALLOC_END_4M_FADDR;
+        flash_env.ota_part_backup_start_faddr_abs = SEC_PART_BACKUP_OAD_HEADER_4M_FADDR;
+        flash_env.ota_part_backup_end_faddr_abs = SEC_PART_BACKUP_OAD_END_4M_FADDR;
+        flash_env.ota_part_backup_oad_header_faddr_abs = SEC_PART_BACKUP_OAD_HEADER_4M_FADDR;
+        flash_env.ota_part_backup_oad_image_faddr_abs = SEC_PART_BACKUP_OAD_IMAGE_4M_FADDR;
+    }
+}
 void set_flash_clk(unsigned char clk_conf)
 {
     //note :>16M don't use la for flash debug
@@ -100,26 +124,28 @@ void flash_write_sr_temp( uint8_t bytes,  uint16_t val )
     }
     switch(flash_mid)
     {
-	    case MX_FLASH_4M:
-	    case MX_FLASH_1:               //MG xx
-	        REG_FLASH_CONF &= 0xffdf0fff;
-	        break;
-	    case GD_FLASH_1:              //QD xx ,
-	    case BY25Q80:
-	    case PN25f04:
-	        REG_FLASH_CONF &= 0xfefe0fff;
-	        break;
-		 case P25Q40U:
-         case TH25D40HB:
-            REG_FLASH_CONF &= 0xfef00fff;
-		break;
-	
-	    case XTX_FLASH_1:              //XTX xx
-	    case GD_MD25D40:
-	    case GD_GD25WD40:
-	    default:
-	        REG_FLASH_CONF &= 0xffff0fff;
-	        break;
+    case MX_FLASH_4M:
+    case MX_FLASH_1:               //MG xx
+        REG_FLASH_CONF &= 0xffdf0fff;
+        break;
+    case GD_FLASH_1:              //QD xx ,
+    case BY25Q80:
+    case PN25f04:
+        REG_FLASH_CONF &= 0xfefe0fff;
+        break;
+     case P25Q40U:
+     case TH25D40HB:
+        REG_FLASH_CONF &= 0xfef00fff;
+    break;
+    case GD_25WD80E:
+        REG_FLASH_CONF &= 0xfffe0fff;
+    break;
+    case XTX_FLASH_1:              //XTX xx
+    case GD_MD25D40:
+    case GD_GD25WD40:
+    default:
+        REG_FLASH_CONF &= 0xffff0fff;
+        break;
     }
     if(bytes==0||bytes>2)
     {
@@ -159,48 +185,66 @@ void flash_write_sr_temp( uint8_t bytes,  uint16_t val )
 
 void flash_write_sr( uint8_t bytes,  uint16_t val )
 {
-	static uint8_t write_sr_cnt = 0;
-	#ifdef CHECK_LOW_VOLT_ENABLE
-	while(check_low_volt_sleep())
-	{
-		bim_printf("low volt 1!!!\n");
-	}
-	#endif
-	if(flash_read_sr() == val) 
-	{
-		return; 
-	}
-	
-	flash_write_sr_temp(bytes, val);
+    static uint8_t write_sr_cnt = 0;
+    uint16_t sr_data=0;
+    #ifdef CHECK_LOW_VOLT_ENABLE
+    check_low_volt_sleep();
+    #endif
 
-	while (flash_read_sr() != val)
-	{
-		flash_write_sr_temp(bytes, val);
-		
-		write_sr_cnt++;
-		if(write_sr_cnt > 20)
-		{
-			bim_printf("boot write sr error! WDT_RESET!!!\r\n");
-			wdt_enable(0x10);
-			while(1);
-		}
-	}
+    sr_data=flash_read_sr();
+    bim_printf("sr_data = 0x%x,VAL=%x\r\n", sr_data,val);
+    if(flash_mid==GD_GD25WD40 || flash_mid==GD_25WD80E)
+    {
+        if((sr_data&0xbf)==val)
+            return;
+    }
+    if(sr_data == val)
+    {
+        return; 
+    }
+
+    flash_write_sr_temp(bytes, val);
+    sr_data=flash_read_sr();
+    if(flash_mid==GD_GD25WD40 || flash_mid==GD_25WD80E)
+    {
+        sr_data &= 0xbf;
+    }
+
+    while (sr_data != val)
+    {
+        flash_write_sr_temp(bytes, val);
+
+        write_sr_cnt++;
+        if(write_sr_cnt > 10)
+        {
+            //uart_printf("boot write sr error! WDT_RESET!!!\r\n");
+            //wdt_enable(0x10);
+            bim_printf("write sr error! cpu_reset!!!\r\n");
+            bim_printf("sr = 0x%x\r\n", flash_read_sr());
+            extern void cpu_reset(void);
+            cpu_reset();
+            while(1);
+        }
+        sr_data=flash_read_sr();
+        if(flash_mid==GD_GD25WD40 || flash_mid==GD_25WD80E)
+        {
+            sr_data &= 0xbf;
+        }
+    }
 }
 
 void flash_wp_8k( void )
 {
-    //uint32_t bim_flash_id_temp= get_flash_ID();
-	//  add read sr for proctol sr reg  ___yubei__2021/7/8
-	uint32_t flash_sr;
-	#ifdef CHECK_LOW_VOLT_ENABLE
-	while(check_low_volt_sleep())
-	{
-		bim_printf("low volt 2!!!\n");
-	}
-	#endif
+    uint32_t flash_sr;
+    #ifdef CHECK_LOW_VOLT_ENABLE
+    while(check_low_volt_sleep())
+    {
+    bim_printf("low volt 2!!!\n");
+    }
+    #endif
+    
     flash_sr=flash_read_sr( );
 
- 
     switch(flash_mid)
     {
     case MX_FLASH_4M:
@@ -229,10 +273,9 @@ void flash_wp_8k( void )
         break;
     }
 }
+
 void flash_wp_128k( void )
 {
-    //uint32_t bim_flash_id_temp= get_flash_ID();
-    //add read sr for proctol sr reg  ___yubei__2021/7/8
     uint32_t flash_sr;
     #ifdef CHECK_LOW_VOLT_ENABLE
     while(check_low_volt_sleep())
@@ -276,14 +319,15 @@ void flash_wp_128k( void )
 }
 void flash_wp_256k( void)
 {
-		//add read sr for proctol sr reg  ___yubei__2021/7/8
-		uint32_t flash_sr;
-	  #ifdef CHECK_LOW_VOLT_ENABLE
-		while(check_low_volt_sleep())
-		{
-			bim_printf("low volt 4!!!\n");
-		}
-		#endif
+
+    uint32_t flash_sr;
+    #ifdef CHECK_LOW_VOLT_ENABLE
+    while(check_low_volt_sleep())
+    {
+    bim_printf("low volt 4!!!\n");
+    }
+    #endif
+    
     flash_sr=flash_read_sr( );
     switch(flash_mid)
     {
@@ -307,6 +351,10 @@ void flash_wp_256k( void)
         if(flash_sr!=0x002c)
             flash_write_sr( 2, 0x002c );
         break;
+    case GD_25WD80E:
+        if(flash_sr!=0x98)
+            flash_write_sr(1, 0x98);  //portect 0 ~ 768KB area
+        break;
     case GD_MD25D40:
     case GD_GD25WD40:
     default:
@@ -316,16 +364,16 @@ void flash_wp_256k( void)
     }
 }
 
-void flash_wp_ALL( void )
+void flash_wp_all( void )
 {
-		//  add read sr for proctol sr reg  ___yubei__2021/7/8
-		uint32_t flash_sr;
-		#ifdef CHECK_LOW_VOLT_ENABLE
-		while(check_low_volt_sleep())
-		{
-			bim_printf("low volt 5!!!\n");
-		}
-		#endif
+    //  add read sr for proctol sr reg  ___yubei__2021/7/8
+    uint32_t flash_sr;
+    #ifdef CHECK_LOW_VOLT_ENABLE
+    while(check_low_volt_sleep())
+    {
+        bim_printf("low volt 5!!!\n");
+    }
+    #endif
     flash_sr=flash_read_sr( );
 
     switch(flash_mid)
@@ -354,6 +402,7 @@ void flash_wp_ALL( void )
         break;
     case GD_MD25D40:
     case GD_GD25WD40:
+	case GD_25WD80E:
     default:
         if(flash_sr!=0x9c)
             flash_write_sr( 1, 0x9c );
@@ -361,10 +410,30 @@ void flash_wp_ALL( void )
     }
 }
 
+void flash_wp_none( void)
+{
+	uint32_t flash_sr;
+    #ifdef CHECK_LOW_VOLT_ENABLE
+	check_low_volt_sleep();
+    #endif
+	flash_sr=flash_read_sr( );
+    switch(flash_mid)
+    {
+        case GD_25WD80E:
+		if(flash_sr!=0x80)
+			flash_write_sr(1, 0x80);  //portect none area
+        break;
+		
+        default:
+        break;    
+    }
+}
+
 void flash_advance_init(void)
 {
     //uint32_t flash_sr;
     flash_mid = get_flash_ID();
+    set_flash_info();
     //flash_sr=flash_read_sr( );
     //flash_wp_256k();
 }
@@ -526,9 +595,9 @@ void flash_set_qe(void)
     uint32_t temp0;
     while(REG_FLASH_OPERATE_SW & 0x80000000);
  
-//XTX_FLASH_1 Ã»ÓÐQE,²»ÐèÒª,¿¿ EQPI(38h) CMD À´´¦Àí
-//Õâ¸ö½ö¶ÔMX_FLASH_1 ¡¢MX_FLASH_4M¡¢XTX_FLASH_1ÓÐÐ§¡£
-    temp0 = REG_FLASH_CONF; //ÅäÖÃWRSR Status data
+//XTX_FLASH_1 Ã»ï¿½ï¿½QE,ï¿½ï¿½ï¿½ï¿½Òª,ï¿½ï¿½ EQPI(38h) CMD ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½MX_FLASH_1 ï¿½ï¿½MX_FLASH_4Mï¿½ï¿½XTX_FLASH_1ï¿½ï¿½Ð§ï¿½ï¿½
+    temp0 = REG_FLASH_CONF; //ï¿½ï¿½ï¿½ï¿½WRSR Status data
     if(flash_mid == XTX_FLASH_1)  // wanghong
     {
         return;
@@ -665,7 +734,7 @@ uint8_t flash_write(uint8_t *buffer,uint32_t address, uint32_t len)
     return 0;
 }
 
-////2¨¢3yo¡¥¨ºy¡ê?¦Ì??¡¤o¨ª3¡è?¨¨??¨°a4K¦Ì???¨ºy¡À?
+////2ï¿½ï¿½3yoï¿½ï¿½ï¿½ï¿½yï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½oï¿½ï¿½3ï¿½ï¿½?ï¿½ï¿½??ï¿½ï¿½a4Kï¿½ï¿½???ï¿½ï¿½yï¿½ï¿½?
 uint8_t flash_erase( uint32_t address, uint32_t len)
 {
     /* assume: the worst span is four sectors*/

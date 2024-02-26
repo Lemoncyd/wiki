@@ -103,6 +103,9 @@ enum prevent_sleep
     RW_BT_ACTIVE_MODE                  = 0x0800,
     /// Flag to indicate that BLE requires active mode
     RW_BLE_ACTIVE_MODE                 = 0x1000,
+    /// RC 32K calibration
+    RW_RC32K_CALI_ONGOING              = 0x2000,
+
 };
 
 /// Parameters - Possible Returned Status

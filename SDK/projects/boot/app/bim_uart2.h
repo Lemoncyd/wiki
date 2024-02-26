@@ -94,7 +94,7 @@
 #define POS_UART2_REG0X7_RXD_NEGEDGE_WAKE_EN                 22
 #define UART2_FIFO_MAX_COUNT   128
 
-#define UART2_DRIVER   1
+#define UART2_DRIVER   0
 
 int bim_printf(const char *fmt,...);
 

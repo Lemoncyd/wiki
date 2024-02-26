@@ -96,6 +96,7 @@
 #include "user_config.h" 
 #include "mesh_sec.h" 
 #include "gattm_int.h"
+#include "angle_axis.h"
 /*
  * LOCAL FUNCTION DEFINITIONS
  ****************************************************************************************
@@ -124,30 +125,73 @@ static void gapm_per_sync_iq_sample_en(uint8_t onoff)
         cmd->operation = GAPM_PER_SYNC_IQ_SAMPLING_CTRL;
         cmd->actv_idx = app_env.period_sync_actv_idx;
         cmd->enable = onoff;
-        cmd->slot_dur =1;
+        
+        #if 1   
+        cmd->switching_pattern_len = 4;
+        cmd->antenna_id[0] = 0;
+        cmd->antenna_id[1] = 1;
+        cmd->antenna_id[2] = 0;
+        cmd->antenna_id[3] = 0;
+        cmd->antenna_id[4] = 2;
+        cmd->antenna_id[5] = 2;
+        cmd->antenna_id[6] = 3;
+        cmd->antenna_id[7] = 3;
+        cmd->enable = 1;
         cmd->max_sampl_cte = 1;
-        cmd->switching_pattern_len=3;
-        cmd->antenna_id[0]=1;
-        cmd->antenna_id[1]=2;
-        cmd->antenna_id[2]=3;
+        cmd->slot_dur = 2;
+        #else    
+        cmd->switching_pattern_len = 8;
+        cmd->antenna_id[0] = 0;
+        cmd->antenna_id[1] = 0;
+        cmd->antenna_id[2] = 1;
+        cmd->antenna_id[3] = 1;
+        cmd->antenna_id[4] = 2;
+        cmd->antenna_id[5] = 2;
+        cmd->antenna_id[6] = 3;
+        cmd->antenna_id[7] = 3;
+        cmd->enable = 1;
+        cmd->max_sampl_cte = 1;
+        cmd->slot_dur = 2;
+        #endif    
 
         uart_printf("gapm_per_sync_iq_sample_en \r\n");
          // Send message
         ke_msg_send(cmd); 
 
 }
-static void gapm_per_adv_iq_report_ind_handler(ke_msg_id_t const msgid,
+static int gapm_per_adv_iq_report_ind_handler(ke_msg_id_t const msgid,
                                              struct gapm_per_adv_iq_report_ind const *p_param,
                                              ke_task_id_t const dest_id,
                                              ke_task_id_t const src_id)
 {
     //gapm_per_sync_iq_sample_en(true);
-    uart_printf("sample iq:\n");
-    for(int i=0;i<p_param->nb_samples;i++)
+
+        float sample_i[82],sample_q[82];
+    for(int i = 0; i < p_param->nb_samples;i++)
     {
-        uart_printf("(%d,%d) ",p_param->sample[i].i,p_param->sample[i].q);
+
+        
+        sample_i[i] = p_param->sample[i].i;
+        sample_q[i] = p_param->sample[i].q;
+        if(sample_i[i] > 127)
+        {
+            sample_i[i] = sample_i[i]-256;
+        }
+                    
+        if(sample_q[i]>127)
+        {
+            sample_q[i] = sample_q[i]-256;
+        }      
+       // bk_printf("sample_I[%d] = %f;sample_Q[%d] = %f;\r\n",i,sample_i[i],i,sample_q[i]);
+        uart_printf("sample[%d] I:0x%02x,Q:0x%02x\r\n",i,p_param->sample[i].i,p_param->sample[i].q);
+       
     }
-    uart_printf("\r\n");
+
+
+
+
+    clac_iq2angle(sample_q,sample_i,p_param->nb_samples);
+    return (KE_MSG_CONSUMED);
 
 }
 static uint8_t app_get_handler(const struct app_subtask_handlers *handler_list_desc,
@@ -593,13 +637,14 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
             }
            #endif
         }
-        break;
+       // break;
     #if (BLE_OBSERVER || BLE_CENTRAL)
         case (GAPM_CREATE_SCAN_ACTIVITY)://0xA1           
         {
             #if (BLE_OBSERVER || BLE_CENTRAL)
              if(param->status == GAP_ERR_NO_ERROR)
              {
+				 extern void appm_create_period_sync(void);
                  appm_start_scaning();
                  appm_create_period_sync();
              }           
@@ -619,6 +664,7 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
     
         case (GAPM_CREATE_PERIOD_SYNC_ACTIVITY):
         {  
+			extern void appm_start_period_sync(void);
             appm_start_period_sync();
             
          }   break;
@@ -660,7 +706,7 @@ static int gapm_cmp_evt_handler(ke_msg_id_t const msgid,
             {
                 if(app_env.adv_state == APP_ADV_STATE_SETTING_ADV_DATA)
                 {
-           
+					extern void appm_set_period_adv_data(void);
                     appm_set_period_adv_data();
                 }
                 else if(app_env.adv_state == APP_ADV_STATE_UPDATA_ADV_DATA_AFTER_CREATED)
@@ -1512,11 +1558,11 @@ static int gapc_param_updated_ind_handler (ke_msg_id_t const msgid,
 static int gapm_ext_adv_report_ind_handler(ke_msg_id_t const msgid, struct gapm_ext_adv_report_ind *param,
                                         ke_task_id_t const dest_id, ke_task_id_t const src_id)
 {
-    uint8_t con_dev_str_name1[] ="YYYKQ";
-    uint8_t con_dev_str_name2[] ="BK3633_BLE789";
-    uint8_t find1 = 0 ;
-	uint8_t find2 = 0;
-    uint8_t length = NVDS_LEN_LTK2;
+ //   uint8_t con_dev_str_name1[] ="YYYKQ";
+//    uint8_t con_dev_str_name2[] ="BK3633_BLE789";
+//    uint8_t find1 = 0 ;
+//	uint8_t find2 = 0;
+//    uint8_t length = NVDS_LEN_LTK2;
     uart_printf("rssi:%d\r\n",param->rssi); 
 
 /*

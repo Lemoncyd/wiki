@@ -42,7 +42,7 @@
 #define ENABLE_EXT_ADV              0 ////Ö§³ÖEXT ADV at  2M/LE_CODE
 /******************************************************/
 
-#define uart_printf              uart2_printf
+#define uart_printf              uart0_printf
 
 /// Default Device Name
 #define APP_DFLT_DEVICE_NAME            ("BK3633_BLE789")

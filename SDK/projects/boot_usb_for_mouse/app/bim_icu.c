@@ -25,6 +25,11 @@ void icu_init(void)
     SYS_REG0X0D |= 0x40;
 
 }
+void cpu_reset(void)
+{
+    setf_PMU_Reg0x1_reg0_w_en;
+    setf_PMU_Reg0x0_all_reset;
+}
 extern volatile uint32_t XVR_ANALOG_REG_BAK[32];
 extern void Delay_ms(int num); //sync from svn revision 18
 

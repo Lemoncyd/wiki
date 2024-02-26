@@ -37,22 +37,23 @@ void bim_main(void)
 {
     icu_init();
     wdt_disable();
-	  updata_memset32((uint8 *)0x00400000, 1, 1);
+    updata_memset32((uint8 *)0x00400000, 1, 1);
     uart2_init(1000000);
-	  bim_printf("boot_start1\r\n");
-	  Delay_ms(50);
-	  GLOBAL_INT_START();
+    bim_printf("boot_start1\r\n");
+    Delay_ms(50);
+    GLOBAL_INT_START();
     flash_advance_init();
+    
     if(1 == bim_select_sec())
     {
-			  updata_memset32((uint8 *)0x00400000, 0, 1);
-			  GLOBAL_INT_STOP();
+        updata_memset32((uint8 *)0x00400000, 0, 1);
+        GLOBAL_INT_STOP();
         (*(FUNCPTR)SEC_IMAGE_RUN_STACK_CADDR)();
     }
     else
     {
-			  updata_memset32((uint8 *)0x00400000, 0, 1);
-			  GLOBAL_INT_STOP();
+        updata_memset32((uint8 *)0x00400000, 0, 1);
+        GLOBAL_INT_STOP();
         while(1)
         {
             bim_printf("error_start\r\n");

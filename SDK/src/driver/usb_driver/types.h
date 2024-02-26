@@ -33,7 +33,7 @@ typedef signed   short      int16_t;    // 有符号16位整型变量
 //typedef signed   int       int32_t;    // 有符号32位整型变量
 typedef unsigned char       uint8_t;    // 无符号8位整型变量
 typedef unsigned short      uint16_t;   // 无符号16位整型变量
-//typedef unsigned int       uint32_t;   // 无符号32位整型变量
+typedef unsigned int       uint32_t;   // 无符号32位整型变量
 
 //typedef enum { false=0, true=!false}  bool;
 // typedef enum { FALSE=0, TRUE=!FALSE }  bool;

@@ -1392,6 +1392,7 @@ KE_MSG_HANDLER_TAB(appm)
     {APP_PERIOD_TIMER,			(ke_msg_func_t)app_period_timer_handler},
     {APP_GATTC_EXC_MTU_CMD,		(ke_msg_func_t)app_mtu_exchange_req_handler},
     {GAPC_LE_PHY_IND,           (ke_msg_func_t)gapc_le_phy_ind_handler},
+
 };
 
 /* Defines the place holder for the states of all the task instances. */

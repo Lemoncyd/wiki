@@ -5,6 +5,8 @@
 #include "bim_wdt.h"
 #include <string.h>
 
+extern uint32_t flash_mid; 
+
 img_hdr_t hdr_img;
 img_hdr_t hdr_back;
 img_hdr_t hdr_back_part;
@@ -19,9 +21,6 @@ uint32_t bim_get_psec_image_header(void)
     {
         sec_image_oad_header_fddr = SEC_IMAGE_OAD_HEADER_STACK_FADDR;
     }
-    sec_image_oad_header_fddr = SEC_OAD_RUN_APP_FADDR;
-
-    bim_printf("ad= %x\n",sec_image_oad_header_fddr);
     flash_read((uint8_t *)&hdr_img,sec_image_oad_header_fddr,sizeof(img_hdr_t));
 #if 1
     bim_printf("hdr_img.crc = %x\n",hdr_img.crc);
@@ -37,10 +36,12 @@ uint32_t bim_get_psec_image_header(void)
 
 uint32_t bim_get_psec_backup_header(void)
 {
-    flash_read((uint8_t *)&hdr_back_part,SEC_PART_BACKUP_OAD_HEADER_FADDR,sizeof(img_hdr_t));
+    flash_read((uint8_t *)&hdr_back_part, flash_env.ota_part_backup_oad_header_faddr_abs,sizeof(img_hdr_t));
+
+    bim_printf("hdr_back_part.uid = %x\n",hdr_back_part.uid);
     if(hdr_back_part.uid!=OAD_APP_PART_UID)
     {
-        flash_read((uint8_t *)&hdr_back,SEC_ALL_BACKUP_OAD_HEADER_FADDR,sizeof(img_hdr_t));
+        flash_read((uint8_t *)&hdr_back, flash_env.ota_all_backup_oad_header_faddr_abs,sizeof(img_hdr_t));
     }
     else
     {
@@ -61,6 +62,7 @@ uint32_t bim_get_psec_backup_header(void)
     bim_printf("hdr_back.uid = %x\n",hdr_back.uid);
     return 0;
 }
+
 int make_crc32_table(void);
 uint32_t make_crc32(uint32_t crc,unsigned char *string,uint32_t size);
 uint32_t calc_image_sec_crc(void)
@@ -84,7 +86,7 @@ uint32_t calc_image_sec_crc(void)
     for(uint32_t i = 0; i < block_total; i++)
     {
         flash_read(data,read_addr,BLOCK_SIZE);
-        //flash_read(tmp_data,read_addr,BLOCK_SIZE);
+
         calcuCrc = make_crc32(calcuCrc,data,BLOCK_SIZE);
 #if 0
         if(memcmp(data,tmp_data,BLOCK_SIZE) != 0)
@@ -101,11 +103,12 @@ uint32_t calc_image_sec_crc(void)
     bim_printf("read end addr = %x\n",read_addr);
     return calcuCrc;
 }
+
 uint32_t calc_backup_sec_crc(uint32_t addr)
 {
 
     uint8_t data[BLOCK_SIZE];
-
+  
     uint16_t block_total;
     uint32_t read_addr;
     uint32_t calcuCrc = 0xffffffff;
@@ -116,7 +119,7 @@ uint32_t calc_backup_sec_crc(uint32_t addr)
     for(uint32_t i = 0; i < block_total; i++)
     {
         flash_read(data,read_addr,BLOCK_SIZE);
-
+        
         calcuCrc = make_crc32(calcuCrc,data,BLOCK_SIZE);
         read_addr+= BLOCK_SIZE;
 
@@ -130,132 +133,28 @@ uint8_t bim_check_image_sec_status(void)
     bim_get_psec_image_header();
     if(hdr_img.uid == OAD_APP_PART_UID)
     {
-        if(CRC_UNCHECK == hdr_img.crc_status) // image not crc check and image is exist ,do crc calc
+        if(hdr_img.len != 0xffff )
         {
-            if(hdr_img.len != 0xffff && (hdr_img.len / 4)<= SEC_MAX_FSIZE_APP_BLOCK)
+            if(hdr_img.crc == calc_image_sec_crc()) 
             {
-                if(hdr_img.crc == calc_image_sec_crc()) // crc ok
-                {
-                    bim_printf("check crc OK!!!\r\n");
-                    hdr_img.crc_status = CRC_CHECK_OK;
-                    hdr_img.sec_status = SECT_NORMAL;
-                    flash_write((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_APP_FADDR,sizeof(img_hdr_t));
-                    flash_read((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_APP_FADDR,sizeof(img_hdr_t));
-                    bim_get_psec_image_header();
-                    return SSTATUS_SECT_NORMAL;
-                }
-                else
-                {
-                    bim_printf("check crc fail!!!\r\n");
-                    hdr_img.crc_status = CRC_CHECK_FAIL;
-                    hdr_img.sec_status = SECT_ABNORMAL;
-                    flash_write((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_APP_FADDR,sizeof(img_hdr_t));
-                    flash_read((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_APP_FADDR,sizeof(img_hdr_t));
-                    return SSTATUS_SECT_ABNORMAL;
-                }
-            }
-            else if(hdr_img.rom_ver == 0xffff)
-            {
-                return SSTATUS_SECT_ERASED;
-            }
-            else
-            {
-                hdr_img.crc_status = CRC_CHECK_FAIL;
-                hdr_img.sec_status = SECT_ABNORMAL;
-                flash_write((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_APP_FADDR,sizeof(img_hdr_t));
-                flash_read((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_APP_FADDR,sizeof(img_hdr_t));
-                return SSTATUS_SECT_ABNORMAL;
+                bim_printf("image crc OK\r\n");
+                return SSTATUS_SECT_NORMAL;
             }
         }
-        else if(CRC_CHECK_FAIL == hdr_img.crc_status)
-        {
-            hdr_img.crc_status = CRC_CHECK_FAIL;
-            hdr_img.sec_status = SECT_ABNORMAL;
-            flash_write((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_APP_FADDR,sizeof(img_hdr_t));
-            flash_read((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_APP_FADDR,sizeof(img_hdr_t));
-            return SSTATUS_SECT_ABNORMAL;
-        }
-        else if(CRC_CHECK_OK == hdr_img.crc_status)
-        {
-            hdr_img.crc_status = CRC_CHECK_OK;
-            hdr_img.sec_status = SECT_NORMAL;
-            flash_write((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_APP_FADDR,sizeof(img_hdr_t));
-            flash_read((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_APP_FADDR,sizeof(img_hdr_t));
-            return SSTATUS_SECT_NORMAL;
-        }
-        else
-        {
-            hdr_img.crc_status = CRC_CHECK_FAIL;
-            hdr_img.sec_status = SECT_ABNORMAL;
-            flash_write((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_APP_FADDR,sizeof(img_hdr_t));
-            flash_read((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_APP_FADDR,sizeof(img_hdr_t));
-            return SSTATUS_SECT_ABNORMAL;
-        }
+        return SSTATUS_SECT_ABNORMAL;
     }
     else if(hdr_img.uid == OAD_APP_STACK_UID)
     {
-        if(CRC_UNCHECK == hdr_img.crc_status) // image not crc check and image is exist ,do crc calc
+        if(hdr_img.len != 0xffff )
         {
-            if(hdr_img.len != 0xffff && (hdr_img.len / 4)<= SEC_MAX_FSIZE_STACK_BLOCK)
+            if(hdr_img.crc == calc_image_sec_crc()) 
             {
-                if(hdr_img.crc == calc_image_sec_crc()) // crc ok
-                {
-                    bim_printf("check crc OK!!!\r\n");
-                    hdr_img.crc_status = CRC_CHECK_OK;
-                    hdr_img.sec_status = SECT_NORMAL;
-                    flash_write((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_STACK_FADDR,sizeof(img_hdr_t));
-                    flash_read((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_STACK_FADDR,sizeof(img_hdr_t));
-                    bim_get_psec_image_header();
-                    return SSTATUS_SECT_NORMAL;
-                }
-                else
-                {
-                    bim_printf("check crc fail!!!\r\n");
-                    hdr_img.crc_status = CRC_CHECK_FAIL;
-                    hdr_img.sec_status = SECT_ABNORMAL;
-                    flash_write((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_STACK_FADDR,sizeof(img_hdr_t));
-                    flash_read((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_STACK_FADDR,sizeof(img_hdr_t));
-                    return SSTATUS_SECT_ABNORMAL;
-                }
-            }
-            else if(hdr_img.ver == 0xffff)
-            {
-                return SSTATUS_SECT_ERASED;
-            }
-            else
-            {
-                hdr_img.crc_status = CRC_CHECK_FAIL;
-                hdr_img.sec_status = SECT_ABNORMAL;
-                flash_write((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_STACK_FADDR,sizeof(img_hdr_t));
-                flash_read((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_STACK_FADDR,sizeof(img_hdr_t));
-                return SSTATUS_SECT_ABNORMAL;
+                bim_printf("image crc OK\r\n");
+                return SSTATUS_SECT_NORMAL;
             }
         }
-        else if(CRC_CHECK_FAIL == hdr_img.crc_status)
-        {
-            hdr_img.crc_status = CRC_CHECK_FAIL;
-            hdr_img.sec_status = SECT_ABNORMAL;
-            flash_write((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_STACK_FADDR,sizeof(img_hdr_t));
-            flash_read((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_STACK_FADDR,sizeof(img_hdr_t));
-            return SSTATUS_SECT_ABNORMAL;
-        }
-        else if(CRC_CHECK_OK == hdr_img.crc_status)
-        {
-            hdr_img.crc_status = CRC_CHECK_OK;
-            hdr_img.sec_status = SECT_NORMAL;
-            flash_write((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_STACK_FADDR,sizeof(img_hdr_t));
-            flash_read((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_STACK_FADDR,sizeof(img_hdr_t));
-            return SSTATUS_SECT_NORMAL;
-        }
-        else
-        {
-            hdr_img.crc_status = CRC_CHECK_FAIL;
-            hdr_img.sec_status = SECT_ABNORMAL;
-            flash_write((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_STACK_FADDR,sizeof(img_hdr_t));
-            flash_read((uint8_t *)&hdr_img,SEC_IMAGE_OAD_HEADER_STACK_FADDR,sizeof(img_hdr_t));
-            return SSTATUS_SECT_ABNORMAL;
-        }
-    }
+        return SSTATUS_SECT_ABNORMAL;
+    } 
     else
     {
         bim_printf("bim_check_image_sec_status: ERROR, UNKNOWN UID\r\n");
@@ -270,157 +169,88 @@ uint8_t bim_check_backup_sec_status(void)//NOT WRITE INFO TO FLASH
     {
         return SSTATUS_SECT_ERASED;
     }
+
     if(hdr_back.uid == OAD_APP_PART_UID)
     {
-        if(CRC_UNCHECK == hdr_back.crc_status) // image not crc check and image is exist ,do crc calc
+        if(hdr_back.len != 0xffff )
         {
-
-            if(hdr_back.len != 0xffff && (hdr_back.len / 4) <= SEC_MAX_FSIZE_APP_BLOCK)
+            if(hdr_back.crc == calc_backup_sec_crc(flash_env.ota_part_backup_oad_image_faddr_abs)) // crc ok
             {
-                if(hdr_back.crc == calc_backup_sec_crc(SEC_PART_BACKUP_OAD_IMAGE_FADDR)) // crc ok
-                {
-                    bim_printf("crc ok_1\r\n");
-                    hdr_back.crc_status = CRC_CHECK_OK;
-                    hdr_back.sec_status = SECT_NORMAL;
-                    return SSTATUS_SECT_NORMAL;
-                }
-                else
-                {
-                    bim_printf("crc error\r\n");
-                    hdr_back.crc_status = CRC_CHECK_FAIL;
-                    hdr_back.sec_status = SECT_ABNORMAL;
-                    return SSTATUS_SECT_ABNORMAL;
-                }
-            }
-            else
-            {
-                hdr_back.crc_status = CRC_CHECK_FAIL;
-                hdr_back.sec_status = SECT_ABNORMAL;
-                return SSTATUS_SECT_ABNORMAL;
+                bim_printf("backup crc ok\r\n");
+                return SSTATUS_SECT_NORMAL;
             }
         }
-        else if(CRC_CHECK_FAIL == hdr_back.crc_status)
-        {
-            hdr_back.crc_status = CRC_CHECK_FAIL;
-            hdr_back.sec_status = SECT_ABNORMAL;
-            return SSTATUS_SECT_ABNORMAL;
-        }
-        else if(CRC_CHECK_OK == hdr_back.crc_status)
-        {
-            hdr_back.crc_status = CRC_CHECK_OK;
-            hdr_back.sec_status = SECT_NORMAL;
-            return SSTATUS_SECT_NORMAL;
-        }
-        else
-        {
-            hdr_back.crc_status = CRC_CHECK_FAIL;
-            hdr_back.sec_status = SECT_ABNORMAL;
-            return SSTATUS_SECT_ABNORMAL;
-        }
+        return SSTATUS_SECT_ABNORMAL;
     }
     else if(hdr_back.uid == OAD_APP_STACK_UID)
     {
-        if(CRC_UNCHECK == hdr_back.crc_status) // image not crc check and image is exist ,do crc calc
+        if( hdr_back.len != 0xffff )
         {
-            if(hdr_back.len != 0xffff && (hdr_back.len / 4) <= SEC_MAX_FSIZE_STACK_BLOCK)
+            if(hdr_back.crc == calc_backup_sec_crc(flash_env.ota_all_backup_oad_image_faddr_abs)) // crc ok
             {
-                if(hdr_back.crc == calc_backup_sec_crc(SEC_ALL_BACKUP_OAD_IMAGE_FADDR)) // crc ok
-                {
-                    bim_printf("crc ok_2\r\n");
-                    hdr_back.crc_status = CRC_CHECK_OK;
-                    hdr_back.sec_status = SECT_NORMAL;
-                    return SSTATUS_SECT_NORMAL;
-                }
-                else
-                {
-                    bim_printf("crc error\r\n");
-                    hdr_back.crc_status = CRC_CHECK_FAIL;
-                    hdr_back.sec_status = SECT_ABNORMAL;
-                    return SSTATUS_SECT_ABNORMAL;
-                }
-            }
-            else
-            {
-                hdr_back.crc_status = CRC_CHECK_FAIL;
-                hdr_back.sec_status = SECT_ABNORMAL;
-                return SSTATUS_SECT_ABNORMAL;
+                bim_printf("backup crc ok\r\n");
+                return SSTATUS_SECT_NORMAL;
             }
         }
-        else if(CRC_CHECK_FAIL == hdr_back.crc_status)
-        {
-            hdr_back.crc_status = CRC_CHECK_FAIL;
-            hdr_back.sec_status = SECT_ABNORMAL;
-            return SSTATUS_SECT_ABNORMAL;
-        }
-        else if(CRC_CHECK_OK == hdr_back.crc_status)
-        {
-            hdr_back.crc_status = CRC_CHECK_OK;
-            hdr_back.sec_status = SECT_NORMAL;
-            return SSTATUS_SECT_NORMAL;
-        }
-        else
-        {
-            hdr_back.crc_status = CRC_CHECK_FAIL;
-            hdr_back.sec_status = SECT_ABNORMAL;
-            return SSTATUS_SECT_ABNORMAL;
-        }
-    }
+        return SSTATUS_SECT_ABNORMAL;
+    }  
     else
     {
+        bim_printf("UNKNOWN\r\n");
         return SSTATUS_SECT_UNKOWN;
     }
 }
+
+void bim_erase(uint32_t start_addr,uint32_t end_addr)
+{
+    uint32_t block_addr;
+    uint32_t sector_addr;
+    sector_addr=(end_addr&0xfffff000);
+    block_addr=(end_addr&0xffff0000);
+    bim_printf("sector_addr=%x\n",sector_addr);
+    bim_printf("block_addr=%x\n",block_addr);
+    if(sector_addr>block_addr)
+    {
+        flash_erase(block_addr,sector_addr-block_addr);
+    }
+    while((block_addr-FLASH_ONE_BLOCK_SIZE)>start_addr )
+    {
+        block_addr -= FLASH_ONE_BLOCK_SIZE;
+        bim_printf("block_addr=%x\n",block_addr);
+        flash_erase_one_block(block_addr);
+    }
+    flash_erase(start_addr,block_addr-start_addr);
+
+}
 void bim_erase_image_sec(void)
 {
-    //uint8_t sector_cnt;
     bim_printf("erase_image start \n");
+
     if(hdr_back.uid == OAD_APP_PART_UID)  //128k
     {
-        ///erase 160k~328k
-        flash_erase(0x28000,0X8000);
-        flash_erase_one_block(0X30000);
-        flash_erase_one_block(0X40000);
-        flash_erase(0x50000,0X2000);
+        bim_erase(flash_env.ota_part_image_start_faddr_abs,flash_env.ota_part_image_end_faddr_abs);
     }
     else if(hdr_back.uid == OAD_APP_STACK_UID) //248k
     {
-        uint32_t addr = (SEC_ALL_IMAGE_ALLOC_END_FADDR - FLASH_ONE_BLOCK_SIZE)&0xffff0000 ;
-
-        flash_erase(SEC_IMAGE_ALLOC_START_STACK_FADDR,(0x10000-SEC_IMAGE_ALLOC_START_STACK_FADDR));
-        while(addr)
-        {
-            flash_erase_one_block(addr);
-            addr -= FLASH_ONE_BLOCK_SIZE;
-        }
-
-        flash_erase(SEC_ALL_IMAGE_ALLOC_END_FADDR&0xffff0000,(SEC_ALL_IMAGE_ALLOC_END_FADDR&0xffff));
-
-        flash_erase_sector(SEC_ALL_IMAGE_ALLOC_END_FADDR-1);
+        bim_erase(flash_env.ota_all_image_start_faddr_abs,flash_env.ota_all_image_end_faddr_abs);
     }
     else
     {
         bim_printf("bim_erase_image_sec: ERROR, UNKNOWN UID\r\n");
     }
-
     bim_printf("erase_image end \n");
 }
 void bim_erase_backup_sec(void)
 {
     if(hdr_back.uid==OAD_APP_STACK_UID)
     {
-        flash_erase_one_block(SEC_ALL_BACKUP_OAD_HEADER_FADDR);
-        flash_erase_one_block(SEC_ALL_BACKUP_OAD_HEADER_FADDR+0x10000);
-        flash_erase_one_block(SEC_ALL_BACKUP_OAD_HEADER_FADDR+0x20000);
-        flash_erase((SEC_ALL_BACKUP_OAD_HEADER_FADDR+0x30000),44*1024);
+        bim_erase(flash_env.ota_all_backup_start_faddr_abs,flash_env.ota_all_backup_end_faddr_abs);
 
         bim_printf("erase all backup addr \r\n");
     }
     else if(hdr_back.uid==OAD_APP_PART_UID)
     {
-        flash_erase(SEC_PART_BACKUP_OAD_HEADER_FADDR,56*1024);
-        flash_erase_one_block(0x60000);
-        flash_erase(0x70000,48*1024);
-
+        bim_erase(flash_env.ota_part_backup_start_faddr_abs,flash_env.ota_part_backup_end_faddr_abs);
         bim_printf("erase part backup addr\r\n");
     }
 }
@@ -435,19 +265,19 @@ void bim_updata_backup_to_image_sec(void)
     if(hdr_back.uid == OAD_APP_PART_UID) // only app part
     {
         write_addr = SEC_IMAGE_OAD_HEADER_APP_FADDR;
-        read_end_addr = SEC_PART_BACKUP_OAD_HEADER_FADDR + backup_size;
-        read_addr = SEC_PART_BACKUP_OAD_HEADER_FADDR;
-
+        read_end_addr = flash_env.ota_part_backup_oad_header_faddr_abs + backup_size;
+        read_addr = flash_env.ota_part_backup_oad_header_faddr_abs;
+       
     }
     else if(hdr_back.uid == OAD_APP_STACK_UID) //app and stack
     {
         write_addr = SEC_IMAGE_OAD_HEADER_STACK_FADDR;
-        read_end_addr = SEC_ALL_BACKUP_OAD_HEADER_FADDR + backup_size;
-        read_addr = SEC_ALL_BACKUP_OAD_HEADER_FADDR;
+        read_end_addr = flash_env.ota_all_backup_oad_header_faddr_abs + backup_size;
+        read_addr = flash_env.ota_all_backup_oad_header_faddr_abs;
     }
     bim_printf("write_addr = %x\r\n",write_addr);
     bim_printf("read_end_addr = %x\r\n",read_end_addr);
-
+    
     while(read_addr < read_end_addr)
     {
         flash_read(data,read_addr,READ_BLOCK_SIZE);
@@ -462,55 +292,64 @@ uint8_t bim_select_sec(void)
 {
     uint8_t bsec_status;
     uint8_t status = 0;
-
+    
     bsec_status = bim_check_backup_sec_status();
     bim_printf("bsec_status= %x\n",bsec_status);
-
+    
     switch(bsec_status)
     {
         case SSTATUS_SECT_NORMAL: // 1:I NORMAL ,B NORMAL,updata B -> I,RUN I
         {
-            if(hdr_back.uid == OAD_APP_PART_UID)
+            if(GD_25WD80E == flash_mid)
             {
-                flash_wp_128k();
+                flash_wp_none();
             }
-            else if(hdr_back.uid == OAD_APP_STACK_UID)
+            else
             {
-                flash_wp_8k();
+                if(hdr_back.uid == OAD_APP_PART_UID)
+                {
+                    flash_wp_128k();
+                }
+                else if(hdr_back.uid == OAD_APP_STACK_UID) 
+                {
+                    flash_wp_8k();
+                }
             }
             bim_erase_image_sec();
             bim_updata_backup_to_image_sec();
             if(SSTATUS_SECT_NORMAL == bim_check_image_sec_status())
             {
-                bim_printf("1234\n");
-                flash_wp_256k();
                 bim_erase_backup_sec();
                 status = 1;
-                flash_wp_ALL();
+                flash_wp_all();
             }
             else
             {
-                flash_wp_ALL();
+                flash_wp_all();
                 wdt_enable(100);//reset
             }
         }
         break;
         case SSTATUS_SECT_ERASED://://3:I NORMAL,B ERASED,RUN I
         {
-
-            bim_printf("earse\n");
             status = 1;
-            //flash_wp_ALL();
         }
         break;
         case SSTATUS_SECT_ABNORMAL:
         case SSTATUS_SECT_DIFF_ROM_VER:////4:I DIFF_ROM,B ERASED,NOT HAPPEN
         default:
         {
-            flash_wp_256k();
+            if(GD_25WD80E == flash_mid)
+            {
+                flash_wp_none();
+            }
+            else
+            {
+                flash_wp_256k();
+            }
             status = 1;
             bim_erase_backup_sec();
-            flash_wp_ALL();
+            flash_wp_all();
         }
         break;
     }

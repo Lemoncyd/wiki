@@ -178,7 +178,7 @@ void bdaddr_env_init(void)
     }
     else
     {
-    	flash_read_data(&co_bdaddr.addr[0],0x7E000,6);
+    	flash_read_data(&co_bdaddr.addr[0],flash_env.bdaddr_def_addr_abs,6);
     	if(co_bdaddr.addr[0]!=0xff ||co_bdaddr.addr[1]!=0xff||
     	        co_bdaddr.addr[2]!=0xff||co_bdaddr.addr[3]!=0xff||
     	        co_bdaddr.addr[4]!=0xff||co_bdaddr.addr[5]!=0xff )
@@ -257,15 +257,6 @@ void platform_reset(uint32_t error)
 
 }
 
-uint8_t system_mode;
-void sys_mode_init(uint8_t mode)
-{
-	system_mode = mode;
-}
-uint8_t get_sys_mode(void)
-{
-	return system_mode;
-}
 void enter_dut_fcc_mode(void)
 { 
 	while(1)
@@ -460,19 +451,10 @@ int main(void)
     icu_init();
     wdt_disable();
     intc_init();
-    sys_mode_init(NORMAL_MODE);
-    
-    gpio_config(0x00,INPUT,PULL_HIGH);
-    Delay_ms(1);
-    if(0==gpio_get_input(0x00))
-    {
-        Delay_ms(10);
-        if(0==gpio_get_input(0x00))
-            sys_mode_init(DUT_FCC_MODE);
-    }
+  
 
-    //uart_init(115200);
-    uart_init(1000000);
+    uart_init(115200);
+  //  uart_init(1000000);
 
     gpio_init();
   //  timer_init();
@@ -492,8 +474,9 @@ int main(void)
     if((system_mode & DUT_FCC_MODE) == DUT_FCC_MODE) //dut mode
     {
         uart_printf("enter_dut_fcc_mode \r\n");
-        GLOBAL_INT_START();
         mcu_clk_switch(MCU_CLK_80M);
+		
+        GLOBAL_INT_START();
         enter_dut_fcc_mode();
     }
     else //normal mode

@@ -26,7 +26,9 @@
 	EXPORT boot_stack_base_IRQ
 	EXPORT boot_stack_len_IRQ
 	EXPORT boot_stack_base_FIQ
-	EXPORT boot_stack_len_FIQ		
+	EXPORT boot_stack_len_FIQ
+    EXPORT arm9_enable_alignfault
+
 	;EXPORT _sysboot_copy_data_to_ram
 	;EXPORT _sysboot_zi_init
 	
@@ -287,4 +289,9 @@ _zi_loop
         BLO _zi_loop
         BX LR
 
+arm9_enable_alignfault
+        MRC p15, 0, R0, c1, c0, 0
+        ORR R0, R0, #0x02
+        MCR p15, 0, R0, c1, c0, 0
+        BX LR
 	END

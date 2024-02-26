@@ -350,7 +350,7 @@ static bool nvds_is_magic_number_ok(void)
     uint8_t read_magic_number[NVDS_MAGIC_NUMBER_LENGTH];
 
     // Look for the magic number
-    nvds_env.read(NVDS_MAGIC_NUMBER_ADDRESS, sizeof(read_magic_number), read_magic_number);
+    nvds_env.read(flash_env.nvds_def_addr_abs, sizeof(read_magic_number), read_magic_number);
 
     // Compare the read magic number with the correct value
     if (memcmp(read_magic_number, nvds_magic_number, NVDS_MAGIC_NUMBER_LENGTH)==0)
@@ -379,7 +379,7 @@ static uint8_t nvds_walk_tag (uint32_t cur_tag_addr,
 
         // Check if there is enough space to read next header
         // the limit is set minus 1 because we need to leave at least an end marker
-        if ((*nxt_tag_addr_ptr - NVDS_MAGIC_NUMBER_ADDRESS) > (nvds_env.total_size - 1))
+        if ((*nxt_tag_addr_ptr - flash_env.nvds_def_addr_abs) > (nvds_env.total_size - 1))
         {
             // Going above NVDS limit, probably an error occurred
             ASSERT_ERR(0);
@@ -402,7 +402,7 @@ static uint8_t nvds_browse_tag (uint8_t tag,
     uint32_t cur_tag_addr, nxt_tag_addr;
 
     // set the address to the first data byte of the NVDS
-    nxt_tag_addr = NVDS_START_STORAGE_AREA_ADDRESS;
+    nxt_tag_addr = (flash_env.nvds_def_addr_abs+NVDS_MAGIC_NUMBER_LENGTH);
 
     do
     {
@@ -466,10 +466,10 @@ static void nvds_erase(uint32_t address, uint32_t length)
 static void nvds_init_memory(void)
 {
     // clear the device
-    nvds_env.erase((uint32_t)NVDS_MAGIC_NUMBER_ADDRESS, nvds_env.total_size);
+    nvds_env.erase((uint32_t)flash_env.nvds_def_addr_abs, nvds_env.total_size);
 
     // Write the magic number at address 0
-    nvds_env.write((uint32_t)NVDS_MAGIC_NUMBER_ADDRESS,
+    nvds_env.write((uint32_t)flash_env.nvds_def_addr_abs,
                    (uint32_t)NVDS_MAGIC_NUMBER_LENGTH,
                    (uint8_t*)nvds_magic_number);
 
@@ -485,7 +485,7 @@ static void nvds_purge(uint32_t length, uint8_t* buf)
 
     // store all the valid TAG elements in the locally allocated buffer
     total_length = 0;
-    nxt_tag_addr = NVDS_START_STORAGE_AREA_ADDRESS;
+    nxt_tag_addr = (flash_env.nvds_def_addr_abs+NVDS_MAGIC_NUMBER_LENGTH);
     walk_ptr = buf;
     do
     {
@@ -501,7 +501,8 @@ static void nvds_purge(uint32_t length, uint8_t* buf)
             ASSERT_ERR(total_length <= length);
 
             // copy the header content
-            *((struct nvds_tag_header*)walk_ptr) = tag_hdr;
+            //*((struct nvds_tag_header*)walk_ptr) = tag_hdr;
+            memcpy(walk_ptr,&tag_hdr,sizeof(struct nvds_tag_header));
 
             // increment the pointer to the data part
             walk_ptr += NVDS_TAG_HEADER_LENGTH;
@@ -520,7 +521,7 @@ static void nvds_purge(uint32_t length, uint8_t* buf)
     nvds_init_memory();
 
     // rewrite the NVDS once cleaned
-    nvds_env.write((uint32_t)NVDS_START_STORAGE_AREA_ADDRESS,
+    nvds_env.write((uint32_t)(flash_env.nvds_def_addr_abs+NVDS_MAGIC_NUMBER_LENGTH),
                    (uint32_t)total_length,
                    buf);
 }
@@ -540,9 +541,6 @@ uint8_t nvds_init(void)
     // Identify Flash memory
     //flash_identify(&nvds_env.flash_id, NULL);
 
-    //if(nvds_env.flash_id == FLASH_TYPE_NUMONYX_M25P128
-    //    || nvds_env.flash_id == FLASH_TYPE_INTEL_28F320C3
-    //        || nvds_env.flash_id == FLASH_TYPE_INTEL_28F800C3)
     if(1)
     {
         // Initialize the pointer to the NVDS
@@ -691,7 +689,7 @@ uint8_t nvds_put(uint8_t tag, nvds_tag_len_t length, uint8_t *buf)
      *   3) compute the total length needed by the all valid tags
      *   4) retrieve the first address where new data can be stored     */
     total_length = 0;
-    nxt_tag_addr = NVDS_START_STORAGE_AREA_ADDRESS;
+    nxt_tag_addr = (flash_env.nvds_def_addr_abs+NVDS_MAGIC_NUMBER_LENGTH);
 
     do
     {
@@ -744,7 +742,7 @@ uint8_t nvds_put(uint8_t tag, nvds_tag_len_t length, uint8_t *buf)
         /* check if there is enough space to write next tag
            the limit is calculated including 2 TAG headers (the current and the next
            that is used to leave at least an end marker) */
-        if ((cur_tag_addr + (NVDS_TAG_HEADER_LENGTH*2) + NVDS_ALIGNMENT(length) - NVDS_MAGIC_NUMBER_ADDRESS)
+        if ((cur_tag_addr + (NVDS_TAG_HEADER_LENGTH*2) + NVDS_ALIGNMENT(length) - flash_env.nvds_def_addr_abs)
              > (nvds_env.total_size - 1))
         {
             ASSERT_ERR(nvds_temp_buf != NULL);
@@ -753,10 +751,10 @@ uint8_t nvds_put(uint8_t tag, nvds_tag_len_t length, uint8_t *buf)
             nvds_purge(total_length, nvds_temp_buf);
 
             // compute the next tag address in the NVDS memory space
-            cur_tag_addr = NVDS_START_STORAGE_AREA_ADDRESS + NVDS_ALIGNMENT(total_length);
+            cur_tag_addr = (flash_env.nvds_def_addr_abs+NVDS_MAGIC_NUMBER_LENGTH) + NVDS_ALIGNMENT(total_length);
 
             // if there is still not enough space, return an error
-			if ((cur_tag_addr + NVDS_TAG_HEADER_LENGTH + NVDS_ALIGNMENT(length) - NVDS_MAGIC_NUMBER_ADDRESS)
+            if ((cur_tag_addr + NVDS_TAG_HEADER_LENGTH + NVDS_ALIGNMENT(length) - flash_env.nvds_def_addr_abs)
                  > (nvds_env.total_size - 1))
             {
                 return NVDS_NO_SPACE_AVAILABLE;

@@ -41,5 +41,3 @@ rd projects\boot_for_all_roles\obj /s /q
 rd projects\boot_usb_central\obj /s /q
 rd projects\boot_usb_for_mouse\obj /s /q
 
-del ..\..\bk3633_V*.rar  /s/q
-

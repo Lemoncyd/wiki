@@ -61,4 +61,7 @@ void set_power(uint8_t power_level);
 void xtal_cal_set(uint8_t cal_data);
 void pll_clk_calibration(void);
 void rf_debug_gpio_init(uint8_t GPIO_C_D);
+void CLK32K_AutoCali_Start(void);
+void CLK32K_AutoCali_End(void);
+
 #endif // RF_H_

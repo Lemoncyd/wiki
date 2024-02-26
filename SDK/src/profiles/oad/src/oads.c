@@ -214,9 +214,9 @@ uint32_t oad_updating_user_section_pro(void)
     {
         sec_ptr = &bsec;
         if(oad_uuid == OAD_APP_PART_UID)
-            wr_addr = sec_ptr->update_offset + (SEC_BACKUP_APP_PART_UID_OAD_HEADER_FADDR);
+            wr_addr = sec_ptr->update_offset + flash_env.ota_app_def_addr_abs ;
         else
-            wr_addr = sec_ptr->update_offset + (SEC_BACKUP_APP_STACK_UID_OAD_HEADER_FADDR);
+            wr_addr = sec_ptr->update_offset + flash_env.ota_stack_app_def_addr_abs;
 
         len = sec_ptr->data_cnt * 16;
         for( i=0;i<len/96;i++)
@@ -237,9 +237,9 @@ uint32_t oad_updating_user_section_pro(void)
     {	
         sec_ptr = &bsec;
         if(oad_uuid == OAD_APP_PART_UID)
-            wr_addr = sec_ptr->update_offset + (SEC_BACKUP_APP_PART_UID_OAD_HEADER_FADDR);
+            wr_addr = sec_ptr->update_offset + flash_env.ota_app_def_addr_abs;
         else
-            wr_addr = sec_ptr->update_offset + (SEC_BACKUP_APP_STACK_UID_OAD_HEADER_FADDR);
+            wr_addr = sec_ptr->update_offset + flash_env.ota_stack_app_def_addr_abs;
 
         len = sec_ptr->data_cnt * 16;
 

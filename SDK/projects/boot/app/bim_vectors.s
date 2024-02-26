@@ -73,7 +73,29 @@ SYSirq_IRQ_Handler 	EQU     0x00025e20
 ;* Output         : none
 ;*******************************************************************************
 Undefined
-        B       Undefined_Exception
+    ; r0保存入栈
+    STMDB SP!, {R12}
+    ; 将指针指向0x400004
+    LDR R12, =0x400004
+    ; 保存 R0 到 R11
+    STMIA R12!, {R0-R11}
+    
+    ;取R12
+    LDR R0,[SP,#-8]
+    STR R0, [R12], #4
+    
+    ; 保存 sp,r13
+    ADD R13, R13,#4
+    STR R13, [R12], #4
+    
+    ; 保存 LR,r14
+    MOV R0, LR
+    STR R0, [R12], #4
+
+    ; 保存pc,???? 
+    MOV R0, PC
+    STR R0, [R12], #4
+    B       Undefined_Exception
 
 ;*******************************************************************************
 ;* Function Name  : SWIHandler
@@ -82,10 +104,33 @@ Undefined
 ;* Output         : none
 ;*******************************************************************************
 SoftwareInterrupt
-        B       SoftwareInterrupt_Exception
+    ; r0保存入栈
+    STMDB SP!, {R12}
+    ; 将指针指向0x400004
+    LDR R12, =0x400004
+    ; 保存 R0 到 R11
+    STMIA R12!, {R0-R11}
+    
+    ;取R12
+    LDR R0,[SP,#-8]
+    STR R0, [R12], #4
+    
+    ; 保存 sp,r13
+    ADD R13, R13,#4
+    STR R13, [R12], #4
+    
+    ; 保存 LR,r14
+    MOV R0, LR
+    STR R0, [R12], #4
+
+    ; 保存pc,???? 
+    MOV R0, PC
+    STR R0, [R12], #4
+    B       SoftwareInterrupt_Exception
 
 PrefetchAbort
-        B       PrefetchAbort_Exception
+
+    B       PrefetchAbort_Exception
 
 ;*******************************************************************************
 ;* Function Name  : DataAbortHandler
@@ -94,7 +139,30 @@ PrefetchAbort
 ;* Output         : none
 ;*******************************************************************************
 DataAbort
-        B       DataAbort_Exception
+	; r0保存入栈
+    STMDB SP!, {R12}
+    ; 将指针指向0x400004
+    LDR R12, =0x400004
+    ; 保存 R0 到 R11
+    STMIA R12!, {R0-R11}
+    
+    ;取R12
+    LDR R0,[SP,#-8]
+    STR R0, [R12], #4
+    
+    ; 保存 sp,r13
+    ADD R13, R13,#4
+    STR R13, [R12], #4
+    
+    ; 保存 LR,r14
+    MOV R0, LR
+    STR R0, [R12], #4
+
+    ; 保存pc,???? 
+    MOV R0, PC
+    STR R0, [R12], #4
+  
+    B       DataAbort_Exception
 
 ;*******************************************************************************
 ;* Function Name  : IRQHandler

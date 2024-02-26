@@ -53,8 +53,17 @@ void  xvr_reg_initial(void) {
         addXVR_Reg0x6 = 0x8487CC00;//0x80B7CE20  ;
         XVR_ANALOG_REG_BAK[6] = 0x8487CC00;//0x80B7CE20;
     #else
-        addXVR_Reg0x6 = 0x84A7CC00;//0x8097CE20  ;
-        XVR_ANALOG_REG_BAK[6] = 0x84A7CC00;//0x8097CE20;
+	
+		if(get_sys_mode() == DUT_FCC_MODE)	// dut is in LDO mode
+		{		
+	        XVR_ANALOG_REG_BAK[6] = 0x8487CC00;//0x80B7CE20;
+		}
+		else
+		{
+	        XVR_ANALOG_REG_BAK[6] = 0x84A7CC00;//0x8097CE20  ;
+		}
+		
+		addXVR_Reg0x6 = XVR_ANALOG_REG_BAK[6];//0x80B7CE20  ;
     #endif
 	addXVR_Reg0x7 = 0xAA023FC0;//0xAA023DC0  ;
 	XVR_ANALOG_REG_BAK[7] = 0xAA023FC0;//0xAA023DC0;
@@ -68,8 +77,17 @@ void  xvr_reg_initial(void) {
 	addXVR_Reg0xa = 0x9C03F86B;//0x9C27785B  ;
 	XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86B;//0x9C27785B;
     #else
-    addXVR_Reg0xa = 0x9C03F86F;//0x9C27785B  ;
-    XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86F;//0x9C27785B;
+	
+	if(get_sys_mode() == DUT_FCC_MODE)	// dut is in LDO mode
+	{		
+		XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86B;//0x9C27785B;
+	}
+	else
+	{
+		XVR_ANALOG_REG_BAK[0xa] = 0x9C03F86F;//0x9C27785B  ;
+	}
+	
+	addXVR_Reg0xa = XVR_ANALOG_REG_BAK[0xa];//0x9C27785B  ;
     #endif
     addXVR_Reg0xb = 0x0FD93F23  ;
     XVR_ANALOG_REG_BAK[0xb] = 0x0FD93F23;
@@ -92,6 +110,8 @@ void  xvr_reg_initial(void) {
 	addXVR_Reg0x1f = 0x00000000  ;
 	XVR_ANALOG_REG_BAK[0x1f] = 0x00000000;
   
+  	xtal_cal_set(0x35);
+    
     addXVR_Reg0x20 = 0x8E89BED6;// REG_20
     addXVR_Reg0x21 = 0x96000000;//0x96000000;// REG_21
     addXVR_Reg0x22 = 0x78000000;// REG_22
@@ -190,7 +210,7 @@ void  xvr_reg_initial(void) {
 
 
 
-	xtal_cal_set(0x35);
+
 
 }
 
@@ -230,10 +250,10 @@ void Delay_ms(int num) //sync from svn revision 18
 void kmod_calibration(void) 
 {
 
-/* 1¡¢ÔÚ³õÊ¼»¯0X26µÄ [16:28] = 0x1084 
-			2¡¢ÔÚ0X30µÄBT ÉèÖÃ³É BT = 1È¥Ð£×¼
+/* 1ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½0X26ï¿½ï¿½ [16:28] = 0x1084 
+			2ï¿½ï¿½ï¿½ï¿½0X30ï¿½ï¿½BT ï¿½ï¿½ï¿½Ã³ï¿½ BT = 1È¥Ð£×¼
 	
-		3¡¢Ð£×¼Íê³Éºó½«ÔÚ0X30µÄBT ÉèÖÃ³É BT = 0.5
+		3ï¿½ï¿½Ð£×¼ï¿½ï¿½Éºï¿½ï¿½ï¿½0X30ï¿½ï¿½BT ï¿½ï¿½ï¿½Ã³ï¿½ BT = 0.5
 	
 	
 	*/
@@ -421,9 +441,9 @@ void CLK32K_AutoCali_init(void)
 }
 
 
-//ÅäÖÃµ¥ÔØ²¨·¢Éä
-//freq:ÆµµãÉèÖÃ£¬Ë«Æµµã(2-80)
-//power:¹¦ÂÊµÈ¼¶(0x1-0xf)
+//ï¿½ï¿½ï¿½Ãµï¿½ï¿½Ø²ï¿½ï¿½ï¿½ï¿½ï¿½
+//freq:Æµï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½Ë«Æµï¿½ï¿½(2-80)
+//power:ï¿½ï¿½ï¿½ÊµÈ¼ï¿½(0x1-0xf)
 void singleWaveCfg(uint8_t freq, uint8_t power_level)
 {
 	uint32_t val = 0;
@@ -440,8 +460,8 @@ void singleWaveCfg(uint8_t freq, uint8_t power_level)
 }
 
 
-//ÐÞ¸Ä·¢Éä¹¦ÂÊ
-//power_level:¹¦ÂÊµÈ¼¶(0x0-0xf)
+//ï¿½Þ¸Ä·ï¿½ï¿½ä¹¦ï¿½ï¿½
+//power_level:ï¿½ï¿½ï¿½ÊµÈ¼ï¿½(0x0-0xf)
 void set_power(uint8_t power_level)
 {
 	uint32_t val = 0;
@@ -454,8 +474,8 @@ void set_power(uint8_t power_level)
 	addXVR_Reg0x24 |= val;
 }
 
-///¾§ÌåÆµÆ«µ÷Õû
-///cal_dataÄ¬ÈÏÎª0x35,×î´óÎª0x7f
+///ï¿½ï¿½ï¿½ï¿½ÆµÆ«ï¿½ï¿½ï¿½ï¿½
+///cal_dataÄ¬ï¿½ï¿½Îª0x35,ï¿½ï¿½ï¿½Îª0x7f
 void xtal_cal_set(uint8_t cal_data)
 {
     if(cal_data>0x7f)

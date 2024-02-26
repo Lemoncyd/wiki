@@ -104,7 +104,6 @@ typedef void (*FUNCPTR)(void);
 #define SEC_IMAGE_OAD_HEADER_STACK_FADDR	        (0x20E0) 
 #endif
 
-
 #define SEC_BACKUP_APP_PART_UID_OAD_HEADER_FADDR	(0x52000) //328kb * 1024
 
 #ifdef __MOUSE__
@@ -112,6 +111,7 @@ typedef void (*FUNCPTR)(void);
 #else
 #define SEC_BACKUP_APP_STACK_UID_OAD_HEADER_FADDR	(0x40000) //256kb * 1024
 #endif
+
 
 #define SEC_BACKUP_ALLOC_END_FADDR			        (0x80000) //(512KB)
 /*********************************************************************

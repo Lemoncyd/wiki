@@ -65,16 +65,19 @@
 #define FLASH_ERASE_SECTOR_SIZE                           (4096)
 #define FLASH_ERASE_SECTOR_SIZE_MASK                      (FLASH_ERASE_SECTOR_SIZE - 1)
 #define UPDATE_CHUNK_SIZE                                 (32)
+
 #define GD_FLASH_1   0XC84013
 #define GD_MD25D40   0x514013
 #define GD_GD25WD40  0xc86413
-#define MX_FLASH_1  0XC22314
-#define XTX_FLASH_1 0X1C3113
-#define BY25Q80     0xe04014
-#define PN25f04     0xe04013
-#define MX_FLASH_4M 0XC22313
-#define P25Q40U     0X856013
-#define TH25D40HB   0xcd6013
+#define MX_FLASH_1   0XC22314
+#define XTX_FLASH_1  0X1C3113
+#define BY25Q80      0xe04014
+#define PN25f04      0xe04013
+#define MX_FLASH_4M  0XC22313
+#define P25Q40U      0X856013
+#define TH25D40HB    0xcd6013
+#define GD_25WD80E   0xc86414
+
 #define FLASH_LINE_1  1
 #define FLASH_LINE_2  2
 #define FLASH_LINE_4  4
@@ -86,6 +89,7 @@
 #define FLASH_WRITE_ENABLE4  0XD1
 #define FLASH_ERASE_ENABLE1  0XAB
 #define FLASH_ERASE_ENABLE2  0XBC
+
 
 extern void __enable_irq(void);
 extern void __enable_fiq(void);
@@ -141,10 +145,26 @@ typedef enum
     FLASH_OPCODE_CRMR    = 22,
     FLASH_OPCODE_CRMR2   = 23,
 } FLASH_OPCODE;
-/*
- * FUNCTION DECLARATIONS
- ****************************************************************************************
- */
+
+
+/// Flash environment structure
+struct flash_env_tag
+{
+    uint32_t ota_all_image_start_faddr_abs ;
+    uint32_t ota_all_image_end_faddr_abs ;
+    uint32_t ota_all_backup_start_faddr_abs ;
+    uint32_t ota_all_backup_end_faddr_abs ;
+    uint32_t ota_all_backup_oad_header_faddr_abs;
+    uint32_t ota_all_backup_oad_image_faddr_abs;
+
+    uint32_t ota_part_image_start_faddr_abs ;
+    uint32_t ota_part_image_end_faddr_abs ;
+    uint32_t ota_part_backup_start_faddr_abs ;
+    uint32_t ota_part_backup_end_faddr_abs ;
+    uint32_t ota_part_backup_oad_header_faddr_abs;
+    uint32_t ota_part_backup_oad_image_faddr_abs;
+};
+
 extern struct flash_env_tag flash_env;
 void flash_advance_init(void);
 /**
@@ -222,7 +242,7 @@ void flash_wp_8k( void );
 void flash_wp_128k( void );
 void flash_wp_256k( void);
 void flash_wp_504k( void);
-void flash_wp_ALL( void );
+void flash_wp_all( void );
 void set_flash_clk(unsigned char clk_conf) ;
 void flash_clk_conf(uint8_t clk_sel,uint8_t clk_src,uint8_t div);
 void flash_set_qe(void);
@@ -232,4 +252,5 @@ void flash_set_line_mode(uint8_t mode);
 void flash_read_data (uint8_t *buffer, uint32_t address, uint32_t len);
 void flash_write_data (uint8_t *buffer, uint32_t address, uint32_t len);
 void flash_set_dual_mode(void);
+void flash_wp_none( void);
 #endif // FLASH_H_

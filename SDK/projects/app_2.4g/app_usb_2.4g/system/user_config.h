@@ -37,7 +37,7 @@
 
 
 
-#define uart_printf              uart2_printf
+#define uart_printf              uart0_printf
 
 
 #ifndef NULL

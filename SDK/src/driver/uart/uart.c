@@ -214,7 +214,6 @@ struct bd_addr
     uint8_t  addr[6];
 };
 
-extern uint8_t system_mode;
 extern struct bd_addr co_default_bdaddr;
 extern void wdt_enable(uint32_t wdt_cnt);
 	

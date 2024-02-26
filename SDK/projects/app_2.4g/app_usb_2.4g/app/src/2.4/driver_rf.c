@@ -149,15 +149,15 @@ void Rf_Init(void)
 
 //    set_SYS_Reg0x1e_ahb_clk_gate_disable(9);
 //    uint8 i;
-//    // ³õÊ¼»¯Ä£Äâ¼Ä´æÆ÷
+//    // ï¿½ï¿½Ê¼ï¿½ï¿½Ä£ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
 //    for(i=0; i<8; i++)
 //        Write_Reg_Ana(i, Ana_Init_Val[i]);
-//    // ÉèÖÃ¹¦ÂÊ
+//    // ï¿½ï¿½ï¿½Ã¹ï¿½ï¿½ï¿½
 //    TRX_GPA0 = 0x05;
 //    TRX_GPA1 = 0xF8;
-//    // ¹Ø±ÕÄ£Ê½Ñ¡ÔñµçÂ·
+//    // ï¿½Ø±ï¿½Ä£Ê½Ñ¡ï¿½ï¿½ï¿½Â·
 //    TRX_ANAPWD_CTRL0 |= 0x11;
-    // ³õÊ¼»¯cfg_0C, cfg_0D
+    // ï¿½ï¿½Ê¼ï¿½ï¿½cfg_0C, cfg_0D
     memcpy_2461(&TRX_CFG_0C_0, Cfg_0c_Val, 4);
     memcpy_2461(&TRX_CFG_0D_0, Cfg_0d_Val, 4);
 //    memcpy_2461(&TRX_RAMP_TABLE_0, Ramp_Table_Val, 11);
@@ -203,7 +203,7 @@ void SetDataRate(int data_rate)
     {
         case 0 :  // 250kbps
             addXVR_Reg0x2e &= 0xfffffe00 ;
-            addXVR_Reg0x2e |= 0x64 ;
+            addXVR_Reg0x2e |= 0x100 ;
             addXVR_Reg0x26 &= 0xe000ffff;
             addXVR_Reg0x26 |= 0x04080000;
             addXVR_Reg0x30 &= ~(0x1ff<<8);
@@ -355,7 +355,7 @@ uint32_t driver_rf_data_send(uint8_t len)
 		PowerUp_Rf();
         RF_CMD_CLEAR_STATUS_MAX;
 	}
-//ÒòÎªmaxºóÐèÒªÖØ´«£¬Ö»ÒªÇåmax¾Í¿ÉÒÔÆô¶¯
+//ï¿½ï¿½Îªmaxï¿½ï¿½ï¿½ï¿½Òªï¿½Ø´ï¿½ï¿½ï¿½Ö»Òªï¿½ï¿½maxï¿½Í¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 //rf_send_exit:
     //if(status & STATUS_MAX_RT)
     //{
@@ -438,7 +438,7 @@ uint32 driver_rf_data_retrans(void)
         RF_CMD_CLEAR_STATUS_MAX;
 
 		RF_flag &= ~flag_rf_last_state ;
-		RF_flag &= ~flag_rf_hop_16ch;			// ÖØÐÂÌîfifo, ±ÜÃâ¿Õfifoµ÷ÓÃdriver_rf_data_retransº¯Êý
+		RF_flag &= ~flag_rf_hop_16ch;			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½fifo, ï¿½ï¿½ï¿½ï¿½ï¿½fifoï¿½ï¿½ï¿½ï¿½driver_rf_data_retransï¿½ï¿½ï¿½ï¿½
 	}
     return (RF_flag & flag_rf_last_state);
 }
@@ -608,17 +608,17 @@ void driver_rf_ouput_power_value_set(uint8_t power_level)
 
 uint8_t get_rf_rssi(void)
 /*
-×¢Òâ
-1 ¶Árssi×îºÃ°Ñagc¹Ø±Õ£¬    addXVR_Reg0x3c |=0x01<<31;
-2 °ÑÖÐÆµµÄrx gain½µµ½×îµÍ£º
+×¢ï¿½ï¿½
+1 ï¿½ï¿½rssiï¿½ï¿½Ã°ï¿½agcï¿½Ø±Õ£ï¿½    addXVR_Reg0x3c |=0x01<<31;
+2 ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½rx gainï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½
    		 XVR_ANALOG_REG_BAK[8] &= ~(0x7f<<20);
     		addXVR_Reg0x8 = XVR_ANALOG_REG_BAK[8]  ;
 
-tx¹¦ÂÊÉè¶¨Îª0£¬ÌìÏß¿¿½ü£¬µÃµ½µÄÖµÎª0x5e£»Ê®¹«·Ö´ó¸Å0x58£»¶þÊ®¹«·Ö´ó¸Å0x51£»50
-¹«·Ö´ó¸Å0x52-0x49²»ÎÈ¶¨
-ÒÔÉÏ²âÊÔÖµÓëÌìÏßºÍ·½ÏòÓÐ¹Ø
+txï¿½ï¿½ï¿½ï¿½ï¿½è¶¨Îª0ï¿½ï¿½ï¿½ï¿½ï¿½ß¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ÖµÎª0x5eï¿½ï¿½Ê®ï¿½ï¿½ï¿½Ö´ï¿½ï¿½0x58ï¿½ï¿½ï¿½ï¿½Ê®ï¿½ï¿½ï¿½Ö´ï¿½ï¿½0x51ï¿½ï¿½50
+ï¿½ï¿½ï¿½Ö´ï¿½ï¿½0x52-0x49ï¿½ï¿½ï¿½È¶ï¿½
+ï¿½ï¿½ï¿½Ï²ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ßºÍ·ï¿½ï¿½ï¿½ï¿½Ð¹ï¿½
 
-¼ÇµÃÓÃÍêÒªÇÐ»ØÕý³£Öµ
+ï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
 
 */
 {

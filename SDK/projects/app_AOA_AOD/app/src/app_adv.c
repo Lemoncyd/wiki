@@ -115,10 +115,33 @@ void appm_create_advertising(void)
         p_cmd->adv_param.period_cfg.adv_intv_max = 25;
         p_cmd->adv_param.period_cfg.cte_count = 1;
         p_cmd->adv_param.period_cfg.cte_type = 0;
-        p_cmd->adv_param.period_cfg.cte_len = 10;
-        p_cmd->adv_param.period_cfg.switching_pattern_len = 2;
-        p_cmd->adv_param.period_cfg.antenna_id[0]=1;
-        p_cmd->adv_param.period_cfg.antenna_id[1]=2;
+        p_cmd->adv_param.period_cfg.cte_len = 20;
+        #if 1
+        p_cmd->adv_param.period_cfg.switching_pattern_len = 4;
+        p_cmd->adv_param.period_cfg.antenna_id[0]= 0;
+        p_cmd->adv_param.period_cfg.antenna_id[1]= 1;
+        p_cmd->adv_param.period_cfg.antenna_id[2]= 0;
+        p_cmd->adv_param.period_cfg.antenna_id[3]= 0;
+        #else
+        p_cmd->adv_param.period_cfg.switching_pattern_len = 16;
+        p_cmd->adv_param.period_cfg.antenna_id[0]= 0;
+        p_cmd->adv_param.period_cfg.antenna_id[1]= 1;
+        p_cmd->adv_param.period_cfg.antenna_id[2]= 2;
+        p_cmd->adv_param.period_cfg.antenna_id[3]= 3;
+        p_cmd->adv_param.period_cfg.antenna_id[4]= 4;
+        p_cmd->adv_param.period_cfg.antenna_id[5]= 5;
+        p_cmd->adv_param.period_cfg.antenna_id[6]= 6;
+        p_cmd->adv_param.period_cfg.antenna_id[7]= 7;
+        p_cmd->adv_param.period_cfg.antenna_id[8]= 8;
+        p_cmd->adv_param.period_cfg.antenna_id[9]= 9;
+        p_cmd->adv_param.period_cfg.antenna_id[10]= 10;
+        p_cmd->adv_param.period_cfg.antenna_id[11]= 11;
+        p_cmd->adv_param.period_cfg.antenna_id[12]= 12;
+        p_cmd->adv_param.period_cfg.antenna_id[13]= 13;
+        p_cmd->adv_param.period_cfg.antenna_id[14]= 14;
+        p_cmd->adv_param.period_cfg.antenna_id[15]= 15;
+        #endif
+
         
         #if (BLE_APP_HID)
         p_cmd->adv_param.disc_mode = GAPM_ADV_MODE_LIM_DISC;

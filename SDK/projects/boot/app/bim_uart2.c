@@ -30,7 +30,7 @@ void uart2_init(uint32_t baudrate)
     UART2_REG0X4 = 0x42;
     UART2_REG0X6 = 0x0;
     UART2_REG0X7 = 0x0;
-    SYS_REG0X10_INT_EN |= (0x01 << POS_SYS_REG0X10_INT_EN_UART1);
+    //SYS_REG0X10_INT_EN |= (0x01 << POS_SYS_REG0X10_INT_EN_UART1);
     //uart2_rx_done = 0;
     //uart2_rx_index = 0;
 }
@@ -133,13 +133,6 @@ int bim_printf(const char *fmt,...)
 
 #endif
 //==========================UART_INTERRUPT==========================
-#else
-void uart2_init(uint32_t baudrate)
-{
-    return ;
-}
-int bim_printf(const char *fmt,...)
-{
-    return 0;
-}
+
+
 #endif
