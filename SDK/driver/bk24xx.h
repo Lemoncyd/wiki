@@ -1,0 +1,148 @@
+#ifndef __BK24xx_H__
+#define __BK24xx_H__
+
+#define  ADDR_BASE_TRX          0x880
+// BK2401
+#define  BK2401_CONFIG     XBYTE[0x0880]
+#define  BK2401_ENAA       XBYTE[0x0881]
+#define  BK2401_ENRX       XBYTE[0x0882]
+#define  BK2401_AW         XBYTE[0x0883]
+#define  BK2401_RETR       XBYTE[0x0884]
+#define  BK2401_RFCH       XBYTE[0x0885]
+#define  BK2401_SETUP      XBYTE[0x0886]
+
+
+#define  BK2401_R0_ADDR    (PCHAR(0x0887))
+#define  BK2401_R1_ADDR    (PCHAR(0x088C))
+#define  BK2401_R2_ADDR    XBYTE[0x0891]
+#define  BK2401_R3_ADDR    XBYTE[0x0892]
+#define  BK2401_R4_ADDR    XBYTE[0x0893]
+#define  BK2401_R5_ADDR    XBYTE[0x0894]
+
+#define  BK2401_TX_ADDR    (PCHAR(0x0895))
+/*
+#define  BK2401_R0_ADDR_0  XBYTE[0x0887]
+#define  BK2401_R0_ADDR_1  XBYTE[0x0888]
+#define  BK2401_R0_ADDR_2  XBYTE[0x0889]
+#define  BK2401_R0_ADDR_3  XBYTE[0x088A]
+#define  BK2401_R0_ADDR_4  XBYTE[0x088B]
+#define  BK2401_R1_ADDR_0  XBYTE[0x088C]
+#define  BK2401_R1_ADDR_1  XBYTE[0x088D]
+#define  BK2401_R1_ADDR_2  XBYTE[0x088E]
+#define  BK2401_R1_ADDR_3  XBYTE[0x088F]
+#define  BK2401_R1_ADDR_4  XBYTE[0x0890]
+#define  BK2401_TX_ADDR_0  XBYTE[0x0895]
+#define  BK2401_TX_ADDR_1  XBYTE[0x0896]
+#define  BK2401_TX_ADDR_2  XBYTE[0x0897]
+#define  BK2401_TX_ADDR_3  XBYTE[0x0898]
+#define  BK2401_TX_ADDR_4  XBYTE[0x0899]
+*/
+#define  BK2401_R0_PW      XBYTE[0x089A]
+#define  BK2401_R1_PW      XBYTE[0x089B]
+#define  BK2401_R2_PW      XBYTE[0x089C]
+#define  BK2401_R3_PW      XBYTE[0x089D]
+#define  BK2401_R4_PW      XBYTE[0x089E]
+#define  BK2401_R5_PW      XBYTE[0x089F]
+#define  BK2401_DYNPD      XBYTE[0x08A0]
+#define  BK2401_FEATURE    XBYTE[0x08A1]
+
+#define  BK2401_CFG_0C_0    XBYTE[0x08A2]
+#define  BK2401_CFG_0D_3    XBYTE[0x08A9]
+/*
+#define  BK2401_CFG_0C_1    XBYTE[0x08A3]
+#define  BK2401_CFG_0C_2    XBYTE[0x08A4]
+#define  BK2401_CFG_0C_3    XBYTE[0x08A5]
+#define  BK2401_CFG_0D_0    XBYTE[0x08A6]
+#define  BK2401_CFG_0D_1    XBYTE[0x08A7]
+#define  BK2401_CFG_0D_2    XBYTE[0x08A8]
+#define  BK2401_CFG_0D_3    XBYTE[0x08A9]
+#define  BK2401_RAMP_TAB_0    XBYTE[0x08AA]
+#define  BK2401_RAMP_TAB_1    XBYTE[0x08AB]
+#define  BK2401_RAMP_TAB_2    XBYTE[0x08AC]
+#define  BK2401_RAMP_TAB_3    XBYTE[0x08AD]
+#define  BK2401_RAMP_TAB_4    XBYTE[0x08AE]
+#define  BK2401_RAMP_TAB_5    XBYTE[0x08AF]
+#define  BK2401_RAMP_TAB_6    XBYTE[0x08B0]
+#define  BK2401_RAMP_TAB_7    XBYTE[0x08B1]
+#define  BK2401_RAMP_TAB_8    XBYTE[0x08B2]
+#define  BK2401_RAMP_TAB_9    XBYTE[0x08B3]
+#define  BK2401_RAMP_TAB_A    XBYTE[0x08B4]
+*/
+#define  BK2401_CFG_0C_ARRAY    (PCHAR(0X08A2))
+#define  BK2401_CFG_0D_ARRAY    (PCHAR(0X08A6))
+#define  BK2401_RAMP_TAB_ARRAY  (PCHAR(0X08AA))
+
+#define  BK2401_CE         XBYTE[0x08B5]
+#define  BK2401_CMD        XBYTE[0x08B6]
+#define  BK2401_FIFO       XBYTE[0x08B7]
+#define  BK2401_SDATA      (PCHAR(0x08B8))
+#define  BK2401_SDATA_0    XBYTE[0x08B8]
+#define  BK2401_SDATA_1    XBYTE[0x08B9]
+#define  BK2401_SDATA_2    XBYTE[0x08BA]
+#define  BK2401_SDATA_3    XBYTE[0x08BB]
+/*
+#define  BK2401_sdata_1    XBYTE[0x08B9]
+#define  BK2401_sdata_2    XBYTE[0x08BA]
+#define  BK2401_sdata_3    XBYTE[0x08BB]
+*/
+#define  BK2401_SCTRL      XBYTE[0x08BC]
+#define  BK2401_KCALOUT_H  XBYTE[0x08BE]
+#define  BK2401_KCALOUT_L  XBYTE[0x08BF]
+
+
+#define  BK2401_STATUS     XBYTE[0x08C0]
+#define  BK2401_OBSERVETX  XBYTE[0x08C1]
+#define  BK2401_CDSTATUS   XBYTE[0x08C2]
+#define  BK2401_FIFOSTATUS XBYTE[0x08C3]
+#define  BK2401_RPL_WIDTH  XBYTE[0x08C4]
+#define  BK2401_MBIST_ST   XBYTE[0x08C5]
+#define  BK2401_BIT_CNT    (PCHAR(0x08C8))
+#define  BK2401_bit_cnt_0  XBYTE[0x08C8]
+#define  BK2401_bit_cnt_1  XBYTE[0x08C9]
+#define  BK2401_bit_cnt_2  XBYTE[0x08CA]
+#define  BK2401_bit_cnt_3  XBYTE[0x08CB]
+
+#define  BK2401_ERR_CNT    (PCHAR(0x08CC))
+#define  BK2401_err_cnt_0  XBYTE[0x08CC]
+#define  BK2401_err_cnt_1  XBYTE[0x08CD]
+#define  BK2401_err_cnt_2  XBYTE[0x08CE]
+#define  BK2401_err_cnt_3  XBYTE[0x08CF]
+
+#define  TX_FREQ_OFFSET    (PCHAR(0x08D0))
+#define  TX_FREQ_OFFSET_0    XBYTE[0x08D0]
+#define  TX_FREQ_OFFSET_1    XBYTE[0x08D1]
+#define  TX_FREQ_OFFSET_2    XBYTE[0x08D2]
+#define  TX_FREQ_OFFSET_3    XBYTE[0x08D3]
+/*
+#define  TX_FREQ_OFFSET_1  XBYTE[0x08D1]
+#define  TX_FREQ_OFFSET_2  XBYTE[0x08D2]
+#define  TX_FREQ_OFFSET_3  XBYTE[0x08D3]
+*/
+#define  RX_FREQ_OFFSET    (PCHAR(0x08D4))
+#define  RX_FREQ_OFFSET_0  XBYTE[0x08D4]
+#define  RX_FREQ_OFFSET_1  XBYTE[0x08D5]
+#define  RX_FREQ_OFFSET_2  XBYTE[0x08D6]
+#define  RX_FREQ_OFFSET_3  XBYTE[0x08D7]
+
+#define  MOD_DELAY         XBYTE[0x08D8]
+#define  PLL_SDM           XBYTE[0x08D9]
+#define  FM_GAIN_H         XBYTE[0x08DA]
+#define  FM_GAIN_L         XBYTE[0x08DB]
+#define  FM_KMOD_SET_H     XBYTE[0x08DC]
+#define  FM_KMOD_SET_L     XBYTE[0x08DD]
+#define  MOD_COEFFICIENT_H XBYTE[0x08DE]
+#define  MOD_COEFFICIENT_L XBYTE[0x08DF]
+#define  ANA_CTRL10         XBYTE[0x08E0]
+#define  ANA_CTRL11         XBYTE[0x08E1]		//
+#define  ANA_CTRL12         XBYTE[0x08E2]
+#define  ANA_CTRL13         XBYTE[0x08E3]
+#define  TRX_GPA0               XBYTE[0x61 + ADDR_BASE_TRX]
+#define  TRX_GPA1               XBYTE[0x62 + ADDR_BASE_TRX]
+#define  DEM_CONTROL            XBYTE[0x62 + ADDR_BASE_TRX]
+
+#define  ANA_IND           XBYTE[0x08F9]
+#define  CHIP_ID_H         XBYTE[0x08FA]
+#define  CHIP_ID_L         XBYTE[0x08FB]
+#define  DEVICE_ID         (PCHAR(0x08FC))
+
+#endif
