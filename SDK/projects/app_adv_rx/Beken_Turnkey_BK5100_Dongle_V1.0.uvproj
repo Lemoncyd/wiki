@@ -10,7 +10,7 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x0</ToolsetNumber>
       <ToolsetName>MCS-51</ToolsetName>
-      <uAC6>0</uAC6>
+      <uAC6>8</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>DS80C320</Device>
@@ -33,10 +33,10 @@
           <SFDFile></SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
-          <BinPath></BinPath>
+          <BinPath>C:\Keil_C51\ARM\BIN\</BinPath>
           <IncludePath></IncludePath>
           <LibPath></LibPath>
-          <RegisterFilePath>Dallas\</RegisterFilePath>
+          <RegisterFilePath></RegisterFilePath>
           <DBRegisterFilePath>Dallas\</DBRegisterFilePath>
           <TargetStatus>
             <Error>0</Error>

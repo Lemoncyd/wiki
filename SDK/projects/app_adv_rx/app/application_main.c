@@ -92,7 +92,7 @@ code UINT8 adv_data[32]={
 
 	0x02,0x01,0x05,//frame 1
 
-	0x09,0x09,'2','4','8','0','-','a','d','v'
+	0x09,0x09,'2','4','8','0','-','a','d','C'
 
 };
 
@@ -181,24 +181,27 @@ int main(void)
 	}
 	#endif
 	#if TEST_RF_MODE==TEST_RF_MODE_RX
-	print_str("Test BLE adv\r\n");
+	print_str("Test BLE adv.....\r\n");
 	//test rx packet
 	//driver_rf_spi_set_mode_rx();
 	while(1){
-		print_str("start rx\r\n");
+		print_str("start rx.....\r\n");
 		s=ble_adv_recv(BLE_ADV_Decode_data, 24, 37);
-		if(s){
-			print_str("Rx Decode={\r\n");
-			for(s=0;s<32;s++){
+		//if(s)
+		{
+			print_str("Rx Decode={{\r\n");
+			for(s=0;s<32;s++)
+			{
 				print_hex(BLE_ADV_Decode_data[s]);
-				if((s&0xf)==0x0f){
+				if((s&0xf)==0x0f)
+				{
 					print_newline();
 				}
 			}
-			print_str("};\r\n");
-
+			print_str("}};\r\n");
 			print_str("recvMAC={");
-			for(s=7;s>1;s--){
+			for(s=7;s>1;s--)
+			{
 				print_hex(BLE_ADV_Decode_data[s]);
 			}
 			print_str("};\r\n");
