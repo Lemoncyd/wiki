@@ -1,0 +1,2 @@
+1. keygen.exe先要patch exe
+2. 再用keygen.exe生成的信息去注册

@@ -1,0 +1,172 @@
+{
+  "projectName": "¼¯ÏÍÐÂÉÕÂ¼Æ÷",
+  "version": "v1.0.1",
+  "chip": "",
+  "baudrate1": 115200,
+  "baudrate2": 0,
+  "waittime": 0,
+  "cmd": [
+    {
+      "no": 0,
+      "cmd_text": "",
+      "cmd_type": "str",
+      "cmd_txt_len": 0,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 50,
+      "retryCnt": 1,
+      "rspCmd": {
+        "succText": "",
+        "rsp_type": "",
+        "rsp_succ_text_len":0 ,
+        "failText": "",
+        "timeout": 50,
+        "count": 1,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+    {
+      "no": 1,
+      "cmd_text": "burn_tool_burn_info",
+      "cmd_type": "hex-custom",
+      "cmd_txt_len": 64,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 1,
+      "rspCmd": {
+        "succText": "",
+        "rsp_type": "hex",
+        "rsp_succ_text_len": 6,
+        "failText": "",
+        "timeout": 200,
+        "count": 10,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 3,
+          "size": 1
+        },
+        "min_val": 1,
+        "max_val": 1
+      }
+    },
+    {
+      "no": 2,
+      "cmd_text": "burn_tool_fireware_info",
+      "cmd_type": "hex-custom",
+      "cmd_txt_len": 64,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 1,
+      "rspCmd": {
+        "succText": "",
+        "rsp_type": "hex",
+        "rsp_succ_text_len": 6,
+        "failText": "",
+        "timeout": 200,
+        "count": 10,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 3,
+          "size": 1
+        },
+        "min_val": 1,
+        "max_val": 1
+      }
+    },
+    {
+      "no": 3,
+      "cmd_text": "burn_tool_license_info",
+      "cmd_type": "hex-custom",
+      "cmd_txt_len": 64,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 1,
+      "rspCmd": {
+        "succText": "",
+        "rsp_type": "hex",
+        "rsp_succ_text_len": 6,
+        "failText": "",
+        "timeout": 200,
+        "count": 10,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 3,
+          "size": 1
+        },
+        "min_val": 1,
+        "max_val": 1
+      }
+    },
+    {
+      "no": 4,
+      "cmd_text": "burn_tool_burn_data",
+      "cmd_type": "hex-custom",
+      "cmd_txt_len": 64,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 1,
+      "rspCmd": {
+        "succText": "",
+        "rsp_type": "hex",
+        "rsp_succ_text_len": 6,
+        "failText": "",
+        "timeout": 200,
+        "count": 10,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 3,
+          "size": 1
+        },
+        "min_val": 1,
+        "max_val": 1
+      }
+    },
+        {
+      "no": 5,
+      "cmd_text": "burn_tool_burn_info",
+      "cmd_type": "hex-custom",
+      "cmd_txt_len": 64,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 1,
+      "rspCmd": {
+        "succText": "",
+        "rsp_type": "hex",
+        "rsp_succ_text_len": 6,
+        "failText": "",
+        "timeout": 200,
+        "count": 40,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 3,
+          "size": 1
+        },
+        "min_val": 1,
+        "max_val": 1
+      }
+    }
+  ]
+}

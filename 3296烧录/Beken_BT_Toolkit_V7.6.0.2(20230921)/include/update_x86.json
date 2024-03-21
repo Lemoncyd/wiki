@@ -1,0 +1,17 @@
+{
+"PulseSensor":
+	{
+		"LatestVersion":"V7.6.0.2",
+		"Url":"ftp://ftp.bekencorp.com/BT_Toolkit/x86/Beken_BT_Toolkit_V7.6.0.2/",
+		"UpdateTime":"2023-5-30",
+		"UpdateFile":"Beken_ToolKit.exe,cn.qm,蓝牙集成工具使用说明.pdf,蓝牙配置模块操作说明.pdf",
+    "ReleaseNote":"\n1.添加检查更新说明，包含版本号，下载链接，更新时间，更新说明.\n2.优化“关于”界面"
+	},
+"RGBContrl":
+	{
+		"LatestVersion":"V7.2.0.3",
+		"Url":"http://192.168.0.8/svn/temp/branches/zhu.su/Beken_BT_Toolkit/Beken_BT_Toolkit_V7.1.0.3.zip",
+		"UpdateTime":"2021-06-11",
+    "ReleaseNote":"版本说明"
+	}
+}

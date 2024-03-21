@@ -1,0 +1,6 @@
+[18:12:40.169]========Start Flash Download Debug========
+[18:12:40.169]ToolVersion:V7.6.0.4
+[18:12:40.169]Build Date:Dec 15 2023
+[18:12:40.169]Opem comport fail.
+COM:\\.\COM3,Baudrate:2000000
+[18:12:40.169]=============End Debug==============

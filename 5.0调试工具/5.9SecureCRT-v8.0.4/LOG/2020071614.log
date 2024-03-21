@@ -1,0 +1,75 @@
+﻿[14:27:12:]
+[14:27:12:]?>
+[14:27:16:]?>bootloader start
+[14:27:18:]
+[14:27:18:]can not find ota_info.bin
+[14:27:18:]can not find ota.bin, plz use xmodem
+[14:27:18:]heap size 136616
+[14:27:18:]===================
+[14:27:18:]RT Config:       11 11 11 11 11 11 11 151 151  7  9 10  7  7  7  7  7  0
+[14:27:18:]HT Config:       11 11 11 11 11 11 11 151 151  7  9 10  7  7  7  7  7  0
+[14:27:18:]LT Config:       11 11 11 11 11 11 11 151 151  7  9 10  7  7  7  7  7  0
+[14:27:18:]===================
+[14:27:18:]RF Gain:         4
+[14:27:18:]B Rate Gain:      7
+[14:27:18:]G Rate Gain:     13, 11,  9,  7
+[14:27:18:]20N Rate Gain:   13, 11,  9,  7
+[14:27:18:]40N Rate Gain:   13, 11,  9,  7
+[14:27:18:]Temperature Boundary:    35, 90
+[14:27:18:]===================
+[14:27:18:]5G RT Config:    13 13 10  8 0x9264924a 0x96dbb6cc
+[14:27:18:]5G HT Config:    13 13 10  8 0x9264924a 0x96dbb6cc
+[14:27:18:]5G LT Config:    13 13 10  8 0x9264924a 0x96dbb6cc
+[14:27:18:]5G Band Threshold:       5150 5500 5700
+[14:27:18:]===================
+[14:27:18:]page index byte len:         256
+[14:27:18:]object lookup pages:         1
+[14:27:18:]page pages per block:        16
+[14:27:18:]page header length:          5
+[14:27:18:]object header index entries: 105
+[14:27:18:]object index entries:        124
+[14:27:18:]available file descriptors:  16
+[14:27:18:]free blocks:                 282
+[14:27:18:]
+[14:27:18:]fs init errno = 0
+[14:27:18:]total 1061981, used 502
+[14:27:18:]playerSaveData.conf [0001] size:116
+[14:27:18:]remove ota.bin rlt = -10002
+[14:27:18:]remove ota_info.bin rlt = -10002
+[14:27:18:]======MAC Address= 00:11:22:33:44:5A
+[14:27:18:]##[version]: app-1.0.0-20200716.1352
+[14:27:18:]
+[14:27:18:]rtc go
+[14:27:18:]temperature_compensaradio init tion_tass
+[14:27:18:]RF table k
+[14:27:18:]task ver 19.00 PHstart at Y table verwdt!
+[14:27:18:] 19.00, common code ver 1.18 
+[14:27:18:]radio init e
+[14:27:18:]if0 00:11:22:33:44:5A
+[14:27:18:]if1  00:11:22:33:44:5A
+[14:27:18:]MAC[00:11:22:33:44:5a]
+[14:27:18:]MAC[00:11:22:33:44:5a]
+[14:27:18:]init end 2
+[14:27:18:]
+[14:27:43:]?>AT+DUT_START=1
+[14:27:43:]reset key tbl
+[14:27:43:]tx flow: 735
+[14:27:43:]rx flow: cb4
+[14:27:43:]ap list number is 50
+[14:27:43:]
+[14:27:43:]?>wifi_mgmt_task
+[14:27:45:]
+[14:27:46:]?>
+[14:27:55:]?>AT+SCAN
+[14:28:15:]?>
+[14:28:15:]?>
+[14:28:15:]?>
+[14:28:35:]?>AT+VERSION 
+[14:28:35:]+VERSION:WSDK.18Q2.1938.01
+[14:28:35:]
+[14:28:38:]?>
+[14:28:39:]?>
+[14:28:39:]?>
+[14:28:48:]?>AT+SCAN
+[14:28:56:]?>
+[14:28:56:]?>

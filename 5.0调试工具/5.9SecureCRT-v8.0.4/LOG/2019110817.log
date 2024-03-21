@@ -1,0 +1,18 @@
+﻿[17:30:37:]c_connection_req_ind_handler
+[17:30:37:]c_le_pkt_size_ind_handler ram->status = 0x0 
+[17:30:37:]1max_rx_octets = 251
+[17:30:37:]1max_rx_time = 2120
+[17:30:37:]1max_tx_octets = 27
+[17:30:37:]1max_tx_time = 328
+[17:30:37:]gattc_mtu_changed_ind_handler 
+[17:30:37:]ind->mtu = 131,seq = 0
+[17:30:38:]slave send param_update_req
+[17:30:38:]c_cmp_evt_handler operation = bncy = 0,time_out = 600
+[17:30:39:]pc_param_updated_ind_handler 
+[17:30:39:]con_interval = 24
+[17:30:39:]con_latency = 0
+[17:30:39:]sup_to = 600
+[17:30:50:]app_task.c:gapc_disconnect_ind_handler   line:474
+[17:30:50:]disconnect link reason = 0x13
+[17:30:50:]Not sleep
+[17:30:50:]appm start advertising

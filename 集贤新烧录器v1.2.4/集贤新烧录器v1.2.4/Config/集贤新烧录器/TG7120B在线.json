@@ -1,0 +1,532 @@
+{
+  "projectName": "7120B",
+  "version": "v1.0.1",
+  "chip": "7120B",
+  "baudrate1": 9600,
+  "baudrate2": 1000000,
+  "waittime": 0,
+  "cmd": [
+    {
+      "no": 0,
+      "baudrate":9600,
+      "cmd_text": "UXTDWU",
+      "cmd_type": "str",
+      "cmd_txt_len": 6,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 999999,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "cmd>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":6,
+        "failText": "",
+        "timeout": 20,
+        "count": 1,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+    {
+      "no": 1,
+      "baudrate":115200,
+      "cmd_text": "rdreg 11000000",
+      "cmd_type": "str",
+      "cmd_txt_len": 14,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "=0xffffffff#OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":17,
+        "failText": "",
+        "timeout": 100,
+        "count": 30,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+        {
+      "no": 2,
+      "baudrate":115200,
+      "cmd_text": "er512",
+      "cmd_type": "str",
+      "cmd_txt_len": 14,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 30,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "#OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":6,
+        "failText": "",
+        "timeout": 100,
+        "count": 40,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+    {
+      "no": 3,
+      "baudrate":115200,
+      "cmd_text": "rdrev+",
+      "cmd_type": "str",
+      "cmd_txt_len": 6,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "0x0013600b 6220CK05 #OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":26,
+        "failText": "",
+        "timeout": 100,
+        "count": 30,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+    {
+      "no": 4,
+      "baudrate":115200,
+      "cmd_text": "clock48",
+      "cmd_type": "str",
+      "cmd_txt_len": 7,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "#OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":6,
+        "failText": "",
+        "timeout": 100,
+        "count": 20,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+        {
+      "no": 5,
+      "baudrate":115200,
+      "cmd_text": "uarts1000000",
+      "cmd_type": "str",
+      "cmd_txt_len": 12,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "#OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":6,
+        "failText": "",
+        "timeout": 100,
+        "count": 0,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+    {
+      "no": 6,
+      "baudrate":1000000,
+      "cmd_text": "rdrev+",
+      "cmd_type": "str",
+      "cmd_txt_len": 6,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "0x0013600b 6220CK05 #OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":26,
+        "failText": "",
+        "timeout": 100,
+        "count": 20,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+        {
+      "no": 7,
+      "baudrate":1000000,
+      "cmd_text": "wrreg4000c890 ab000001",
+      "cmd_type": "str",
+      "cmd_txt_len": 22,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "#OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":6,
+        "failText": "",
+        "timeout": 100,
+        "count": 30,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+        {
+      "no": 8,
+      "baudrate":1000000,
+      "cmd_text": "wrreg4000c838 ff010005",
+      "cmd_type": "str",
+      "cmd_txt_len": 22,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "#OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":6,
+        "failText": "",
+        "timeout": 100,
+        "count": 20,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+    {
+      "no": 9,
+      "baudrate":1000000,
+      "cmd_text": "spifs 0 1 3 0",
+      "cmd_type": "str",
+      "cmd_txt_len": 13,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "#OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":6,
+        "failText": "",
+        "timeout": 100,
+        "count": 20,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+       {
+      "no": 10,
+      "baudrate":1000000,
+      "cmd_text": "sfmod 2 2",
+      "cmd_type": "str",
+      "cmd_txt_len": 9,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "#OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":6,
+        "failText": "",
+        "timeout": 100,
+        "count": 30,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+        {
+      "no": 11,
+      "baudrate":1000000,
+      "cmd_text": "rdrev+",
+      "cmd_type": "str",
+      "cmd_txt_len": 6,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "0x0013600b 6220CK05 #OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":26,
+        "failText": "",
+        "timeout": 100,
+        "count": 20,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+    {
+      "no": 12,
+      "baudrate":1000000,
+      "cmd_text": "cpnum ffffffff",
+      "cmd_type": "str",
+      "cmd_txt_len": 14,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "#OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":6,
+        "failText": "",
+        "timeout": 100,
+        "count": 20,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+        {
+      "no": 13,
+      "baudrate":1000000,
+      "cmd_text": "",
+      "cmd_type": ".bin",
+      "cmd_txt_len": 0,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "cpbin c0",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "0",
+        "rsp_type": "",
+        "rsp_succ_text_len":0,
+        "failText": "",
+        "timeout": 100,
+        "count": 60,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+        {
+      "no": 14,
+      "baudrate":1000000,
+      "cmd_text": "rdrev+",
+      "cmd_type": "str",
+      "cmd_txt_len": 6,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "0x0013600b 6220CK05 #OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":26,
+        "failText": "",
+        "timeout": 100,
+        "count": 20,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+            {
+      "no": 15,
+      "baudrate":1000000,
+      "cmd_text": "uarts115200",
+      "cmd_type": "str",
+      "cmd_txt_len": 11,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "#OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":6,
+        "failText": "",
+        "timeout": 100,
+        "count": 0,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+        {
+      "no": 16,
+      "baudrate":115200,
+      "cmd_text": "rdrev+",
+      "cmd_type": "str",
+      "cmd_txt_len": 6,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 0,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "0x0013600b 6220CK05 #OK>>:",
+        "rsp_type": "",
+        "rsp_succ_text_len":26,
+        "failText": "",
+        "timeout": 100,
+        "count": 20,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    },
+      {
+      "no": 17,
+      "baudrate":115200,
+      "cmd_text": "",
+      "cmd_type": "str",
+      "cmd_txt_len": 0,
+      "statusText_tips": "",
+      "succText_tips": "",
+      "failText_tips": "",
+      "sleepTime": 2000,
+      "retryCnt": 2,
+      "cmdAddEnter":0,
+      "rspCmd": {
+        "succText": "",
+        "rsp_type": "",
+        "rsp_succ_text_len":0,
+        "failText": "",
+        "timeout": 5000,
+        "count": 1,
+        "val_type": {
+          "find_text": "",
+          "find_text2": "",
+          "index": 0,
+          "size": 0
+        },
+        "min_val": 0,
+        "max_val": 0
+      }
+    }
+  ]
+}

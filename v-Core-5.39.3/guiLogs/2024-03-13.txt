@@ -1,0 +1,4 @@
+2024-03-13 14:20:58,558 [1] INFO  Log1 - v2rayN start up | v2rayN - V5.39 - 2022/12/13 | D:\1.0.1.tool\v-Core-5.39.3\v2rayN.exe
+2024-03-13 14:21:59,612 [4] INFO  Log1 - UpdateTaskRun
+2024-03-13 15:06:16,965 [1] INFO  Log1 - MyAppExit Begin
+2024-03-13 15:06:17,178 [1] INFO  Log1 - MyAppExit End

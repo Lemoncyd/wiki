@@ -1,0 +1,14 @@
+128位 UUID 与16（32）位 UUID 换算公式如下：
+
+
+
+128_bit_value = 16_bit_value * (2^96) + Bluetooth_Base_UUID  2的96次方
+
+
+128_bit_value = 32_bit_value * (2^96) + Bluetooth_Base_UUID
+
+
+
+其中 Bluetooth_Base_UUID 的值为：
+
+00000000–0000–1000–8000–00805F9B34FB

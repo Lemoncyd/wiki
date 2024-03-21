@@ -1,0 +1,25 @@
+[11:27:23.305]========Start Flash Download Debug========
+[11:27:23.305]ToolVersion:V7.6.0.4
+[11:27:23.305]Build Date:Dec 15 2023
+[11:27:23.307]COM:\\.\COM4,Baudrate:9600
+[11:27:23.318]Start handshake...
+[11:27:23.318]>>>handshakeAndStayinRom
+[11:27:23.318][BAUD]:original baudrate: 9600.
+[11:27:23.318][CMD]:01 e0 fc 05 fe 95 27 95 27 
+[11:27:23.321][BAUD]:Set baudrate: 115200.
+[11:27:23.335][CMD]:01 e0 fc 02 aa 55 
+[11:27:23.336][RET]:00 00 00 00 00 00 00 00 
+[11:27:23.339][CMD]:01 e0 fc 02 aa 55 
+[11:27:23.339][RET]:04 0e 05 01 e0 fc aa 55 
+[11:27:23.339]Handshake successful.
+[11:27:23.349][CMD]:01 e0 fc 09 01 3c 0c 00 01 3a 00 00 00 
+[11:27:23.357][RET]:04 0e 0c 01 e0 fc 01 3c 0c 00 01 3a 00 00 00 
+[11:27:23.458]Start read flash ID...
+[11:27:23.458]>>>readFlashMid
+[11:27:23.458][CMD]:01 e0 fc ff f4 05 00 0e 9f 00 00 00 
+[11:27:23.462][RET]:04 0e ff 01 e0 fc f4 06 00 0e 00 ff cd 60 14 
+[11:27:23.462][MSG]:Read flash mid:0x1460cd
+[11:27:23.462]Read flash ID OK:0x1460cd
+[11:27:23.463]Check flash size enough to download bin file.
+[11:27:23.463]Bin file size over flash size.
+[11:27:23.463]=============End Debug==============

@@ -1,0 +1,5 @@
+14.59.40	正常	设备1 CRC = 0x772436b0
+14.59.59	正常	设备1 程序下载成功 
+15.01.36	正常	设备1 CRC = 0x7fba133b
+15.01.54	正常	设备1 程序下载成功 
+15.05.20	警告	设备1 文件打开失败!路径:C:\Users\Lemon\Desktop\BK3435&3431Q_DesignKit_V3B_1A12-改\SDK\projects\ble_app_central\output\app\bk3435_ble_app_merge_crc.bin!
