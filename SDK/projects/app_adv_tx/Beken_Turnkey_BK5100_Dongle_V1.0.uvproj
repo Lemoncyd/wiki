@@ -377,26 +377,6 @@
           <GroupName>application</GroupName>
           <Files>
             <File>
-              <FileName>application_main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\app\application_main.c</FilePath>
-            </File>
-            <File>
-              <FileName>application_mode_normal.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\application\application_mode_normal.c</FilePath>
-            </File>
-            <File>
-              <FileName>application_mode_page.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\application\application_mode_page.c</FilePath>
-            </File>
-            <File>
-              <FileName>application_mode_test.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\application\application_mode_test.c</FilePath>
-            </File>
-            <File>
               <FileName>application_rf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\application\application_rf.c</FilePath>
@@ -411,30 +391,40 @@
               <FileType>4</FileType>
               <FilePath>..\..\application\BLE_boardcast.LIB</FilePath>
             </File>
+            <File>
+              <FileName>application_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\app\application_main.c</FilePath>
+            </File>
+            <File>
+              <FileName>application_mode_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\application\application_mode_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>application_mode_page.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\application\application_mode_page.c</FilePath>
+            </File>
+            <File>
+              <FileName>application_mode_normal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\application\application_mode_normal.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>driver</GroupName>
           <Files>
             <File>
-              <FileName>driver_initial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\driver\driver_initial.c</FilePath>
-            </File>
-            <File>
-              <FileName>driver_interrupt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\driver\driver_interrupt.c</FilePath>
-            </File>
-            <File>
-              <FileName>driver_memory.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\driver\driver_memory.c</FilePath>
-            </File>
-            <File>
               <FileName>driver_rf.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\driver\driver_rf.c</FilePath>
+            </File>
+            <File>
+              <FileName>driver_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\driver\driver_uart.c</FilePath>
             </File>
             <File>
               <FileName>driver_timer.c</FileName>
@@ -442,9 +432,19 @@
               <FilePath>..\..\driver\driver_timer.c</FilePath>
             </File>
             <File>
-              <FileName>driver_uart.c</FileName>
+              <FileName>driver_initial.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\driver\driver_uart.c</FilePath>
+              <FilePath>..\..\driver\driver_initial.c</FilePath>
+            </File>
+            <File>
+              <FileName>driver_memory.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\driver\driver_memory.c</FilePath>
+            </File>
+            <File>
+              <FileName>driver_interrupt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\driver\driver_interrupt.c</FilePath>
             </File>
           </Files>
         </Group>
