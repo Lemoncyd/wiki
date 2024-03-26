@@ -1,0 +1,11 @@
+.\objects\multi_role_main.o: source\multi_role\multi_role_Main.c
+.\objects\multi_role_main.o: ..\..\..\components\osal\include\OSAL.h
+.\objects\multi_role_main.o: ..\..\..\components\osal\include\comdef.h
+.\objects\multi_role_main.o: ..\..\..\components\inc\types.h
+.\objects\multi_role_main.o: ..\..\..\misc\rom_sym_def.h
+.\objects\multi_role_main.o: E:\keil\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\multi_role_main.o: E:\keil\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\multi_role_main.o: ..\..\..\components\osal\include\OSAL_Memory.h
+.\objects\multi_role_main.o: ..\..\..\components\osal\include\OSAL_Timers.h
+.\objects\multi_role_main.o: ..\..\..\components\osal\include\OSAL_Tasks.h
+.\objects\multi_role_main.o: ..\..\..\components\osal\include\OSAL_PwrMgr.h

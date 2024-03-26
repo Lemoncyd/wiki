@@ -1,0 +1,11 @@
+.\objects\singlebank_otadongle_main.o: Source\singlebank_otadongle_Main.c
+.\objects\singlebank_otadongle_main.o: ..\..\..\components\osal\include\OSAL.h
+.\objects\singlebank_otadongle_main.o: ..\..\..\components\osal\include\comdef.h
+.\objects\singlebank_otadongle_main.o: ..\..\..\components\inc\types.h
+.\objects\singlebank_otadongle_main.o: ..\..\..\misc\rom_sym_def.h
+.\objects\singlebank_otadongle_main.o: E:\keil\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\singlebank_otadongle_main.o: E:\keil\ARM\ARMCC\Bin\..\include\stdbool.h
+.\objects\singlebank_otadongle_main.o: ..\..\..\components\osal\include\OSAL_Memory.h
+.\objects\singlebank_otadongle_main.o: ..\..\..\components\osal\include\OSAL_Timers.h
+.\objects\singlebank_otadongle_main.o: ..\..\..\components\osal\include\OSAL_Tasks.h
+.\objects\singlebank_otadongle_main.o: ..\..\..\components\osal\include\OSAL_PwrMgr.h

@@ -1,0 +1,86 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¦ÌVision V5.37.0.0
+Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: cheng chengge, 888, LIC=HF82M-XQ96N-D3RM3-AT7HS-G49UM-2WS9M
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Professional  Version: 5.37.0.0
+Toolchain Path:  E:\keil\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 6 (build 750)
+Assembler:       Armasm.exe V5.06 update 6 (build 750)
+Linker/Locator:  ArmLink.exe V5.06 update 6 (build 750)
+Library Manager: ArmAr.exe V5.06 update 6 (build 750)
+Hex Converter:   FromElf.exe V5.06 update 6 (build 750)
+CPU DLL:         SARMCM3.DLL V5.37.0.0
+Dialog DLL:      DARMCM1.DLL V1.19.6.0
+Target DLL:      UL2CM3.DLL V1.164.7.0
+Dialog DLL:      TARMCM1.DLL V1.14.6.0
+ 
+<h2>Project:</h2>
+F:\phyplusinc\SDK\test\release_bbb_sdk-PHY62XX_SDK_3.1.3\example\peripheral\gpio\gpio.uvprojx
+Project File Date:  06/06/2023
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'E:\keil\ARM\ARMCC\Bin'
+Build target 'gpio'
+compiling my_printf.c...
+compiling gpio_demo.c...
+Source\gpio_demo.c(369): warning:  #177-D: variable "i"  was declared but never referenced
+      uint8_t i = 0;
+Source\gpio_demo.c(222): warning:  #177-D: function "key_press_evt"  was declared but never referenced
+  static void key_press_evt(uint8_t i, key_evt_t key_evt)
+Source\gpio_demo.c(249): warning:  #177-D: function "P16_wakeup_handler"  was declared but never referenced
+  static void P16_wakeup_handler(void)
+Source\gpio_demo.c(254): warning:  #177-D: function "P17_wakeup_handler"  was declared but never referenced
+  static void P17_wakeup_handler(void)
+Source\gpio_demo.c: 4 warnings, 0 errors
+compiling OSAL_gpio.c...
+compiling clock.c...
+compiling main.c...
+compiling gpio_Main.c...
+compiling jump_table.c...
+compiling gpio.c...
+compiling uart.c...
+compiling pwrmgr.c...
+compiling adc.c...
+compiling key.c...
+compiling flash.c...
+linking...
+.\scatter_load.sct(28): warning: L6329W: Pattern key.o(RO) only matches removed unused sections.
+Program Size: Code=22656 RO-data=1708 RW-data=1228 ZI-data=9104  
+Finished: 0 information, 1 warning and 0 error messages.
+FromELF: creating hex file...
+After Build - User command #1: fromelf.exe --bin -o  ./bin  ./Objects/gpio_demo.axf
+After Build - User command #2: fromelf.exe .\Objects\gpio_demo.axf --i32combined --output .\bin\gpio_demo.hex
+".\Objects\gpio_demo.axf" - 0 Error(s), 5 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.9.0.pack
+                ARM.CMSIS.5.9.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.6.0
+   * Component: Startup Version: 1.2.2
+
+<h2>Collection of Component include folders:</h2>
+  ./RTE/_gpio
+  E:/keil/keil_v5/ARM/CMSIS/5.9.0/CMSIS/Core/Include
+  E:/keil/keil_v5/ARM/CMSIS/5.9.0/Device/ARM/ARMCM0/Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.6.0
+
+   * Component: ARM::Device:Startup:1.2.2
+      Source file:   Device/ARM/ARMCM0/Source/system_ARMCM0.c
+      Source file:   Device/ARM/ARMCM0/Source/ARM/startup_ARMCM0.s
+      Include file:  Device/ARM/ARMCM0/Include/ARMCM0.h
+Build Time Elapsed:  00:00:02
+</pre>
+</body>
+</html>
